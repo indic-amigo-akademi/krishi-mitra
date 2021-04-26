@@ -81,18 +81,14 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Krishi-Mitra
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="https://laravel.com/docs">Register as Seller</a>
+                    <a href="https://laracasts.com">Browse products</a>
+                    <a href="https://laravel-news.com">Sell your produces</a>
+                    <a href="https://blog.laravel.com">Talk to farmers</a>
                 </div>
             </div>
         </div>

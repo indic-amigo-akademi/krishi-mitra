@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -14,6 +13,13 @@ class Address extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'type', 'street', 'house_no', 'city', 'state', 'pincode', 'landmark'
+        'user_id',
+        'type',
+        'street',
+        'house_no',
+        'city',
+        'state',
+        'pincode',
+        'landmark',
     ];
 }

@@ -18,6 +18,7 @@ class product extends Model
         'cover',
         'name',
         'unit',
+        'quantity',
         'slug',
         'seller_id',
         'discount',

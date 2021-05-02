@@ -26,6 +26,7 @@ class CreateProductsTable extends Migration
             $table->string('cover');
             $table->string('name');
             $table->string('unit');
+            $table->integer('quantity')->nullable();
             $table->string('slug');
             $table->double('discount');
             $table->timestamps();

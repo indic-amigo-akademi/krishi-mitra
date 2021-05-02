@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/seller_register', 'SellerRegisterController@seller_form');
+Route::post('/seller_create', 'SellerRegisterController@create_seller');
+Route::get('/products', 'ProductController@index')->withoutMiddleware(['auth']);
+Route::get('/create_product', 'ProductController@create');
+Route::post('/product_store', 'ProductController@store');

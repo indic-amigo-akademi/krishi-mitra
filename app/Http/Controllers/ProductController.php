@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Seller;
+use App\User;
+use App\Product;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Image;
 
 class ProductController extends Controller
 {
@@ -11,9 +17,15 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        //
+        $products = Product::all();
+        return view('Products')->with('products', $products);
     }
 
     /**
@@ -23,7 +35,12 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $x = User::find(Auth::id());
+        if ($x->role == 'Seller') {
+            return view('CreateProduct');
+        } else {
+            return redirect('/');
+        }
     }
 
     /**
@@ -32,9 +49,36 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        $sid = Seller::find(['user_id' => Auth::id()])[0];
+        Log::info($sid->user_id);
+        $image = $req->file('input_img');
+        log::info('The image is' . $image);
+
+        if ($req->hasFile('input_img')) {
+            log::info('The IMAGE IS PRESENT');
+            $image = $req->file('input_img');
+            $destinationPath = public_path('\images');
+            if (!$image->move($destinationPath, $image->getClientOriginalName())) {
+                log::info('ERROR SAVING IMAGE');
+            }
+            log::info('image saved!!');
+        }
+
+        Product::create([
+            'type' => $req['type'],
+            'desc' => $req['desc'],
+            'price' => $req['price'],
+            'cover' => $image->getClientOriginalName(),
+            'name' => $req['name'],
+            'unit' => $req['unit'],
+            'seller_id' => $sid->id,
+            'slug' => $req['name'] . $sid->id,
+            'discount' => 0.4,
+        ]);
+        LOG::info('Yohoo Product Created');
+        return redirect('/');
     }
 
     /**

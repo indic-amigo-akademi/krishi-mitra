@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,3 +27,6 @@ Route::post('/seller_create', 'SellerRegisterController@create_seller');
 Route::get('/products', 'ProductController@index')->withoutMiddleware(['auth']);
 Route::get('/create_product', 'ProductController@create');
 Route::post('/product_store', 'ProductController@store');
+Route::get('/admin_registration','AdminController@auth_register_view');
+Route::post('/admin_registration','AdminController@auth_register');
+Route::post('/admin_registration/edit','AdminController@edit');

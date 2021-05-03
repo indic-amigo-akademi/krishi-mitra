@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Seller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -11,11 +16,32 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function __construct()
     {
-        //
+        // $this->middleware('guest')->except('logout');
     }
 
+    public function auth_register_view()
+    {
+        return view('admin');
+    }
+
+    public function auth_register(Request $req)
+    {
+        
+        $x = User::all()->where('email',"=", $req->input('email'))->first();
+
+        if (isset($x) && $x && Hash::check($req->input('password'), $x->password)) {
+            // $x = $x->first();
+            $x->role = 'admin';
+            Log::info($x);
+            $x->save();
+            return redirect('/')->with('alert', ['code' => 'success', 'title' => 'Success!', 'subtitle' => 'You have been registered as an admin!']);
+        }
+        return redirect('/admin_registration')->with('alert', ['code' => 'error', 'title' => 'Error!', 'subtitle' => 'Invalid credentials!']);
+
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -54,9 +80,8 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $req)
     {
-        //
     }
 
     /**
@@ -68,7 +93,6 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**

@@ -59,7 +59,7 @@ class ProductController extends Controller
         if ($req->hasFile('input_img')) {
             log::info('The IMAGE IS PRESENT');
             $image = $req->file('input_img');
-            $destinationPath = public_path('\images');
+            $destinationPath = public_path('\uploads\products');
             if (!$image->move($destinationPath, $image->getClientOriginalName())) {
                 log::info('ERROR SAVING IMAGE');
             }

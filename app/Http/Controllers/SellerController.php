@@ -8,7 +8,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class SellerRegisterCOntroller extends Controller
+class SellerController extends Controller
 {
     public function __construct()
     {
@@ -18,6 +18,12 @@ class SellerRegisterCOntroller extends Controller
     {
         return view("seller_form");
     }
+
+    public function index()
+    {
+        return view("seller_dashboard");
+    }
+    
     protected function create_seller(Request $req)
     {
         Log::info('Hii this seller_req method has been called!!');

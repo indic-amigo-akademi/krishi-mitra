@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Seller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -22,6 +20,11 @@ class AdminController extends Controller
         // $this->middleware('guest')->except('logout');
     }
 
+    public function index()
+    {
+        return view('admin_dashboard');
+    }
+
     public function auth_register_view()
     {
         return view('admin');
@@ -29,8 +32,8 @@ class AdminController extends Controller
 
     public function auth_register(Request $req)
     {
-        
-        $x = User::all()->where('email',"=", $req->input('email'))->first();
+
+        $x = User::all()->where('email', "=", $req->input('email'))->first();
 
         if (isset($x) && $x && Hash::check($req->input('password'), $x->password)) {
             // $x = $x->first();
@@ -40,7 +43,6 @@ class AdminController extends Controller
             return redirect('/')->with('alert', ['code' => 'success', 'title' => 'Success!', 'subtitle' => 'You have been registered as an admin!']);
         }
         return redirect('/admin_registration')->with('alert', ['code' => 'error', 'title' => 'Error!', 'subtitle' => 'Invalid credentials!']);
-
     }
     /**
      * Show the form for creating a new resource.

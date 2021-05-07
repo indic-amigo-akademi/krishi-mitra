@@ -73,8 +73,15 @@
         <li class="uk-navbar-item"><a href="{{ route('home') }}">Home</a></li>
         <li class="uk-navbar-item"><a href="{{ route('welcome') }}">Explore</a></li>
         <li class="uk-navbar-item"><a href="">My Orders</a></li>
-        <li class="uk-navbar-item"><a href="">Sell on Krishi-Mitra</a></li>
+        @if (Auth::user()->role == 'customer')
+            <li class="uk-navbar-item"><a href="{{ route('seller.register') }}">Sell on Krishi-Mitra</a></li>
+        @elseif(Auth::user()->role == 'seller')
+            <li class="uk-navbar-item"><a href="{{ route('seller.index') }}">Seller Dashboard</a></li>
+        @elseif(Auth::user()->role == 'admin')
+            <li class="uk-navbar-item"><a href="{{ route('admin.index') }}">Admin Dashboard</a></li>
+        @endif
         <li class="uk-navbar-item"><a href="">Contact us</a></li>
+
     </ul>
 </nav>
 

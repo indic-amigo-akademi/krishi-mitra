@@ -32,7 +32,6 @@ footer {
         }
     }
 
-
     .sign_img {
         width: 23rem;
         height: 30rem;
@@ -60,7 +59,7 @@ footer {
         p {
             font-size: 10px;
             margin-bottom: 0px;
-            color: rgb(185, 185, 185);
+            color: darken($theme-color2, 5%);
         }
         .icon {
             display: flex;
@@ -84,7 +83,7 @@ footer {
 
     .footer {
         text-align: center;
-        color: rgb(185, 185, 185);
+        color: darken($theme-color2, 5%);
         p {
             font-size: 12px;
             color: $theme-color1;
@@ -106,7 +105,7 @@ footer {
 
     span {
         font-size: 10px;
-        color: rgb(185, 185, 185);
+        color: darken($theme-color2, 5%);
     }
 
     .radiobtn {
@@ -193,6 +192,12 @@ footer {
     /* active state */
     input:focus ~ .highlight {
         animation: inputHighlighter 0.3s ease;
+    }
+
+    .uk-radio:checked,
+    .uk-checkbox:checked,
+    .uk-checkbox:indeterminate {
+        background-color: $theme-color1;
     }
 }
 

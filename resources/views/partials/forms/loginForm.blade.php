@@ -19,20 +19,20 @@
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
                     <div class="group">
-                        <input class="input" type="email" name="email" required autocomplete="email" autofocus />
+                        <input class="input uk-input" type="email" name="email" required autocomplete="email" autofocus />
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Email</label>
                     </div>
 
                     <div class="group">
-                        <input class="input" type="password" name="password" required autocomplete="current-password" />
+                        <input class="input uk-input" type="password" name="password" required autocomplete="current-password" />
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Password</label>
                     </div>
 
-                    <input type="checkbox" checked="checked" name="remember" class="radioBtn" /><span> Keep me Logged
+                    <input type="checkbox" name="remember" class="radioBtn uk-checkbox" checked /><span> Keep me Logged
                         in</span>
                     <button class="form-btn" type="submit">Submit</button>
                 </form>

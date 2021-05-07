@@ -39,21 +39,31 @@ class LoginController extends Controller
      * @return void
      */
 
-
-
     protected function authenticated(Request $request, $user)
     {
-        $y = $user->role;
-        if ($y == 'admin') {
-            return redirect('/admin')->with('alert', ['code' => 'success', 'title' => 'Success!', 'subtitle' => 'You have been logged in as an admin!']);
-        }
+        switch ($user->role) {
+            case 'admin':
+                return redirect('/admin')->with('alert', [
+                    'code' => 'success',
+                    'title' => 'Success!',
+                    'subtitle' => 'You have been logged in as an admin!',
+                ]);
+                break;
+            case 'seller':
+                return redirect('/seller')->with('alert', [
+                    'code' => 'success',
+                    'title' => 'Success!',
+                    'subtitle' => 'You have been logged in as an seller!',
+                ]);
+                break;
 
-        if ($y == 'seller') {
-            return redirect('/seller')->with('alert', ['code' => 'success', 'title' => 'Success!', 'subtitle' => 'You have been logged in as an seller!']);
-        }
-
-        if ($y == 'customer') {
-            return redirect('/customer')->with('alert', ['code' => 'success', 'title' => 'Success!', 'subtitle' => 'You have been logged in as an customer!']);
+            default:
+                return redirect('home')->with('alert', [
+                    'code' => 'success',
+                    'title' => 'Success!',
+                    'subtitle' => 'You have been logged in as an customer!',
+                ]);
+                break;
         }
     }
 }

@@ -12408,7 +12408,7 @@ footer {
 .form-container .upper_modal p {
   font-size: 10px;
   margin-bottom: 0px;
-  color: #b9b9b9;
+  color: #413636;
 }
 .form-container .upper_modal .icon {
   display: flex;
@@ -12429,7 +12429,7 @@ footer {
 }
 .form-container .footer {
   text-align: center;
-  color: #b9b9b9;
+  color: #413636;
 }
 .form-container .footer p {
   font-size: 12px;
@@ -12450,7 +12450,7 @@ footer {
 }
 .form-container span {
   font-size: 10px;
-  color: #b9b9b9;
+  color: #413636;
 }
 .form-container .radiobtn {
   background-color: #3b7402;
@@ -12523,6 +12523,11 @@ footer {
 .form-container input:focus ~ .highlight {
   -webkit-animation: inputHighlighter 0.3s ease;
           animation: inputHighlighter 0.3s ease;
+}
+.form-container .uk-radio:checked,
+.form-container .uk-checkbox:checked,
+.form-container .uk-checkbox:indeterminate {
+  background-color: #3b7402;
 }
 
 /* ANIMATIONS ================ */

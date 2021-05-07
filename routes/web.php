@@ -33,3 +33,7 @@ Route::post('/admin_registration','AdminController@auth_register');
 Route::get('/admin','AdminController@index');
 Route::get('/seller','SellerController@index');
 Route::get('/customer','CustomerController@index');
+
+// Default routes
+Route::get('/contact', 'AppController@contact')->name('contact');
+Route::get('/about', 'AppController@about')->name('about');

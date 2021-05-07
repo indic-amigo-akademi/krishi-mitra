@@ -28,7 +28,7 @@ class SellerController extends Controller
     {
         Log::info('Hii this seller_req method has been called!!');
         $x = User::find(Auth::id());
-        $x->role = 'Seller';
+        $x->role = 'seller';
         Log::info($req->all());
 
         Log::info($x);

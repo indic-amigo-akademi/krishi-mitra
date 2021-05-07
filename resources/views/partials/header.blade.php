@@ -74,7 +74,7 @@
         <li class="uk-navbar-item"><a href="{{ route('welcome') }}">Explore</a></li>
         <li class="uk-navbar-item"><a href="">My Orders</a></li>
         <li class="uk-navbar-item"><a href="">Sell on Krishi-Mitra</a></li>
-        <li class="uk-navbar-item"><a href="">Contact us</a></li>
+        <li class="uk-navbar-item"><a href="{{ route('contact') }}">Contact us</a></li>
     </ul>
 </nav>
 

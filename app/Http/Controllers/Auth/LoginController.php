@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Illuminate\Http\Request;
+use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 class LoginController extends Controller
 {
     /*
@@ -33,8 +38,22 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+
+
+
+    protected function authenticated(Request $request, $user)
     {
-        $this->middleware('guest')->except('logout');
+        $y = $user->role;
+        if ($y == 'admin') {
+            return redirect('/admin')->with('alert', ['code' => 'success', 'title' => 'Success!', 'subtitle' => 'You have been logged in as an admin!']);
+        }
+
+        if ($y == 'seller') {
+            return redirect('/seller')->with('alert', ['code' => 'success', 'title' => 'Success!', 'subtitle' => 'You have been logged in as an seller!']);
+        }
+
+        if ($y == 'customer') {
+            return redirect('/customer')->with('alert', ['code' => 'success', 'title' => 'Success!', 'subtitle' => 'You have been logged in as an customer!']);
+        }
     }
 }

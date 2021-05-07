@@ -22,17 +22,27 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-//Route::post('/login','Auth\LoginController@login_redirect');
-Route::get('/seller_register', 'SellerController@seller_form');
-Route::post('/seller_create', 'SellerController@create_seller');
+Route::get('/customer', 'CustomerController@index')->name('customer.index');
+
+Route::get('/seller', 'SellerController@index')->name('seller.index');
+Route::get('/seller/register', 'SellerController@seller_form')->name(
+    'seller.register'
+);
+Route::post('/seller/create', 'SellerController@create_seller')->name(
+    'seller.create'
+);
+
+Route::get('/admin', 'AdminController@index')->name('admin.index');
+Route::get('/admin_registration', 'AdminController@auth_register_view');
+Route::post('/admin_registration', 'AdminController@auth_register');
+Route::post('/admin_registration/edit', 'AdminController@edit');
+
 Route::get('/products', 'ProductController@index')->withoutMiddleware(['auth']);
 Route::get('/create_product', 'ProductController@create');
 Route::post('/product_store', 'ProductController@store');
-Route::get('/admin_registration','AdminController@auth_register_view');
-Route::post('/admin_registration','AdminController@auth_register');
-Route::get('/admin','AdminController@index');
-Route::get('/seller','SellerController@index');
-Route::get('/customer','CustomerController@index');
+Route::get('/product_edit/{id}', 'ProductController@edit');
+Route::post('/product_update/{id}', 'ProductController@update');
+Route::get('/product_destroy/{id}', 'ProductController@destroy');
 
 // Default routes
 Route::get('/contact', 'AppController@contact')->name('contact');

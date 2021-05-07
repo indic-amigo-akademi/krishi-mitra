@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <h1>Seller Registration</h1>
-    <form action="/seller_create" method="POST">
+    <form action="{{ route('seller.create') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="name">Name</label>

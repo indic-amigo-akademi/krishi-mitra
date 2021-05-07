@@ -1,39 +1,82 @@
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-<nav class="upper-navbar">
-    <div class="left-content">
-        <img class="logo" src="{{ asset('images/icons/logo.png') }}" />
-        <p>Krishi-Mitra</p>
+<nav class="uk-navbar-container upper-navbar" uk-navbar>
+    <div class="nav-overlay uk-navbar-left left-content">
+        <div class="navbar-toggle uk-navbar-toggle" uk-navbar-toggle-icon uk-toggle="target: .lower-navbar"></div>
+        <a class="uk-navbar-item uk-logo" href="#">
+            <img class="logo" src="{{ asset('images/icons/logo.png') }}" alt="logo text" />
+            <span class="logo-text font-cursive">{{ config('app.name', 'Laravel') }}</span>
+        </a>
+        <a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade"
+            href="#"></a>
     </div>
 
-    <div class="uk-navbar-left center-content">
-        <div class="uk-navbar-item">
+    <div class="nav-overlay uk-navbar-right right-content">
+        <ul class="uk-navbar-nav">
+            @if (Auth::check())
+                <li class="uk-navbar-item nav-link user-navbar-btn">
+                    <a href="#">
+                        <span class="icon ri-user-fill ri-1g"></span>
+                        <span class="icon-text uk-text-truncate">{{ Auth::user()->username }}</span>
+                    </a>
+                    <div class="uk-navbar-dropdown" uk-dropdown="mode: click">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li>
+                                <a href="#">
+                                    <span class="icon ri-settings-fill ri-1g"></span>
+                                    <span>Settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="document.getElementById('logoutFrm').submit()">
+                                    <form id="logoutFrm" action="{{ route('logout') }}" method="post">
+                                        @csrf
+                                        <span class="icon ri-logout-circle-fill ri-1g"></span>
+                                        <span>Logout</span>
+                                    </form>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="uk-navbar-item nav-link">
+                    <span class="icon ri-shopping-cart-fill"></span>
+                    <a href="#" class="icon-text">{{ __('Cart') }}</a>
+                </li>
+            @else
+                <li class="uk-navbar-item nav-link" uk-toggle="target: #signin-form">
+                    <a href="#" class="text-icon">
+                        <small>{{ __('Login') }}</small>
+                    </a>
+                </li>
+                <li class="uk-navbar-item nav-link" uk-toggle="target: #signup-form">
+                    <a href="#" class="text-icon">
+                        <small>{{ __('Register') }}</small>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </div>
+
+    <div class="nav-overlay uk-navbar-left center-content" hidden>
+        <div class="uk-navbar-item search">
             <form class="uk-search uk-search-navbar uk-text-bold uk-text-italic">
-                <span uk-search-icon></span>
-                <input class="uk-search-input" type="search" placeholder="Search">
+                <input class="uk-search-input" type="search" placeholder="Search..." autofocus />
             </form>
+            <a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade"
+                href="#"></a>
         </div>
     </div>
 
-    <div class="right-content">
-        <div class="nav-link" uk-toggle="target: #signin-form"><i
-                class="fa fa-user"></i><span>{{ __('Login') }}</span></div>
-        <button class="nav-link" uk-toggle="target: #signup-form"><span>{{ __('Register') }}</span></button>
-        <div class="nav-link"><i class="fa fa-opencart"></i><span>Cart</span></div>
-    </div>
 </nav>
 
-<div class="header-content"
-    style="background-image:url({{ asset('images/background/img1.jpg') }}); filter:sepia(20%);">
-    <nav class="upper-content">
-        <a>Home</a>
-        <a>Explore</a>
-        <a>My Orders</a>
-        <a>Sell on Krishi-Mitra</a>
-        <a>Contact us</a>
-    </nav>
-</div>
+<nav class="uk-navbar-container lower-navbar" uk-navbar>
+    <ul class="uk-navbar-nav uk-navbar-center">
+        <li class="uk-navbar-item"><a href="{{ route('home') }}">Home</a></li>
+        <li class="uk-navbar-item"><a href="{{ route('welcome') }}">Explore</a></li>
+        <li class="uk-navbar-item"><a href="">My Orders</a></li>
+        <li class="uk-navbar-item"><a href="">Sell on Krishi-Mitra</a></li>
+        <li class="uk-navbar-item"><a href="">Contact us</a></li>
+    </ul>
+</nav>
 
 
 @include('partials.forms.registerForm')

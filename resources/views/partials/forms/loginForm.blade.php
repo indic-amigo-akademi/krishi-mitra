@@ -16,24 +16,26 @@
                     <hr />
                 </div>
 
-                <div class="group">
-                    <input class="input" type="text" required />
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Username</label>
-                </div>
+                <form action="{{ route('login') }}" method="POST">
+                    @csrf
+                    <div class="group">
+                        <input class="input" type="email" name="email" required autocomplete="email" autofocus />
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Email</label>
+                    </div>
 
-                <div class="group">
-                    <input class="input" type="password" required />
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Password</label>
-                </div>
+                    <div class="group">
+                        <input class="input" type="password" name="password" required autocomplete="current-password" />
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Password</label>
+                    </div>
 
-                <input type="checkbox" checked="checked" name="remember" class="radioBtn" /><span> Keep me Logged
-                    in</span>
-                <button class="Log_button" type="submit">Submit</button>
-
+                    <input type="checkbox" checked="checked" name="remember" class="radioBtn" /><span> Keep me Logged
+                        in</span>
+                    <button class="form-btn" type="submit">Submit</button>
+                </form>
                 <div class="footer">
                     <p>Forgot Password ?</p>
                     <span>Don't have an account</span>

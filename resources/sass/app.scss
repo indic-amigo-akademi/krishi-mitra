@@ -2,11 +2,13 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
-@import 'variables';
+@import './variables';
 
-@import "~uikit/src/scss/variables-theme.scss";
-@import "~uikit/src/scss/mixins-theme.scss";
+@import "../../node_modules/uikit/src/scss/variables-theme.scss";
+@import "../../node_modules/uikit/src/scss/mixins-theme.scss";
 
-@import "~uikit/src/scss/uikit-theme.scss";
+@import "../../node_modules/uikit/src/scss/uikit-theme.scss";
+
+@import "./base";
 
 @import "./pages/home";

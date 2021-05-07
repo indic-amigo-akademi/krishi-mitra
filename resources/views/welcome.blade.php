@@ -1,32 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex-center position-ref full-height">
-        @if (Route::has('login'))
-            <div class="top-right links">
-                @auth
-                    <a href="{{ url('/home') }}">Home</a>
-                @else
-                    <a href="{{ route('login') }}">Login</a>
 
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}">Register</a>
-                    @endif
-                @endauth
-            </div>
-        @endif
+    <section class="container">
+        <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light header-content"
+            data-src="{{ asset('images/background/img2.jpeg') }}" uk-img>
 
-        <div class="content">
-            <div class="title m-b-md">
-                Krishi-Mitra
-            </div>
+            <div class="uk-card uk-card-default">
+                <div class="uk-card-header">
+                    <h3 class="uk-card-title">{{ config('app.name') }}</h3>
+                </div>
 
-            <div class="links">
-                <a href="https://laravel.com/docs">Register as Seller</a>
-                <a href="https://laracasts.com">Browse products</a>
-                <a href="https://laravel-news.com">Sell your produces</a>
-                <a href="https://blog.laravel.com">Talk to farmers</a>
+                <div class="uk-card-body"></div>
+
             </div>
         </div>
-    </div>
+    </section>
 @endsection

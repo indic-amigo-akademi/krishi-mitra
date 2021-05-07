@@ -17,62 +17,66 @@
                     <p>Or Sign Up with Email</p>
                     <hr />
                 </div>
-                <div id="first_block">
-                    <div class="group">
-                        <input class="input" type="text" required />
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Name</label>
+                <form method="POST" action="{{ route('register') }}">
+                    @csrf
+                    <div id="first_block">
+                        <div class="group">
+                            <input class="input" type="text" name="name" required autocomplete="name" autofocus />
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>Name</label>
+                        </div>
+
+                        <div class="group">
+                            <input class="input" type="text" name="username" required autocomplete="username" />
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>Username</label>
+                        </div>
+
+                        <div class="group">
+                            <input class="input" type="number" name="phone" required autocomplete="phone" />
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>Phone Number</label>
+                        </div>
+
+                        <button class="form-btn" type="submit" onclick="onEdit1();">Next</button>
                     </div>
 
-                    <div class="group">
-                        <input class="input" type="text" required />
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Username</label>
+                    <div id="second_block" style="display: none">
+                        <div class="group">
+                            <input class="input" type="email" name="email" required autocomplete="email" />
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>Email</label>
+                        </div>
+
+                        <div class="group">
+                            <input class="input" type="password" name="password" required autocomplete="new-password" />
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>Create Password</label>
+                        </div>
+
+                        <div class="group">
+                            <input class="input" type="password" name="password_confirmation" required
+                                autocomplete="new-password" />
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>Confirm Password</label>
+                        </div>
+
+                        <input type="checkbox" checked="checked" name="remember" class="radioBtn" /><span> Keep me
+                            Logged in</span>
+                        <button class="form-btn" type="submit"> {{ __('Register') }}</button>
                     </div>
-
-                    <div class="group">
-                        <input class="input" type="number" required />
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Contact</label>
+                    <div class="footer">
+                        <span>Already have an account</span>
+                        <a uk-toggle="target: #signin-form">Sign In</a>
+                        <hr />
                     </div>
-
-                    <button class="Log_button" type="submit" onclick="onEdit1();">Next</button>
-                </div>
-
-                <div id="second_block" style="display: none">
-                    <div class="group">
-                        <input class="input" type="text" required />
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Email</label>
-                    </div>
-
-                    <div class="group">
-                        <input class="input" type="password" required />
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Create Password</label>
-                    </div>
-
-                    <div class="group">
-                        <input class="input" type="password" required />
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Confirm Password</label>
-                    </div>
-
-                    <input type="checkbox" checked="checked" name="remember" class="radioBtn" /><span> Keep me
-                        Logged in</span>
-                    <button class="Log_button" type="submit">Submit</button>
-                </div>
-                <div class="footer">
-                    <span>Already have an account</span>
-                    <a uk-toggle="target: #signin-form">Sign In</a>
-                    <hr />
-                </div>
+                </form>
             </div>
         </div>
     </div>

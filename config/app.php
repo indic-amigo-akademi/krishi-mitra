@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Description
+    |--------------------------------------------------------------------------
+    |
+    | This value is the description of your application. This value is used when 
+    | the framework needs to place the application's description seo and related
+    | purposes.
+    |
+    */
+
+    'description' => env('APP_DESCRIPTION', 'Laravel'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

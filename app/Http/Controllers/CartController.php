@@ -20,7 +20,16 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        log::info('cart called' . Auth::id());
+        $cart_array = Cart::where('user_id', Auth::id())->get();
+        $final_array = [];
+        foreach ($cart_array as $item) {
+            $item['type'] = Product::find($item->product_id)->type;
+            $item['cover'] = Product::find($item->product_id)->cover;
+            array_push($final_array, $item);
+        }
+        log::info('Final Array', $final_array);
+        return view('Cart')->with('products', $final_array);
     }
 
     /**
@@ -31,12 +40,28 @@ class CartController extends Controller
      */
     public function store(Request $req)
     {
-        Cart::create([
-            'type' => $req['type'],
-            'desc' => $req['desc'],
-            'price' => $req['price'],
-        ]);
-        LOG::info('Yohoo Product Created');
+        log::info('Request id is ' . $req->input('id'));
+        $prod_id = $req->input('id');
+        $user_id = Auth::id();
+        $prod = Product::find($prod_id);
+        log::info('PURBU' . $prod);
+        $c = Cart::where([['product_id', '=', $prod_id], ['user_id', '=', Auth::id()]])->count();
+        if ($c == 0) {
+            Cart::create([
+                'user_id' => $user_id,
+                'product_id' => $prod_id,
+                'qty' => 1,
+                'price' => $prod->price,
+                'discount' => $prod->discount,
+
+            ]);
+        } else {
+            $cart_prod = Cart::where([['product_id', '=', $prod_id], ['user_id', '=', Auth::id()]])->get()[0];
+            log::info('CART PRODUCT' . $cart_prod);
+            $cart_prod->qty = $cart_prod->qty + 1;
+            $cart_prod->save();
+        }
+        Log::info('Cart Item Added');
     }
 
     /**
@@ -68,9 +93,18 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function incr(Request $req)
     {
-        //
+        $prod = Cart::find($req->input('id'));
+        log::info('INCREMENT' . $prod);
+        $prod->qty = $prod->qty + 1;
+        $prod->save();
+    }
+    public function decr(Request $req)
+    {
+        $prod = Cart::find($req->input('id'));
+        $prod->qty = $prod->qty - 1;
+        $prod->save();
     }
 
     /**
@@ -79,8 +113,18 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $req)
     {
-        //
+        Cart::find($req->input('id'))->delete();
+        LOG::info('Product Is Destroyed');
+        $cart_array = Cart::where('user_id', Auth::id())->get();
+        $final_array = [];
+        foreach ($cart_array as $item) {
+            $item['type'] = Product::find($item->product_id)->type;
+            $item['cover'] = Product::find($item->product_id)->cover;
+            array_push($final_array, $item);
+        }
+        log::info('Final Array', $final_array);
+        return view('Cart')->with('products', $final_array);
     }
 }

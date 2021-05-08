@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
     <h1>List of all products</h1>
     @if (count($data_arr[0]) > 0)
@@ -8,10 +9,10 @@
 
             <img src={{ URL::to('/uploads/products/' . $prod->cover) }} width="300" height="300">
             @if ($data_arr[1] == 'customer')
-                <a href="/cart_add" type=" button" class="btn btn-primary">Add to cart</a>
+                <button id={{ $prod->id }} onclick="post()">Add to cart</button>
             @endif
             @if ($data_arr[1] == 'seller')
-                <a href="/cart_add" type=" button" class="btn btn-primary">Add to cart</a>
+                <button id={{ $prod->id }} onclick="post()">Add to cart</button>
                 <a href="/product_edit/{{ $prod->id }}" type=" button" class="btn btn-success">Edit the product</a>
                 <a href="/product_destroy/{{ $prod->id }}" type=" button" class="btn btn-danger">Remove Product</a>
             @endif
@@ -25,3 +26,30 @@
         NO PRODUCTS FOUND
     @endif
 @endsection
+@push('JsScript')
+    <script>
+        function post() {
+            var x = {
+                id: event.target.id
+            }
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '/cart/store',
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(x),
+                success: function(data) {
+                    console.log('Posted');
+                }
+
+            });
+        }
+
+    </script>
+@endpush

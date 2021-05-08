@@ -12,7 +12,16 @@
     <div class="nav-overlay uk-navbar-right right-content">
         <ul class="uk-navbar-nav">
             @if (Auth::check())
-                <li class="uk-navbar-item nav-link user-navbar-btn">
+                <li>
+                    <a href="#" onclick="document.getElementById('logoutFrm').submit()">
+                        <form id="logoutFrm" action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <span class="icon ri-logout-circle-fill ri-1g"></span>
+                            <small>Logout</small>
+                        </form>
+                    </a>
+                </li>
+                <li class="uk-navbar-item nav-link user-navbar-btn d-none">
                     <a href="#">
                         <span class="icon ri-user-fill ri-1g"></span>
                         <span class="icon-text uk-text-truncate">{{ Auth::user()->username }}</span>
@@ -39,7 +48,7 @@
                 </li>
                 <li class="uk-navbar-item nav-link">
                     <span class="icon ri-shopping-cart-fill"></span>
-                    <a href="#" class="icon-text">{{ __('Cart') }}</a>
+                    <a href="{{ route('cart') }}" class="icon-text">{{ __('Cart') }}</a>
                 </li>
             @else
                 <li class="uk-navbar-item nav-link" uk-toggle="target: #signin-form">
@@ -72,13 +81,13 @@
     <ul class="uk-navbar-nav uk-navbar-center">
         <li class="uk-navbar-item"><a href="{{ route('home') }}">Home</a></li>
         <li class="uk-navbar-item"><a href="{{ route('welcome') }}">Explore</a></li>
-        <li class="uk-navbar-item"><a href="">My Orders</a></li>
-        @if (Auth::user()->role == 'customer')
-            <li class="uk-navbar-item"><a href="{{ route('seller.register') }}">Sell on Krishi-Mitra</a></li>
-        @elseif(Auth::user()->role == 'seller')
+        <li class="uk-navbar-item"><a href="{{ route('cart') }}">My Orders</a></li>
+        @if (Auth::check() && Auth::user()->role == 'seller')
             <li class="uk-navbar-item"><a href="{{ route('seller.index') }}">Seller Dashboard</a></li>
-        @elseif(Auth::user()->role == 'admin')
+        @elseif(Auth::check() && Auth::user()->role == 'admin')
             <li class="uk-navbar-item"><a href="{{ route('admin.index') }}">Admin Dashboard</a></li>
+        @else
+            <li class="uk-navbar-item"><a href="{{ route('seller.register') }}">Sell on Krishi-Mitra</a></li>
         @endif
         <li class="uk-navbar-item"><a href="">Contact us</a></li>
 

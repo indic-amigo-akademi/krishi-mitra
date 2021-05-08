@@ -46,6 +46,7 @@
     </footer>
 
     @yield('scripts')
+    @stack('JsScript')
 
 </body>
 

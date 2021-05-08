@@ -12,7 +12,7 @@
     <div class="nav-overlay uk-navbar-right right-content">
         <ul class="uk-navbar-nav">
             @if (Auth::check())
-                <li class="uk-navbar-item nav-link user-navbar-btn">
+                <li class="nav-link user-navbar-btn uk-position-relative uk-position-z-index">
                     <a href="#">
                         <span class="icon ri-user-fill ri-1g"></span>
                         <span class="icon-text uk-text-truncate">{{ Auth::user()->username }}</span>
@@ -21,33 +21,35 @@
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li>
                                 <a href="#">
-                                    <span class="icon ri-settings-fill ri-1g"></span>
-                                    <span>Settings</span>
+                                    <span class="icon ri-settings-fill"></span>
+                                    <span class="text-icon">Settings</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="#" onclick="document.getElementById('logoutFrm').submit()">
                                     <form id="logoutFrm" action="{{ route('logout') }}" method="post">
                                         @csrf
-                                        <span class="icon ri-logout-circle-fill ri-1g"></span>
-                                        <span>Logout</span>
+                                        <span class="icon ri-logout-circle-fill"></span>
+                                        <span class="text-icon">Logout</span>
                                     </form>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <li class="uk-navbar-item nav-link">
-                    <span class="icon ri-shopping-cart-fill"></span>
-                    <a href="#" class="icon-text">{{ __('Cart') }}</a>
+                <li class="nav-link">
+                    <a href="#" class="text-icon">
+                        <span class="icon ri-shopping-cart-fill"></span>
+                        <span class="icon-text">{{ __('Cart') }}</span>
+                    </a>
                 </li>
             @else
-                <li class="uk-navbar-item nav-link" uk-toggle="target: #signin-form">
+                <li class="uk-padding-remove nav-link" uk-toggle="target: #signin-form">
                     <a href="#" class="text-icon">
                         <small>{{ __('Login') }}</small>
                     </a>
                 </li>
-                <li class="uk-navbar-item nav-link" uk-toggle="target: #signup-form">
+                <li class="uk-padding-remove nav-link" uk-toggle="target: #signup-form">
                     <a href="#" class="text-icon">
                         <small>{{ __('Register') }}</small>
                     </a>
@@ -73,12 +75,12 @@
         <li class="uk-navbar-item"><a href="{{ route('home') }}">Home</a></li>
         <li class="uk-navbar-item"><a href="{{ route('welcome') }}">Explore</a></li>
         <li class="uk-navbar-item"><a href="">My Orders</a></li>
-        @if (Auth::user()->role == 'customer')
-            <li class="uk-navbar-item"><a href="{{ route('seller.register') }}">Sell on Krishi-Mitra</a></li>
-        @elseif(Auth::user()->role == 'seller')
+        @if (Auth::check() && Auth::user()->role == 'seller')
             <li class="uk-navbar-item"><a href="{{ route('seller.index') }}">Seller Dashboard</a></li>
-        @elseif(Auth::user()->role == 'admin')
+        @elseif(Auth::check() && Auth::user()->role == 'admin')
             <li class="uk-navbar-item"><a href="{{ route('admin.index') }}">Admin Dashboard</a></li>
+        @else
+            <li class="uk-navbar-item"><a href="{{ route('seller.register') }}">Sell on Krishi-Mitra</a></li>
         @endif
         <li class="uk-navbar-item"><a href="{{ route('contact') }}">Contact us</a></li>
 

@@ -12347,6 +12347,18 @@ h3 {
 
 body {
   font-family: "Open Sans", sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header,
+footer {
+  flex-shrink: 0;
+}
+
+main {
+  flex: 1 0 auto;
 }
 
 footer {
@@ -12575,6 +12587,10 @@ footer {
 .upper-navbar .center-content .search .uk-search-navbar .uk-search-input:focus {
   border-bottom: 3px solid #3b7402 !important;
 }
+.upper-navbar .right-content .icon {
+  font-size: large;
+  margin-right: 0.4rem;
+}
 .upper-navbar .right-content li {
   font-weight: bold;
   font-size: 1.2rem;
@@ -12584,7 +12600,7 @@ footer {
 .upper-navbar .right-content li a {
   color: inherit;
 }
-.upper-navbar .right-content li:hover {
+.upper-navbar .right-content li a:hover {
   color: #3b7402;
   transform: scale(1.1);
 }
@@ -12593,6 +12609,13 @@ footer {
 }
 .upper-navbar .right-content li .uk-navbar-dropdown-nav a {
   font-size: 1rem;
+}
+.upper-navbar .right-content li .uk-navbar-dropdown-nav a .icon {
+  position: relative;
+  top: 0.25rem;
+}
+.upper-navbar .right-content li .uk-navbar-dropdown-nav a .text-icon {
+  font-size: 0.9rem;
 }
 .upper-navbar .right-content button {
   background-color: #3b7402;

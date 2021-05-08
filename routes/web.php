@@ -26,7 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/seller/register', 'SellerController@seller_form')->name('seller.register');
 Route::post('/seller/create', 'SellerController@create_seller')->name('seller.create');
 
-Route::get('/products', 'ProductController@index')->withoutMiddleware(['auth']);
+Route::get('/products', 'ProductController@index')->withoutMiddleware(['auth'])->name('Products');
 Route::get('/create_product', 'ProductController@create');
 Route::post('/product_store', 'ProductController@store');
 

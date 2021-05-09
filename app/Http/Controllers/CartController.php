@@ -103,8 +103,12 @@ class CartController extends Controller
     public function decr(Request $req)
     {
         $prod = Cart::find($req->input('id'));
-        $prod->qty = $prod->qty - 1;
-        $prod->save();
+        if ($prod->qty == 1) {
+            Cart::find($req->input('id'))->delete();
+        } else {
+            $prod->qty = $prod->qty - 1;
+            $prod->save();
+        }
     }
 
     /**

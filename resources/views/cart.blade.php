@@ -12,7 +12,7 @@
                 <li>Description:{{ $prod->desc }}</li>
                 <li>Quantity:{{ $prod->qty }}</li>
                 <button id={{ $prod->id }} onclick="add()">+</button>
-                <button id={{ $prod->id }} onclick="sub()">-</button>
+                <button id={{ $prod->id }} value={{ $prod->qty }} onclick="sub()">-</button>
                 <li>Price:{{ $prod->price * $prod->qty }}</li>
                 <li>Discount_rate:{{ $prod->discount }}</li>
                 <li>Discounted_Price:{{ $prod->price * $prod->qty * (1 - $prod->discount) }}</li>
@@ -24,6 +24,7 @@
             @endphp
         @endforeach
         <h2>The Total price is : {{ $x }}</h2>
+        <a href="{{ route('checkout') }}" type="button">Checkout</a>
     @else
         Cart is Empty
     @endif
@@ -53,7 +54,9 @@
                 }
 
             });
-            location.reload();
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
         }
 
         function add() {
@@ -79,12 +82,18 @@
                 }
 
             });
-            location.reload();
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
+
         }
 
         function sub() {
             var x = {
                 id: event.target.id
+            }
+            if (event.target.value == 1) {
+                alert('Do you want to remove this item from the cart?')
             }
             console.log('ID IS');
             console.log(x)
@@ -105,7 +114,9 @@
                 }
 
             });
-            location.reload();
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
         }
 
     </script>

@@ -47,3 +47,8 @@ Route::get('/cart', 'CartController@index')->name('cart');
 Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');
 Route::post('/cart/incr', 'CartController@incr')->name('cart.increment');
 Route::post('/cart/decr', 'CartController@decr')->name('cart.decrement');
+
+Route::get('/checkout', 'OrderController@index')->name('checkout');
+Route::get('/checkout/form', 'OrderController@create')->name('CheckoutForm');
+Route::get('/checkout/processed/cod', 'OrderController@storecod')->name('OrderProcessed.cod');
+Route::get('/checkout/processed/card', 'OrderController@storecard')->name('OrderProcessed.card');

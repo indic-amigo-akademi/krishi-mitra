@@ -16,8 +16,8 @@ class DBConnectionTest extends TestCase
      */
     public function testExample()
     {
-        $pdo = DB::connection('mysql')->getPdo();
-        $this->assertNotNull($pdo);
+        $db_name = DB::connection('mysql')->getDatabaseName();
+        $this->assertEquals($db_name, 'krishi');
     }
 }
 

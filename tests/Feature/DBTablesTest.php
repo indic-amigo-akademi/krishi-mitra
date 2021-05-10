@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
-class DBConnectionTest extends TestCase
+class DBTablesTest extends TestCase
 {
     /**
      * A basic feature test example.
@@ -16,10 +16,8 @@ class DBConnectionTest extends TestCase
      */
     public function testExample()
     {
-
-        $this->assertNotNull(DB::Connection('mysql'));
-        $db_name = DB::connection()->getDatabaseName();
-        $this->assertEquals('krishi',$db_name);
+        $tables = ['addresses', 'carts', 'failed_jobs', 'migrations', 'orders', 'password_resets', 'products', 'sellers', 'users'];
+        $tb = array_map('reset',DB::connection('mysql')->select('SHOW TABLES'));
+        $this->assertEquals($tables, $tb);
     }
 }
-

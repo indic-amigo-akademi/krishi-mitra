@@ -57,8 +57,9 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $req)
-    {
-        $sid = Seller::find(['user_id' => Auth::id()])[0];
+    {   log::info('PRODUCT STORAGE');
+        $sid = Seller::where('user_id',Auth::id())->get()[0];
+        // $sid=Seller::find(['user_id' => Auth::id()])[0];
         Log::info($sid->user_id);
         $image = $req->file('input_img');
         log::info('The image is' . $image);

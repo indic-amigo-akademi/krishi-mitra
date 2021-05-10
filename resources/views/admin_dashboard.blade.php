@@ -9,6 +9,7 @@
             </div>
 
             <div class="links">
+                <a href="/admin/approval">Approve Seller</a>
                 <a href="/products">Browse products</a>
                 <a href="https://blog.laravel.com">Talk to farmers</a>
             </div>

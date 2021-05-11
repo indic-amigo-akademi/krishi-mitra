@@ -10,7 +10,9 @@ use App\Address;
 use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Image;
+
 
 use Illuminate\Http\Request;
 
@@ -113,9 +115,16 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showall()
     {
-        //
+        /*$ord = Cart::select('order_id')::where('user_id', Auth::id())->get();*/
+        $ord = DB::table('orders')
+            ->where('user_id', '=', Auth::id())
+            ->select([DB::raw("order_id"), DB::raw("SUM(price) as 'tot'")])
+            ->groupBy('order_id')
+            ->get();
+        log::info('PALS PP' . $ord);
+        return view('OrderList')->with('ord', $ord);
     }
 
     /**
@@ -124,9 +133,11 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function showone($id)
     {
-        //
+        $order = Order::where('order_id', $id)->get();
+        log::info('ORDER IS' . $order);
+        return view('SingleOrder')->with('ord', $order);
     }
 
     /**

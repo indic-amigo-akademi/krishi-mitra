@@ -52,3 +52,5 @@ Route::get('/checkout', 'OrderController@index')->name('checkout');
 Route::get('/checkout/form', 'OrderController@create')->name('CheckoutForm');
 Route::get('/checkout/processed/cod', 'OrderController@storecod')->name('OrderProcessed.cod');
 Route::get('/checkout/processed/card', 'OrderController@storecard')->name('OrderProcessed.card');
+Route::get('/orders', 'OrderController@showall')->name('ShowOrders');
+Route::get('/orders/{id}', 'OrderController@showone')->name('ShowSingle');

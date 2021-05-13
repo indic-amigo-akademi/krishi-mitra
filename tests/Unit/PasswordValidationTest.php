@@ -30,4 +30,9 @@ class PasswordValidationTest extends TestCase
         $result = (new ValidPassword())->passes('','Hamidrezahahah');
         $this->assertEquals(0,$result);
     }
+     public function test_password_is_required()
+    {
+        $result = (new ValidPassword())->passes('','');
+        $this->assertEquals(0,$result);
+    }
 }

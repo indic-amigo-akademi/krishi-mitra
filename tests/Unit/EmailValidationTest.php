@@ -21,6 +21,11 @@ class EmailValidationTest extends TestCase
         $result = (new ValidEmail())->passes('','srija@123');
         $this->assertEquals(0,$result);
     }
+    public function test_email_is_required()
+    {
+        $result = (new ValidEmail())->passes('','');
+        $this->assertEquals(0,$result);
+    }
     
    
 }

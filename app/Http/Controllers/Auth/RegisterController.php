@@ -60,9 +60,9 @@ class RegisterController extends Controller
                 'string',
                 'email',
                 'max:255',
-                'unique:users',
+                'unique:users',new ValidEmail()
             ],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed',new ValidPassword()],
         ]);
     }
 

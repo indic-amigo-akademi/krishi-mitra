@@ -64,6 +64,7 @@ class RegisterController extends Controller
             ],
             'password' => ['required', 'string', 'min:8', 'confirmed',new ValidPassword()],
             'confirm_password' => ['required','same:password','min:8'],
+            'phone' =>['required','unique:users',new ValidMobile()],
         ]);
     }
 

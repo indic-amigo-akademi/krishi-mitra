@@ -37,6 +37,8 @@ Route::get('/customer', 'CustomerController@index')->name('customer.index');
 Route::get('/admin_registration', 'AdminController@auth_register_view');
 Route::post('/admin_registration', 'AdminController@auth_register');
 Route::post('/admin_registration/edit', 'AdminController@edit');
+Route::get('/admin/approval', 'AdminController@approval_view');
+Route::post('/admin/approval', 'AdminController@approval');
 
 Route::get('/product_edit/{id}', 'ProductController@edit');
 Route::post('/product_update/{id}', 'ProductController@update');

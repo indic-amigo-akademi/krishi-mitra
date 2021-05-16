@@ -120,10 +120,12 @@ class OrderController extends Controller
         /*$ord = Cart::select('order_id')::where('user_id', Auth::id())->get();*/
         $ord = DB::table('orders')
             ->where('user_id', '=', Auth::id())
-            ->select([DB::raw("order_id"), DB::raw("SUM(price) as 'tot'")])
+            ->select([DB::raw("order_id"), DB::raw("SUM(price) as 'tot'"), DB::raw("max(created_at) as created_at")])
             ->groupBy('order_id')
+            ->orderBy('created_at')
             ->get();
-        log::info('PALS PP' . $ord);
+        log::info('Eto Obdhi' . $ord);
+        //$dates = Order::select('created_at')->orderBy('created_at')->get();
         return view('OrderList')->with('ord', $ord);
     }
 

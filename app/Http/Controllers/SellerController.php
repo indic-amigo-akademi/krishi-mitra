@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Seller;
+use App\Approval;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -28,12 +28,12 @@ class SellerController extends Controller
     {
         Log::info('Hii this seller_req method has been called!!');
         $x = User::find(Auth::id());
-        $x->role = 'seller';
+        // $x->role = 'seller';
         Log::info($req->all());
 
         Log::info($x);
-        $x->save();
-        Seller::create([
+        // $x->save();
+        Approval::create([
             'user_id' => $x->id,
             'name' => $req['name'],
             'gst_number' => $req['gst_num'],

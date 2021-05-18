@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdersTable extends Migration
+class AdminApproval extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,16 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('approvals', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('product_id');
             $table
                 ->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table
-                ->foreign('product_id')
-                ->references('id')
-                ->on('products');
-            $table->integer('order_id');
-            $table->integer('qty');
-            $table->double('price');
-            $table->double('discount');
-            $table->string('status');
-            $table->string('type');
+            $table->string('name');
+            $table->string('gst_number');
+            $table->string('trade_name');
             $table->timestamps();
         });
     }
@@ -42,6 +34,6 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('approvals');
     }
 }

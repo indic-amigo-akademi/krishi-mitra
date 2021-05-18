@@ -8,7 +8,7 @@
                 Krishi-Mitra
             </div>
             <div class="links">
-                <a href="/seller_register">Register as Seller</a>
+                <a href="/seller/register">Register as Seller</a>
                 <a href="/products">Browse products</a>
                 <a href="https://blog.laravel.com">Talk to farmers</a>
             </div>

@@ -368,3 +368,45 @@ footer {
         }
     }
 }
+
+/* Seller Registration CSS */
+.seller {
+    color: $yellow;
+    font-family: cursive;
+}
+.seller-reg {
+    color: $theme-color3;
+}
+.seller-btn {
+    color: $theme-color2;
+    background-color: $theme-color3;
+}
+
+/* Contact Us CSS */
+.contact {
+    background-color: #fdf9d4;
+    .contact-card {
+        span {
+            color: $theme-color1;
+            font-size: 30px;
+        }
+    }
+    .contact-text {
+        color: $theme-color1;
+    }
+    .contact-btn {
+        color: $theme-color3;
+        background-color: $theme-color1;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    .contact-card {
+        border-bottom: 1px solid rgb(206, 205, 205);
+    }
+}
+@media screen and (min-width: 991px) {
+    .contact-card {
+        border-right: 1px solid rgb(206, 205, 205);
+    }
+}

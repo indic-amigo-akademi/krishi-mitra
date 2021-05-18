@@ -12721,3 +12721,44 @@ footer {
     margin-right: 0;
   }
 }
+/* Seller Registration CSS */
+.seller {
+  color: #ffed4a;
+  font-family: cursive;
+}
+
+.seller-reg {
+  color: #fff27a;
+}
+
+.seller-btn {
+  color: #4f4242;
+  background-color: #fff27a;
+}
+
+/* Contact Us CSS */
+.contact {
+  background-color: #fdf9d4;
+}
+.contact .contact-card span {
+  color: #3b7402;
+  font-size: 30px;
+}
+.contact .contact-text {
+  color: #3b7402;
+}
+.contact .contact-btn {
+  color: #fff27a;
+  background-color: #3b7402;
+}
+
+@media screen and (max-width: 990px) {
+  .contact-card {
+    border-bottom: 1px solid #cecdcd;
+  }
+}
+@media screen and (min-width: 991px) {
+  .contact-card {
+    border-right: 1px solid #cecdcd;
+  }
+}

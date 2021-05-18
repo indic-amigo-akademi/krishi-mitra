@@ -12345,6 +12345,37 @@ h3 {
   display: none !important;
 }
 
+.pk-input-number::-webkit-inner-spin-button,
+.pk-input-number::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.ri-spin,
+.ri-spin::after,
+.ri-spin::before {
+  -webkit-animation: spinner 4s infinite linear;
+          animation: spinner 4s infinite linear;
+}
+
+@-webkit-keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 body {
   font-family: "Open Sans", sans-serif;
   display: flex;
@@ -12370,14 +12401,6 @@ footer {
   font-family: "Itim", cursive;
 }
 
-.form-container {
-  /* LABEL ======================================= */
-  /* active state */
-  /* BOTTOM BARS ================================= */
-  /* active state */
-  /* HIGHLIGHTER ================================== */
-  /* active state */
-}
 .form-container .signup {
   display: flex;
   flex-direction: row;
@@ -12470,20 +12493,26 @@ footer {
 }
 .form-container .group {
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 2.25rem;
+  /* LABEL */
+  /* active state */
+  /* BOTTOM BARS */
+  /* active state */
+  /* HIGHLIGHTER */
+  /* active state */
 }
-.form-container .input {
-  font-size: 18px;
+.form-container .group .input {
+  font-size: 0.95rem;
   padding: 5px 10px 10px 5px;
   display: block;
   width: 300px;
   border: none;
-  border-bottom: 1px solid #757575;
+  border-bottom: 1px solid #4f4242;
 }
-.form-container .input:focus {
+.form-container .group .input:focus {
   outline: none;
 }
-.form-container label {
+.form-container .group label {
   color: #999;
   font-size: 18px;
   font-weight: normal;
@@ -12493,18 +12522,18 @@ footer {
   top: 10px;
   transition: 0.2s ease all;
 }
-.form-container input:focus ~ label,
-.form-container input:valid ~ label {
+.form-container .group input:focus ~ label,
+.form-container .group input:valid ~ label {
   top: -20px;
   font-size: 14px;
   color: #3b7402;
 }
-.form-container .bar {
+.form-container .group .bar {
   position: relative;
   display: block;
   width: 300px;
 }
-.form-container .bar:before, .form-container .bar:after {
+.form-container .group .bar:before, .form-container .group .bar:after {
   content: "";
   height: 2px;
   width: 0;
@@ -12513,17 +12542,17 @@ footer {
   background: #3b7402;
   transition: 0.2s ease all;
 }
-.form-container .bar:before {
+.form-container .group .bar:before {
   left: 50%;
 }
-.form-container .bar:after {
+.form-container .group .bar:after {
   right: 50%;
 }
-.form-container input:focus ~ .bar:before,
-.form-container input:focus ~ .bar:after {
+.form-container .group input:focus ~ .bar:before,
+.form-container .group input:focus ~ .bar:after {
   width: 50%;
 }
-.form-container .highlight {
+.form-container .group .highlight {
   position: absolute;
   height: 60%;
   width: 100px;
@@ -12532,9 +12561,13 @@ footer {
   pointer-events: none;
   opacity: 0.5;
 }
-.form-container input:focus ~ .highlight {
+.form-container .group input:focus ~ .highlight {
   -webkit-animation: inputHighlighter 0.3s ease;
           animation: inputHighlighter 0.3s ease;
+}
+.form-container .group small.uk-text-danger {
+  position: absolute;
+  top: 100%;
 }
 .form-container .uk-radio:checked,
 .form-container .uk-checkbox:checked,
@@ -12542,7 +12575,7 @@ footer {
   background-color: #3b7402;
 }
 
-/* ANIMATIONS ================ */
+/* ANIMATIONS */
 @-webkit-keyframes inputHighlighter {
   from {
     background: #3b7402;

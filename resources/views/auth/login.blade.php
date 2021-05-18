@@ -10,7 +10,7 @@
                     </div>
 
                     <div class="uk-card-body">
-                        <form class="uk-form-stacked" method="POST" action="{{ route('login') }}">
+                        <form class="uk-form-stacked" method="POST" action="{{ route('login') }}" id="web-login-form">
                             @csrf
 
                             <div class="form-group row">
@@ -20,11 +20,15 @@
                                     <input id="email" type="email" class="uk-input @error('email') uk-form-danger @enderror"
                                         name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                                    @error('email')
+                                    {{-- @error('email')
                                         <div class="uk-alert-danger" uk-alert>
                                             <strong>{{ $message }}</strong>
                                         </div>
-                                    @enderror
+                                    @enderror --}}
+
+                                    <small class="uk-text-danger uk-margin-bottom">
+                                        <strong class="error-email"></strong>
+                                    </small>
                                 </div>
                             </div>
 
@@ -33,14 +37,18 @@
 
                                 <div class="uk-form-controls">
                                     <input id="password" type="password"
-                                        class="uk-input @error('password') uk-form-danger @enderror" name="password" required
-                                        autocomplete="current-password">
+                                        class="uk-input @error('password') uk-form-danger @enderror" name="password"
+                                        required autocomplete="current-password">
 
-                                    @error('password')
+                                    {{-- @error('password')
                                         <div class="uk-alert-danger" uk-alert>
                                             <strong>{{ $message }}</strong>
                                         </div>
-                                    @enderror
+                                    @enderror --}}
+
+                                    <small class="uk-text-danger uk-margin-bottom">
+                                        <strong class="error-password"></strong>
+                                    </small>
                                 </div>
                             </div>
 
@@ -67,7 +75,8 @@
 
                                 </div>
                                 <div class="uk-margin-small-top uk-text-center">
-                                    <button type="submit" class="uk-button uk-button-primary">
+                                    <button type="button" class="uk-button uk-button-primary"
+                                        onClick="validateLoginForm(event)">
                                         {{ __('Login') }}
                                     </button>
                                 </div>
@@ -78,4 +87,36 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        async function validateLoginForm(event) {
+            try {
+                $(event.target).text("{{ __('Processing') }}...");
+                const formData = new FormData($('#web-login-form').get(0));
+
+                event.preventDefault();
+                const response = await fetch('{{ route('user.login.validate') }}', {
+                    method: 'POST',
+                    body: formData
+                });
+                const jsonData = await response.json();
+                console.log(jsonData);
+
+                $(event.target).text("{{ __('Login') }}");
+
+                if (jsonData.success) {
+                    $('#web-login-form').submit();
+                } else {
+                    Object.keys(jsonData.errors).forEach((ele) => {
+                        $(`#web-login-form .uk-text-danger strong.error-${ele}`).text(jsonData.errors[ele]);
+                    });
+                }
+            } catch (err) {
+                console.log("Cannot Connect to Server")
+            }
+        }
+
+    </script>
 @endsection

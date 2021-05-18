@@ -16,25 +16,35 @@
                     <hr />
                 </div>
 
-                <form action="{{ route('login') }}" method="POST">
+                <form action="{{ route('login') }}" method="POST" id="modal-login-form">
                     @csrf
                     <div class="group">
-                        <input class="input uk-input" type="email" name="email" required autocomplete="email" autofocus />
+                        <input class="input uk-input" type="text" name="email" required autocomplete="email"
+                            autofocus />
                         <span class="highlight"></span>
                         <span class="bar"></span>
-                        <label>Email</label>
+                        <label>Username / Email</label>
+
+                        <small class="uk-text-danger uk-margin-bottom">
+                            <strong class="error-email"></strong>
+                        </small>
                     </div>
 
                     <div class="group">
-                        <input class="input uk-input" type="password" name="password" required autocomplete="current-password" />
+                        <input class="input uk-input" type="password" name="password" required
+                            autocomplete="current-password" />
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label>Password</label>
+
+                        <small class="uk-text-danger uk-margin-bottom">
+                            <strong class="error-password"></strong>
+                        </small>
                     </div>
 
                     <input type="checkbox" name="remember" class="radioBtn uk-checkbox" checked /><span> Keep me Logged
                         in</span>
-                    <button class="form-btn" type="submit">Submit</button>
+                    <button class="form-btn submit-btn" type="button">Login</button>
                 </form>
                 <div class="footer">
                     <p>Forgot Password ?</p>

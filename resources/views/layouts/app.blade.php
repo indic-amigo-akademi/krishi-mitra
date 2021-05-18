@@ -32,6 +32,7 @@
 </head>
 
 <body>
+    @include('partials.states')
 
     <header>
         @include('partials.header')

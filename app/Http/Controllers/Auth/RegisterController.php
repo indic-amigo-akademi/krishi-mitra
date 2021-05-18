@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use App\User;
 
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -40,10 +41,10 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    /*public function __construct()
+    public function __construct()
     {
         $this->middleware('guest');
-    }*/
+    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -53,7 +54,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -62,8 +63,50 @@ class RegisterController extends Controller
                 'max:255',
                 'unique:users',
             ],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'password' => [
+                'required',
+                'string',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
+                'min:8',
+                'confirmed',
+            ],
+            'phone' => ['required', 'string', 'min:10'],
+        ];
+        $messages = [
+            'name' => [
+                'required' => 'Name is required',
+                'string' => 'Name must be a valid string',
+                'max:255' => 'Name cannot be greater than 255',
+            ],
+            'email' => [
+                'required' => 'Email is required',
+                'string' => 'Email must be a valid string',
+                'email' => 'Email must be in proper email format',
+                'max:255' => 'Email cannot be greater than 255',
+                'unique:users' => 'Email already used',
+            ],
+            'username' => [
+                'required' => 'Username is required',
+                'string' => 'Username must be a valid string',
+                'max:255' => 'Username cannot be greater than 255',
+                'unique:users' => 'Username already used',
+            ],
+            'password' => [
+                'required' => 'Password is required',
+                'string' => 'Password must be a valid string',
+                'min:8' => 'Password must have more than 8 characters',
+                'confirmed' => 'Password do not match',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/' =>
+                    'Password must contain at least one uppercase letter, one lowercase letter and one number',
+            ],
+            'phone' => [
+                'required' => 'Phone Number is required',
+                'string' => 'Phone Number must be a valid number',
+                'min:10' => 'Phone Number must have at least 10 digits',
+            ],
+        ];
+        return Validator::make($data, $rules, $messages);
     }
 
     /**
@@ -83,6 +126,23 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'role' => 'customer',
             'active' => true,
+        ]);
+    }
+
+    public function validateRegister(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $validator->getMessageBag(),
+            ]);
+        }
+
+        return new JsonResponse([
+            'success' => true,
+            'message' => 'All fields are valid',
         ]);
     }
 }

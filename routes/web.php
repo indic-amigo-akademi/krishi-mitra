@@ -45,8 +45,10 @@ Route::post('/product_update/{id}', 'ProductController@update');
 Route::get('/product_destroy/{id}', 'ProductController@destroy');
 
 // Default routes
-Route::get('/contact', 'AppController@contact')->name('contact');
 Route::get('/about', 'AppController@about')->name('about');
+Route::post('/contact', 'AppController@create_contact')->name('contact.create');
+Route::get('/contact', 'AppController@contact')->name('contact');
+
 Route::post('/cart/store', 'CartController@store');
 Route::get('/cart', 'CartController@index')->name('cart');
 Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');

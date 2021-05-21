@@ -13,33 +13,51 @@
                 <div class="uk-text-center uk-flex uk-flex-column">
                     <span class="ri-phone-fill"></span>
                     <p class="uk-text-bold uk-margin-remove uk-text-emphasis">Phone</p>
-                    <p class="uk-margin-remove-top uk-text-muted">8373072888</p>
+                    <p class="uk-margin-remove-top uk-text-muted">1800045678</p>
                 </div>
                 <div class="uk-text-center uk-flex uk-flex-column">
                     <span class="ri-mail-fill"></span>
                     <p class="uk-text-bold uk-margin-remove uk-text-emphasis">Email</p>
-                    <p class="uk-margin-remove-top uk-text-muted">megha@gmail.com</p>
+                    <p class="uk-margin-remove-top uk-text-muted">contact@zen-geeks.com</p>
                 </div>
             </div>
 
             <div
                 class="uk-width-1-1 uk-width-2-3@m uk-padding uk-padding-remove-top uk-padding uk-padding-remove-bottom uk-text-center">
                 <div class="uk-text-large uk-text-bolder contact-text">Send us a Message</div>
-                <div class="uk-margin uk-text-small uk-text-bold uk-text-emphasis">Want to get in touch ? We would love to
-                    hear you. Here's how you can
-                    reach us.</div>
-                <div class="uk-margin">
-                    <input class="uk-input" type="text" placeholder="Input">
+                <div class="uk-margin uk-text-small uk-text-bold uk-text-emphasis">
+                    Want to get in touch ? We would love to hear you. Here's how you can reach us.
                 </div>
-                <div>
-                    <input class="uk-input" type="text" placeholder="Input">
-                </div>
-                <div class="uk-margin">
-                    <textarea class="uk-textarea" rows="5" placeholder="Textarea"></textarea>
-                </div>
-                <div>
-                    <button type="submit" class="uk-button contact-btn">Submit</button>
-                </div>
+                <form id="web-contact-form" method="POST" action="{{ route('contact.create') }}">
+                    @csrf
+                    <div class="uk-margin">
+                        <input class="uk-input @error('name') uk-form-danger @enderror" type="text" name="name" placeholder="Name" required>
+                        @error('name')
+                            <div class="uk-alert-danger" uk-alert>
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
+                        <input class="uk-input @error('subject') uk-form-danger @enderror" type="text" name="subject" placeholder="Subject" required>
+                        @error('subject')
+                            <div class="uk-alert-danger" uk-alert>
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="uk-margin">
+                        <textarea class="uk-textarea @error('message') uk-form-danger @enderror" rows="5" name="message" placeholder="Message" required></textarea>
+                        @error('message')
+                            <div class="uk-alert-danger" uk-alert>
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
+                        <button type="submit" class="uk-button contact-btn"><i class="ri-send-plane-fill"></i> Send</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

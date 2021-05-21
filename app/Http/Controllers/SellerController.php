@@ -16,29 +16,30 @@ class SellerController extends Controller
     }
     public function seller_form()
     {
-        return view("seller_form");
+        return view('seller.form');
     }
 
     public function index()
     {
-        return view("seller_dashboard");
+        return view('seller.dashboard');
     }
-    
+
     protected function create_seller(Request $req)
     {
         Log::info('Hii this seller_req method has been called!!');
-        $x = User::find(Auth::id());
-        // $x->role = 'seller';
+
         Log::info($req->all());
 
-        Log::info($x);
-        // $x->save();
         Approval::create([
-            'user_id' => $x->id,
+            'user_id' => Auth::id(),
             'name' => $req['name'],
             'gst_number' => $req['gst_num'],
             'trade_name' => $req['trade_name'],
         ]);
-        return redirect('/home')->with('alert', ['code' => 'success', 'title' => 'Hello!', 'subtitle' => 'You have been registered as a seller!']);
+        return redirect('/home')->with('alert', [
+            'code' => 'success',
+            'title' => 'Yippee!',
+            'subtitle' => 'Your registration as a seller is in progress!',
+        ]);
     }
 }

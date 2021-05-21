@@ -25,12 +25,12 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view('admin_dashboard');
+        return view('admin.dashboard');
     }
 
     public function auth_register_view()
     {
-        return view('admin');
+        return view('admin.register');
     }
 
     public function auth_register(Request $req)
@@ -51,7 +51,7 @@ class AdminController extends Controller
     public function approval_view()
     {
         $approval = Approval::all();
-        return view('admin_approval')->with('approval_arr', $approval);
+        return view('admin.approval')->with('approval_arr', $approval);
     }
 
     public function approval(Request $req)

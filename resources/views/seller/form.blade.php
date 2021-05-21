@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('content')
 
-    <form action="{{ route('seller.create') }}" method="POST">
-        @csrf
-        <div class="uk-width-1-1 uk-height-auto uk-background-cover uk-background-norepeat"
-            style="background-image:url({{ asset('images/background/img3.jpg') }})">
+@section('content')
+    <div class="uk-width-1-1 uk-height-1-1 uk-background-cover uk-background-norepeat"
+        style="background-image:url({{ asset('images/background/img3.jpg') }})">
+        <form action="{{ route('seller.create') }}" method="POST">
+            @csrf
             <div class="uk-padding-large uk-text-large uk-text-bold seller-reg">For Selling on Krishi-Mitra, You
                 need to
                 Register
@@ -30,6 +30,6 @@
             <div class="uk-padding-large uk-padding-remove-top">
                 <button type="submit" class="uk-button uk-text-bold seller-btn">Submit</button>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 @endsection

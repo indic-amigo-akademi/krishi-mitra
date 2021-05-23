@@ -1,16 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="/admin_dashboard" method="GET">
 
-        <div class="content">
-            <div class="title m-b-md">
-                Krishi-Mitra
+    <div class="uk-container">
+        <div class="uk-card" uk-card-default>
+            <div class="uk-card-header">
+                <h3 class="uk-card-title">Seller Dashboard</h3>
             </div>
-            <div class="links">
-                <a href="/products">Browse products</a>
-                <a href="/create_product">Sell your produces</a>
+            <div class="uk-card-body">
+                <ul class="uk-list links">
+                    <li><a href="{{ route('product.create') }}">Sell your produces</a></li>
+                    <li><a href="{{ route('product.browse') }}">Browse products</a></li>
+                </ul>
             </div>
+            <div class="uk-card-footer"></div>
         </div>
-    </form>
+    </div>
+
 @endsection

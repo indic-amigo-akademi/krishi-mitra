@@ -9,8 +9,8 @@
             </div>
             <div class="uk-card-body">
                 <ul class="uk-list links">
-                    <li><a href="/admin/approval">Approve Requests</a></li>
-                    <li><a href="/products">Browse products</a></li>
+                    <li><a href="{{ route('admin.approval.view') }}">Approve Requests</a></li>
+                    <li><a href="{{ route('product.browse') }}">Browse products</a></li>
                 </ul>
             </div>
             <div class="uk-card-footer"></div>

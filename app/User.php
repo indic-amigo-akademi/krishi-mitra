@@ -45,4 +45,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Seller::class, 'user_id');
     }
+
+    public function is_admin(){
+        return $this->role == 'admin';
+    }
+
+    public function is_seller(){
+        return $this->role == 'seller';
+    }
 }

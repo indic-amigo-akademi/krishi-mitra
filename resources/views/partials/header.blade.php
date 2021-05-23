@@ -71,7 +71,7 @@
 <nav class="uk-navbar-container lower-navbar" uk-navbar>
     <ul class="uk-navbar-nav uk-navbar-center">
         <li class="uk-navbar-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="uk-navbar-item"><a href="{{ route('Products') }}">Explore</a></li>
+        <li class="uk-navbar-item"><a href="{{ route('product.browse') }}">Explore</a></li>
         <li class="uk-navbar-item"><a href="{{ route('ShowOrders') }}">My Orders</a></li>
         @if (Auth::check() && Auth::user()->role == 'seller')
             <li class="uk-navbar-item"><a href="{{ route('seller.index') }}">Seller Dashboard</a></li>

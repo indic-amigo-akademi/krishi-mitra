@@ -22,22 +22,23 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-//Route::post('/login','Auth\LoginController@login_redirect');
+
 Route::get('/seller/register', 'SellerController@seller_form')->name('seller.register');
 Route::post('/seller/create', 'SellerController@create_seller')->name('seller.create');
 
-Route::get('/products', 'ProductController@index')->withoutMiddleware(['auth'])->name('Products');
-Route::get('/create_product', 'ProductController@create');
+Route::get('/products', 'ProductController@index')->withoutMiddleware(['auth'])->name('product.browse');
+Route::get('/product/create', 'ProductController@create')->name('product.create');
 Route::post('/product_store', 'ProductController@store');
 
 Route::get('/admin', 'AdminController@index')->name('admin.index');
 Route::get('/seller', 'SellerController@index')->name('seller.index');
 Route::get('/customer', 'CustomerController@index')->name('customer.index');
 
+// Admin Routes
 Route::get('/admin/register', 'AdminController@register_view')->name('admin.register.view');
 Route::post('/admin/register', 'AdminController@register')->name('admin.register');
-Route::get('/admin/approval', 'AdminController@approval_view');
-Route::post('/admin/approval', 'AdminController@approval');
+Route::get('/admin/approval', 'AdminController@approval_view')->name('admin.approval.view');
+Route::post('/admin/approval', 'AdminController@approval')->name('admin.approval');
 
 Route::get('/product_edit/{id}', 'ProductController@edit');
 Route::post('/product_update/{id}', 'ProductController@update');
@@ -48,6 +49,7 @@ Route::get('/about', 'AppController@about')->name('about');
 Route::post('/contact', 'AppController@create_contact')->name('contact.create');
 Route::get('/contact', 'AppController@contact')->name('contact');
 
+// Cart Routes
 Route::post('/cart/store', 'CartController@store');
 Route::get('/cart', 'CartController@index')->name('cart');
 Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');

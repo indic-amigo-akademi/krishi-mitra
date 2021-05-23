@@ -16,6 +16,7 @@
     <!-- Scripts -->
     <script src="{{ mix('/js/app.js') }}" defer></script>
     <script src="{{ mix('/js/vanilla.js') }}" defer></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">

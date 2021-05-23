@@ -1,4 +1,4 @@
-<nav class="uk-navbar-container upper-navbar" uk-navbar>
+<nav class="uk-navbar-container  upper-navbar" uk-navbar>
     <div class="nav-overlay uk-navbar-left left-content">
         <div class="navbar-toggle uk-navbar-toggle" uk-navbar-toggle-icon uk-toggle="target: .lower-navbar"></div>
         <a class="uk-navbar-item uk-logo" href="#">

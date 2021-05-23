@@ -12715,7 +12715,7 @@ footer {
   color: #3b7402;
 }
 .contact .contact-btn {
-  color: #fff27a;
+  color: white;
   background-color: #3b7402;
 }
 
@@ -12728,4 +12728,79 @@ footer {
   .contact-card {
     border-right: 1px solid #cecdcd;
   }
+}
+.sboard {
+  height: 39rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.sboard .sboard-bg {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.sboard .sboard-bg .sboard-heading {
+  color: white;
+  text-shadow: 1px 1px 2px black, 0 0 25px #fff27a, 0 0 6px #3b7402;
+}
+.sboard .sboard-bg .sboard-btn {
+  background-color: #3b7402;
+  color: #fdf9d4 !important;
+  border-radius: 5px;
+  text-decoration: none !important;
+}
+.sboard .sboard-bg .sboard-btn:hover {
+  opacity: 0.8;
+}
+
+.cproduct {
+  background-color: #fdf9d4;
+}
+
+.cproduct-head {
+  color: #3b7402;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.cproduct-btn {
+  color: white;
+  background-color: #3b7402;
+}
+
+.cproduct-contain {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: 1px solid #e7e7e7;
+}
+
+.sprod {
+  background-color: #fdf9d4;
+}
+
+.sprod-color {
+  color: #3b7402;
+}
+
+.sprod-add-new {
+  background-color: whitesmoke;
+}
+
+.sdetail {
+  background-image: linear-gradient(to bottom right, #fdf9d4, #f6993f, #fff27a, #fdf9d4);
+}
+
+.sdetail-mrp {
+  -webkit-text-decoration-line: line-through;
+  /* Safari */
+  text-decoration-line: line-through;
+}
+
+.sdetail-price {
+  color: #3b7402;
+}
+
+.sdetail-offer {
+  font-size: 12px;
+}
+
+.sdetail-size {
+  font-size: 10px;
 }

@@ -47,3 +47,11 @@ Route::get('/product_destroy/{id}', 'ProductController@destroy');
 // Default routes
 Route::get('/contact', 'AppController@contact')->name('contact');
 Route::get('/about', 'AppController@about')->name('about');
+
+//product page
+Route::get('/product', function () {
+    return view('product');
+})->name('product');
+
+//seller detail product page
+Route::get('/sproducts_detail/{id}', 'ProductController@show');

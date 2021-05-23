@@ -379,7 +379,7 @@ footer {
 
 /* Contact Us CSS */
 .contact {
-    background-color: #fdf9d4;
+    background-color: $theme-color4;
     .contact-card {
         span {
             color: $theme-color1;
@@ -390,7 +390,7 @@ footer {
         color: $theme-color1;
     }
     .contact-btn {
-        color: $theme-color3;
+        color: white;
         background-color: $theme-color1;
     }
 }

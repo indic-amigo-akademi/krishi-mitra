@@ -34,7 +34,6 @@ class ProductController extends Controller
         log::info('Role is' . $role);
         return view('Products')->with('data_arr', [$products, $role]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -58,7 +57,7 @@ class ProductController extends Controller
      */
     public function store(Request $req)
     {
-        $sid = Seller::find(['user_id' => Auth::id()])[0];
+        $sid = Seller::where('user_id',Auth::id())->get()[0];
         Log::info($sid->user_id);
         $image = $req->file('input_img');
         log::info('The image is' . $image);
@@ -96,7 +95,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $prod = Product::find($id);
+        return view('sproducts_detail')->with('prod', $prod);
     }
 
     /**

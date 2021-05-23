@@ -1,3 +1,75 @@
-h1 {
-    color: red;
+//Seller Dashboard SCSSS
+.sboard {
+    height: 39rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .sboard-bg {
+        background-color: rgba(255, 255, 255, 0.3);
+        .sboard-heading {
+            color: white;
+            text-shadow: 1px 1px 2px black, 0 0 25px $theme-color3,
+                0 0 6px $theme-color1;
+        }
+        .sboard-btn {
+            background-color: $theme-color1;
+            color: $theme-color4 !important;
+            border-radius: 5px;
+            text-decoration: none !important;
+        }
+        .sboard-btn:hover {
+            opacity: 0.8;
+        }
+    }
+}
+
+//Create Product SCSS
+.cproduct {
+    background-color: $theme-color4;
+}
+.cproduct-head {
+    color: $theme-color1;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+.cproduct-btn {
+    color: white;
+    background-color: $theme-color1;
+}
+.cproduct-contain {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: 1px solid rgb(231, 231, 231);
+}
+//Seller Product SCSS
+.sprod {
+    background-color: $theme-color4;
+}
+.sprod-color {
+    color: $theme-color1;
+}
+.sprod-add-new {
+    background-color: whitesmoke;
+}
+
+//Seller Product Detail SCSS
+.sdetail {
+    background-image: linear-gradient(
+        to bottom right,
+        $theme-color4,
+        $orange,
+        $theme-color3,
+        $theme-color4
+    );
+}
+.sdetail-mrp {
+    -webkit-text-decoration-line: line-through; /* Safari */
+    text-decoration-line: line-through;
+}
+.sdetail-price {
+    color: $theme-color1;
+}
+.sdetail-offer {
+    font-size: 12px;
+}
+.sdetail-size {
+    font-size: 10px;
 }

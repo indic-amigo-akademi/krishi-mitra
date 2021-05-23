@@ -34,9 +34,8 @@ Route::get('/admin', 'AdminController@index')->name('admin.index');
 Route::get('/seller', 'SellerController@index')->name('seller.index');
 Route::get('/customer', 'CustomerController@index')->name('customer.index');
 
-Route::get('/admin_registration', 'AdminController@auth_register_view');
-Route::post('/admin_registration', 'AdminController@auth_register');
-Route::post('/admin_registration/edit', 'AdminController@edit');
+Route::get('/admin/register', 'AdminController@register_view')->name('admin.register.view');
+Route::post('/admin/register', 'AdminController@register')->name('admin.register');
 Route::get('/admin/approval', 'AdminController@approval_view');
 Route::post('/admin/approval', 'AdminController@approval');
 

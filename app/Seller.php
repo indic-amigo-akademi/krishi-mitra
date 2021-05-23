@@ -11,5 +11,10 @@ class Seller extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'name', 'gst_number', 'trade_name'];
+    protected $fillable = ['name', 'user_id', 'gstin', 'aadhaar', 'trade_name'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

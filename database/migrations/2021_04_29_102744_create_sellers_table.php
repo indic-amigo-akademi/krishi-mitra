@@ -21,7 +21,8 @@ class CreateSellersTable extends Migration
                 ->references('id')
                 ->on('users');
             $table->string('name');
-            $table->string('gst_number');
+            $table->string('aadhaar');
+            $table->string('gstin')->nullable();
             $table->string('trade_name');
             $table->timestamps();
         });

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Approval;
+use App\Seller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class SellerController extends Controller
 {
@@ -26,16 +28,31 @@ class SellerController extends Controller
 
     protected function create_seller(Request $req)
     {
-        Log::info('Hii this seller_req method has been called!!');
+        $validator = Validator::make($req->all(), [
+            'name' => 'required|string|max:255',
+            // 'gstin' => 'string|size:15',
+            'aadhaar' => 'required|string|size:12',
+            'trade_name' => 'required|string|max:255',
+        ]);
 
-        Log::info($req->all());
+        if ($validator->fails()) {
+            return redirect('/seller/register')
+                ->withErrors($validator)
+                ->withInput();
+        }
 
+        Seller::create([
+            'name' => $req['name'],
+            'gstin' => $req['gstin'],
+            'aadhaar' => $req['aadhaar'],
+            'trade_name' => $req['trade_name'],
+            'user_id' => Auth::id(),
+        ]);
         Approval::create([
             'user_id' => Auth::id(),
-            'name' => $req['name'],
-            'gst_number' => $req['gst_num'],
-            'trade_name' => $req['trade_name'],
+            'type' => 'seller_approval',
         ]);
+
         return redirect('/home')->with('alert', [
             'code' => 'success',
             'title' => 'Yippee!',

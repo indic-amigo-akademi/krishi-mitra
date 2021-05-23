@@ -11,5 +11,10 @@ class Approval extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'name', 'gst_number', 'trade_name'];
+    protected $fillable = ['user_id', 'type'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

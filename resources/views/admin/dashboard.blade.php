@@ -1,18 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="/admin_dashboard" method="GET">
 
-        <div class="content">
-            <div class="title m-b-md">
-                Krishi-Mitra
+    <div class="uk-container">
+        <div class="uk-card" uk-card-default>
+            <div class="uk-card-header">
+                <h3 class="uk-card-title">Admin Dashboard</h3>
             </div>
-
-            <div class="links">
-                <a href="/admin/approval">Approve Seller</a>
-                <a href="/products">Browse products</a>
-                <a href="https://blog.laravel.com">Talk to farmers</a>
+            <div class="uk-card-body">
+                <ul class="uk-list links">
+                    <li><a href="/admin/approval">Approve Requests</a></li>
+                    <li><a href="/products">Browse products</a></li>
+                </ul>
             </div>
+            <div class="uk-card-footer"></div>
+        </div>
+    </div>
 
-    </form>
 @endsection

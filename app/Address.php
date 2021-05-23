@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
@@ -22,4 +21,9 @@ class Address extends Model
         'pincode',
         'landmark',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

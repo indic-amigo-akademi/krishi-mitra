@@ -1,11 +1,12 @@
-const registerForm = $("#modal-register-form").get(0);
-
+// On Off Button
 $(".on-off-btn").on("click", function (event) {
     event.preventDefault();
     if ($(event.target).data("on")) $($(event.target).data("on")).show();
     if ($(event.target).data("off")) $($(event.target).data("off")).hide();
 });
 
+
+// Modal Register Form
 $("#modal-register-form .submit-btn").on("click", async function (event) {
     event.preventDefault();
     try {
@@ -47,6 +48,7 @@ $("#modal-register-form .submit-btn").on("click", async function (event) {
     }
 });
 
+// Modal Login Form
 $("#modal-login-form .submit-btn").on("click", async function (event) {
     event.preventDefault();
     try {

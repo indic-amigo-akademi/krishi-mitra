@@ -31,7 +31,7 @@
                 <form id="web-contact-form" method="POST" action="{{ route('contact.create') }}">
                     @csrf
                     <div class="uk-margin">
-                        <input class="uk-input @error('name') uk-form-danger @enderror" type="text" name="name" placeholder="Name" required>
+                        <input class="uk-input @error('name') uk-form-danger @enderror" type="text" name="name" value="{{ old('name') }}" placeholder="Name" required>
                         @error('name')
                             <div class="uk-alert-danger" uk-alert>
                                 <strong>{{ $message }}</strong>
@@ -39,7 +39,7 @@
                         @enderror
                     </div>
                     <div>
-                        <input class="uk-input @error('subject') uk-form-danger @enderror" type="text" name="subject" placeholder="Subject" required>
+                        <input class="uk-input @error('subject') uk-form-danger @enderror" type="text" name="subject" value="{{ old('subject') }}" placeholder="Subject" required>
                         @error('subject')
                             <div class="uk-alert-danger" uk-alert>
                                 <strong>{{ $message }}</strong>
@@ -47,7 +47,7 @@
                         @enderror
                     </div>
                     <div class="uk-margin">
-                        <textarea class="uk-textarea @error('message') uk-form-danger @enderror" rows="5" name="message" placeholder="Message" required></textarea>
+                        <textarea class="uk-textarea @error('message') uk-form-danger @enderror" rows="5" name="message" placeholder="Message" required>{{ old('message') }}</textarea>
                         @error('message')
                             <div class="uk-alert-danger" uk-alert>
                                 <strong>{{ $message }}</strong>

@@ -13,6 +13,7 @@ class product extends Model
      */
     protected $fillable = [
         'type',
+        'seller_id',
         'desc',
         'price',
         'cover',
@@ -20,7 +21,11 @@ class product extends Model
         'unit',
         'quantity',
         'slug',
-        'seller_id',
         'discount',
     ];
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class, 'seller_id');
+    }
 }

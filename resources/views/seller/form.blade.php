@@ -12,23 +12,45 @@
             </div>
             <div class="uk-padding-large uk-padding-remove-top">
                 <div class="uk-margin-bottom">
-                    <input class="uk-input uk-form-width-large" id="name" type="text" placeholder="Enter Name" name="name">
+                    <input class="uk-input uk-form-width-large @error('name') uk-form-danger @enderror" id="name"
+                        type="text" value="{{ old('name') }}" placeholder="Enter Name" name="name">
+                    @error('name')
+                        <div class="uk-alert-danger" uk-alert>
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
                 </div>
                 <div class="uk-margin-bottom">
-                    <input class="uk-input uk-form-width-large" id="aadhaar_num" type="text"
-                        placeholder="Enter Aadhaar Number" name="aadhaar_num">
+                    <input class="uk-input uk-form-width-large @error('aadhaar') uk-form-danger @enderror" id="aadhaar"
+                        type="text" value="{{ old('aadhaar') }}" placeholder="Enter Aadhaar Number" name="aadhaar">
+                    @error('aadhaar')
+                        <div class="uk-alert-danger" uk-alert>
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
                 </div>
                 <div class="uk-margin-bottom">
-                    <input class="uk-input uk-form-width-large" id="gst_num" type="text" placeholder="Enter GST Number"
-                        name="gst_num">
+                    <input class="uk-input uk-form-width-large @error('gstin') uk-form-danger @enderror" id="gstin"
+                        type="text" value="{{ old('gstin') }}" placeholder="Enter GST Number" name="gstin">
+                    @error('gstin')
+                        <div class="uk-alert-danger" uk-alert>
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
                 </div>
                 <div>
-                    <input class="uk-input uk-form-width-large" id="trade_name" type="text" placeholder="Enter Trade Name"
+                    <input class="uk-input uk-form-width-large @error('trade_name') uk-form-danger @enderror"
+                        id="trade_name" type="text" value="{{ old('trade_name') }}" placeholder="Enter Trade Name"
                         name="trade_name">
+                    @error('trade_name')
+                        <div class="uk-alert-danger" uk-alert>
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
                 </div>
             </div>
             <div class="uk-padding-large uk-padding-remove-top">
-                <button type="submit" class="uk-button uk-text-bold seller-btn">Submit</button>
+                <button type="submit" class="uk-button uk-text-bold seller-btn">Register</button>
             </div>
         </form>
     </div>

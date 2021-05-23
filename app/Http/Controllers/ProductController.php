@@ -34,7 +34,6 @@ class ProductController extends Controller
         log::info('Role is' . $role);
         return view('Products')->with('data_arr', [$products, $role]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -96,7 +95,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $prod = Product::find($id);
+        return view('sproducts_detail')->with('prod', $prod);
     }
 
     /**

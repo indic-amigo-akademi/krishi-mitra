@@ -62,3 +62,11 @@ Route::get('/checkout/processed/cod', 'OrderController@storecod')->name('OrderPr
 Route::get('/checkout/processed/card', 'OrderController@storecard')->name('OrderProcessed.card');
 Route::get('/orders', 'OrderController@showall')->name('ShowOrders');
 Route::get('/orders/{id}', 'OrderController@showone')->name('ShowSingle');
+
+//product page
+Route::get('/product', function () {
+    return view('product');
+})->name('product');
+
+//seller detail product page
+Route::get('/sproducts_detail/{id}', 'ProductController@show');

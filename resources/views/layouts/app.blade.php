@@ -46,6 +46,7 @@
     <!-- Scripts -->
     <script src="{{ mix('/js/app.js') }}"></script>
     <script src="{{ mix('/js/vanilla.js') }}"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 
     @include('partials.alert')
 

@@ -39,6 +39,9 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_sysadmin' => 'boolean',
+        'is_admin' => 'boolean',
+        'is_seller' => 'boolean',
     ];
 
     public function seller()
@@ -46,11 +49,18 @@ class User extends Authenticatable
         return $this->hasOne(Seller::class, 'user_id');
     }
 
-    public function is_admin(){
-        return $this->role == 'admin';
+    public function getIsSysadminAttribute()
+    {
+        return $this->role == 'sysadmin';
     }
 
-    public function is_seller(){
+    public function getIsAdminAttribute()
+    {
+        return $this->role == 'admin' || $this->role == 'sysadmin';
+    }
+
+    public function getIsSellerAttribute()
+    {
         return $this->role == 'seller';
     }
 }

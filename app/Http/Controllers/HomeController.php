@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
-
 use App\FileImage;
 use Illuminate\Http\Request;
 use App\Seller;
@@ -46,5 +44,10 @@ class HomeController extends Controller
         }
         log::info('Role is' . $role);
         return view('product.explore')->with('products', $products);
+    }
+
+    public function profile()
+    {
+        return view('profile.account');
     }
 }

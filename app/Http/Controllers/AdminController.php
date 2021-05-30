@@ -27,9 +27,10 @@ class AdminController extends Controller
 
     public function index()
     {
-        $usr = User::find(Auth::id());
-        log::info('User' . $usr);
-        return view('admin.dashboard')->with('usr', $usr);
+        if (Auth::user()->is_admin) {
+            abort(403);
+        }
+        return view('admin.dashboard');
     }
 
     public function register_view()
@@ -38,11 +39,11 @@ class AdminController extends Controller
             ->where('user_id', '=', Auth::id())
             ->first();
         if (isset($approval) && $approval) {
-            return redirect('/')->with('alert', [
+            return redirect(route('home'))->with('alert', [
                 'code' => 'info',
                 'title' => 'Waiting!',
                 'subtitle' =>
-                'Already signed for ' .
+                    'Already signed for ' .
                     str_replace('_', ' ', $approval->type) .
                     '!',
             ]);
@@ -65,14 +66,14 @@ class AdminController extends Controller
                 'user_id' => $x->id,
                 'type' => 'admin_approval',
             ]);
-            return redirect('/')->with('alert', [
+            return redirect(route('home'))->with('alert', [
                 'code' => 'success',
                 'title' => 'Success!',
                 'subtitle' => 'Your registration as an admin is in progress!',
             ]);
         }
 
-        return redirect('/admin/register')->with('alert', [
+        return redirect(route('admin.register'))->with('alert', [
             'code' => 'error',
             'title' => 'Error!',
             'subtitle' => 'Invalid credentials!',
@@ -81,27 +82,37 @@ class AdminController extends Controller
 
     public function approval_view()
     {
+        if (Auth::user()->is_admin) {
+            abort(403);
+        }
         $seller_approval = Approval::all()->where(
             'type',
             '=',
             'seller_approval'
         );
         $admin_approval = Approval::all()->where('type', '=', 'admin_approval');
-        return view('admin.approval')
-            ->with('seller_approval', $seller_approval)
-            ->with('admin_approval', $admin_approval);
+        return view(
+            'admin.approval',
+            compact('seller_approval', 'admin_approval')
+        );
     }
     public function browse()
     {
+        if (Auth::user()->is_admin) {
+            abort(403);
+        }
         $prod = Product::all();
         $seller = Seller::all();
         Log::info($seller);
-        $data = array('products' => $prod, 'seller' => $seller);
-        return view('admin.admin_dash_prod')->with($data);
+        $data = ['products' => $prod, 'seller' => $seller];
+        return view('admin.products', $data);
     }
 
     public function approval(Request $req)
     {
+        if (Auth::user()->is_admin) {
+            abort(403);
+        }
         $approval = $req->input('input');
         $sid = $req->input('id');
         if ($approval == 'approve') {
@@ -119,7 +130,7 @@ class AdminController extends Controller
             }
             $z->save();
             $y->delete();
-            return redirect('/admin/approval')->with('alert', [
+            return redirect(route('admin.approval.view'))->with('alert', [
                 'code' => 'success',
                 'title' => 'Approved!',
                 'subtitle' => 'The customer have been registered as a seller!',
@@ -137,7 +148,7 @@ class AdminController extends Controller
                 }
             }
             $y->delete();
-            return redirect('/admin/approval')->with('alert', [
+            return redirect(route('admin.approval.view'))->with('alert', [
                 'code' => 'error',
                 'title' => 'Denied!',
                 'subtitle' => 'The customer have been denied as a seller!',

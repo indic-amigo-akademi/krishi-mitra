@@ -71,11 +71,12 @@ class SellerController extends Controller
         $prod = Product::where(['slug' => $slug])->first();
         return view('seller.product.show')->with('product', $prod);
     }
+
     public function product_display()
     {
         $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
         $products = Product::where('seller_id', $sid)->get();
         Log::info('Nimish' . $products . $sid);
-        return view('seller.dashboard_products')->with('products', $products);
+        return view('seller.product.list')->with('products', $products);
     }
 }

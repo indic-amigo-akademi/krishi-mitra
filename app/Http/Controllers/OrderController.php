@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Image;
 
-
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -22,7 +21,7 @@ class OrderController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     * 
+     *
      */
     public function __construct()
     {
@@ -30,7 +29,7 @@ class OrderController extends Controller
     }
     public function index()
     {
-        return view('Checkout');
+        return view('profile.checkout');
     }
 
     /**
@@ -50,7 +49,7 @@ class OrderController extends Controller
                 'city' => $req['city'],
                 'state' => $req['state'],
                 'pincode' => $req['pincode'],
-                'landmark' => $req['landmark']
+                'landmark' => $req['landmark'],
             ]);
         }
         if ($req['optradio'] == 'COD') {
@@ -120,13 +119,15 @@ class OrderController extends Controller
         /*$ord = Cart::select('order_id')::where('user_id', Auth::id())->get();*/
         $ord = DB::table('orders')
             ->where('user_id', '=', Auth::id())
-            ->select([DB::raw("order_id"), DB::raw("SUM(price) as 'tot'"), DB::raw("max(created_at) as created_at")])
+            ->select([
+                DB::raw('order_id'),
+                DB::raw("SUM(price) as 'tot'"),
+                DB::raw('max(created_at) as created_at'),
+            ])
             ->groupBy('order_id')
             ->orderBy('created_at')
             ->get();
-        log::info('Eto Obdhi' . $ord);
-        //$dates = Order::select('created_at')->orderBy('created_at')->get();
-        return view('OrderList')->with('ord', $ord);
+        return view('profile.orders')->with('ord', $ord);
     }
 
     /**
@@ -137,9 +138,14 @@ class OrderController extends Controller
      */
     public function showone($id)
     {
-        $order = Order::where('order_id', $id)->get();
-        log::info('ORDER IS' . $order);
-        return view('SingleOrder')->with('ord', $order);
+        $orders = Order::where([
+            'user_id' => Auth::id(),
+            'order_id' => $id,
+        ])->get();
+        if (count($orders) > 0) {
+            return view('profile.order', compact('orders'));
+        }
+        abort(404);
     }
 
     /**

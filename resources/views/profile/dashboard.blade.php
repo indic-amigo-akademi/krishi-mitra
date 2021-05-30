@@ -7,16 +7,20 @@
 
         <div class="uk-card uk-container uk-card-default">
             <div class="uk-card-header">
-                <h3 class="uk-card-title">Seller Dashboard</h3>
+                <h3 class="uk-card-title">User Dashboard</h3>
             </div>
             <div class="uk-card-body">
                 <ul class="uk-list links">
-                    <li><a href="{{ route('seller.browse.products') }}">Browse products</a></li>
+                    <li><a href="{{ route('profile') }}">My Profile</a></li>
+                    <li><a href="{{ route('cart') }}">My Cart</a></li>
+                    <li><a href="{{ route('orders') }}">My Orders</a></li>
+
+                    @if (!(Auth::user()->is_admin || Auth::user()->is_seller))
+                        <li><a href="{{ route('seller.register') }}">Register as Seller</a></li>
+                    @endif
                 </ul>
             </div>
             <div class="uk-card-footer"></div>
         </div>
     </div>
-
-
 @endsection

@@ -29,7 +29,7 @@ class CartController extends Controller
             array_push($final_array, $item);
         }
         log::info('Final Array', $final_array);
-        return view('Cart')->with('products', $final_array);
+        return view('profile.cart')->with('products', $final_array);
     }
 
     /**
@@ -129,6 +129,6 @@ class CartController extends Controller
             array_push($final_array, $item);
         }
         log::info('Final Array', $final_array);
-        return view('Cart')->with('products', $final_array);
+        return view('profile.cart')->with('products', $final_array);
     }
 }

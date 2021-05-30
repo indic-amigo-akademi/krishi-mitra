@@ -5,7 +5,7 @@
 
     @if (count($ord) > 0)
         @foreach ($ord as $o)
-            {{ $i++ }}) Order_ID:<a href="/orders/{{ $o->order_id }}">{{ $o->order_id }}</a>
+            {{ $i++ }}) Order_ID: <a href="{{ route('orders.show', $o->order_id) }}">{{ $o->order_id }}</a>
             <p>Total Price:{{ $o->tot }} Date is: {{ $o->created_at }}</p><br>
 
         @endforeach

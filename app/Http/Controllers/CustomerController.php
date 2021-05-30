@@ -16,8 +16,6 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $usr = User::find(Auth::id());
-
-        return view("customer_dashboard")->with('usr', $usr);
+        return view("profile.dashboard");
     }
 }

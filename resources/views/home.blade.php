@@ -18,10 +18,8 @@
                     @endif
 
                     <p>
-                        {{ Auth::user()->is_admin }}
                     </p>
 
-                    {{ __('You are logged in!') }}
                 </div>
             </div>
         </div>

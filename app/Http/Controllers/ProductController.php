@@ -28,14 +28,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $role = '';
-        if (Auth::id() == null) {
-            $role = 'browser';
-        } else {
-            $role = Auth::user()->role;
-        }
         return view('seller.product.list')->with('products', $products);
     }
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -47,7 +42,7 @@ class ProductController extends Controller
         if ($x->role == 'seller' || $x->role == 'admin') {
             return view('seller.product.create');
         } else {
-            return redirect('/');
+            return redirect(route('home'));
         }
     }
 
@@ -65,7 +60,6 @@ class ProductController extends Controller
             'type' => $req['type'],
             'desc' => $req['desc'],
             'price' => $req['price'],
-            // 'cover' => join(',', $fileName),
             'quantity' => $req['quantity'],
             'name' => $req['name'],
             'unit' => $req['unit'],
@@ -92,15 +86,12 @@ class ProductController extends Controller
                 $img = FileImage::create([
                     'name' => $imageName,
                     'type' => 'products',
-                    'ref_id' => $product->id
+                    'ref_id' => $product->id,
                 ]);
                 array_push($fileName, $img->id);
             }
         }
-
-
-        LOG::info('Yohoo Product Created');
-        return redirect('/seller/products');
+        return redirect(route('seller.browse.products'));
     }
 
     /**

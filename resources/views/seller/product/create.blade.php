@@ -1,28 +1,28 @@
 @extends('layouts.app')
 @section('content')
 
-    <form action="{{ route('product.store') }}" method='Post' enctype="multipart/form-data">
+    <form action="{{ route('product.store') }}" method='post' enctype="multipart/form-data">
         @csrf
         <div
             class="uk-width-1-1 uk-height-1-1 uk-padding-large uk-padding-remove-horizontal uk-flex uk-flex-around uk-flex-middle cproduct">
             <div class="uk-card uk-card-default uk-card-body uk-width-2-3@m">
                 <h1 class="uk-heading-divider uk-text-center uk-text-bold cproduct-head">Create a Product</h1>
-                <div class="uk-padding-small uk-flex uk-flex-middle">
-                    <label class="uk-width-1-5 uk-text-bold" for="name">Name :</label>
-                    <div class="uk-inline uk-width-4-5">
+                <div class="uk-padding-small uk-flex uk-flex-middle uk-flex-wrap">
+                    <label class="uk-width-1-5@m uk-text-bold" for="name">Name :</label>
+                    <div class="uk-inline uk-width-1-1 uk-width-4-5@m">
                         <i class="uk-form-icon ri-pencil-fill"></i>
                         <input class="uk-input" type="text" id="name" name="name">
                     </div>
                 </div>
-                <div class="uk-padding-small uk-flex uk-flex-middle">
-                    <label class="uk-width-1-5 uk-text-bold" for="type">Type :</label>
-                    <div class="uk-inline uk-width-4-5">
+                <div class="uk-padding-small uk-flex uk-flex-middle uk-flex-wrap">
+                    <label class="uk-width-1-5@m uk-text-bold" for="type">Type :</label>
+                    <div class="uk-inline uk-width-1-1 uk-width-4-5@m">
                         <i class="uk-form-icon ri-pencil-fill"></i>
                         <input class="uk-input" type="text" id="type" name="type">
                     </div>
                 </div>
-                <div class="uk-padding-small uk-flex uk-flex-between uk-flex-middle">
-                    <div>
+                <div class="uk-flex uk-flex-between uk-flex-middle uk-flex-wrap">
+                    <div class="uk-padding-small">
                         <label class="uk-text-bold uk-margin-right" for="unit">Unit :</label>
                         <div class="uk-inline">
                             <i class="uk-form-icon ri-pencil-fill"></i>
@@ -76,7 +76,7 @@
                             {{-- <input class="uk-input" type="string" id="unit" name="unit"> --}}
                         </div>
                     </div>
-                    <div>
+                    <div class="uk-padding-small">
                         <label class="uk-text-bold uk-margin-right" for="quantity">Quantity :</label>
                         <div class="uk-inline">
                             <i class="uk-form-icon ri-pencil-fill"></i>
@@ -84,32 +84,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="uk-padding-small uk-flex uk-flex-between uk-flex-middle">
-                    <div>
+                <div class="uk-flex uk-flex-between uk-flex-middle uk-flex-wrap">
+                    <div class="uk-padding-small">
                         <label class="uk-text-bold uk-margin-right" for="price">Price :</label>
                         <div class="uk-inline">
                             <span class="uk-form-icon">₹</span>
                             <input class="uk-input" type="number" placeholder="" id="price" name="price" value="0">
                         </div>
                     </div>
-                    <div>
+                    <div class="uk-padding-small">
                         <label class="uk-text-bold uk-margin-right" for="discount">Discount :</label>
-                        <div class="uk-flex">
-                            <input class="uk-input uk-range" type="range" min="0.05" max="0.75" step="0.01"
-                                id="discount-range" name="discount-range">
-                            <div class="uk-inline">
+                        <div class="uk-inline">
                                 <div class="uk-form-icon uk-form-icon-flip">
                                     <span class="ri-percent-fill"></span>
                                 </div>
                                 <input class="uk-input" class="discount" name="discount" type="number" min="0.05" max="0.75"
                                     step="0.01" />
                             </div>
+                        <div>
+                            <input class="uk-range" type="range" min="0.05" max="0.75" step="0.01"
+                                id="discount-range" name="discount-range">
+                            
                         </div>
                     </div>
                 </div>
 
-                <div class="uk-padding-small uk-flex uk-flex-middle">
-                    <label class="uk-width-1-5 uk-text-bold" for="imageInput">Cover :</label>
+                <div class="uk-padding-small uk-flex uk-flex-middle uk-flex-wrap">
+                    <label class="uk-width-1-5@m uk-text-bold" for="imageInput">Cover :</label>
                     <input name="cover[]" type="file" id="cover" multiple>
                 </div>
 
@@ -125,9 +126,9 @@
 
                 <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
 
-                <div class="uk-padding-small uk-flex uk-flex-middle">
-                    <label class="uk-width-1-5 uk-text-bold" for="name">Description :</label>
-                    <div class="uk-inline uk-width-4-5">
+                <div class="uk-padding-small uk-flex uk-flex-middle uk-flex-wrap">
+                    <label class="uk-width-1-5@m uk-text-bold" for="name">Description :</label>
+                    <div class="uk-inline uk-width-1-1 uk-width-4-5@m">
                         <textarea class="uk-textarea" rows="5" id="desc" name="desc"></textarea>
                     </div>
                 </div>

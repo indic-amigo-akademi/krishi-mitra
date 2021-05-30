@@ -16,7 +16,6 @@ class Product extends Model
         'seller_id',
         'desc',
         'price',
-        // 'cover',
         'name',
         'unit',
         'quantity',
@@ -35,5 +34,9 @@ class Product extends Model
             'type',
             'products'
         );
+    }
+
+    public function getProductUnitAttribute()
+    {
     }
 }

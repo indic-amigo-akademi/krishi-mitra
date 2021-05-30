@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
             $table->string('type');
             $table->text('desc');
             $table->double('price');
-            $table->string('cover');
+            // $table->string('cover');
             $table->string('name');
             $table->string('unit');
             $table->integer('quantity')->default(0);

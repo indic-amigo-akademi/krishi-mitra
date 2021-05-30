@@ -34,12 +34,14 @@ Route::get('/customer', 'CustomerController@index')->name('customer.index');
 
 // Seller Routes
 Route::get('/seller', 'SellerController@index')->name('seller.index');
-Route::get('/seller/product/create', 'ProductController@create')->name('product.create');
-Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name('product.edit');
+Route::get('/seller/products', 'ProductController@index')->name('product.list');
+Route::get('/seller/product/create', 'ProductController@create')->name('seller.product.create');
+Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name('seller.product.edit');
+Route::get('/seller/product/{slug}', 'SellerController@product_show')->name('seller.product.view');
 
 Route::post('/product/store', 'ProductController@store')->name('product.store');
 Route::post('/product/update/{id}', 'ProductController@update')->name('product.update');
-Route::get('/product/destroy/{id}', 'ProductController@destroy')->name('product.destroy');
+Route::post('/product/destroy/{id}', 'ProductController@destroy')->name('product.destroy');
 
 // Admin Routes
 Route::get('/admin', 'AdminController@index')->name('admin.index');
@@ -73,5 +75,3 @@ Route::get('/product', function () {
     return view('product');
 })->name('product');
 
-//seller detail product page
-Route::get('/sproducts_detail/{id}', 'ProductController@show');

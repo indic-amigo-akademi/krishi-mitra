@@ -26,7 +26,7 @@
                 <div class="uk-margin-small-top uk-margin-small-bottom">{!! $product->desc !!}</div>
                 <div>
                     <span class="uk-text-bold">Quantity</span>
-                    <input class="uk-input uk-form-width-small uk-form-small uk-margin-left" type="number">
+                    <input class="uk-input uk-form-width-small uk-form-small uk-margin-left" type="number" name="qty">
                 </div>
                 <div class="uk-width-1-1 uk-flex uk-flex-around uk-margin">
                     <input class="uk-input uk-form-width-medium uk-text-center uk-text-bold" value="ADD TO BAG" disabled>

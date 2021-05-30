@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class product extends Model
+class Product extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -16,7 +16,7 @@ class product extends Model
         'seller_id',
         'desc',
         'price',
-        'cover',
+        // 'cover',
         'name',
         'unit',
         'quantity',
@@ -31,6 +31,9 @@ class product extends Model
 
     public function coverPhotos()
     {
-
+        return $this->hasMany(FileImage::class, 'ref_id')->where(
+            'type',
+            'products'
+        );
     }
 }

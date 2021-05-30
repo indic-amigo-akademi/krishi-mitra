@@ -63,12 +63,15 @@ class ProductController extends Controller
         if ($req->hasFile('cover')) {
             $destinationPath = public_path('uploads/products');
             foreach ($req->file('cover') as $image) {
-                var_dump($image->name());
-                $imageName =
-                    $image->getClientOriginalName() +
-                    time() +
-                    '.' +
-                    $image->extension();
+                $filename = pathinfo(
+                    $image->getClientOriginalName(),
+                    PATHINFO_FILENAME
+                );
+                $extension = pathinfo(
+                    $image->getClientOriginalName(),
+                    PATHINFO_EXTENSION
+                );
+                $imageName = $filename . time() . '.' . $extension;
                 if (!$image->move($destinationPath, $imageName)) {
                     log::info('ERROR SAVING IMAGE');
                 }
@@ -84,15 +87,16 @@ class ProductController extends Controller
             'type' => $req['type'],
             'desc' => $req['desc'],
             'price' => $req['price'],
-            'cover' => join(',', $fileName),
+            // 'cover' => join(',', $fileName),
+            'quantity' => $req['qty'],
             'name' => $req['name'],
             'unit' => $req['unit'],
-            'seller_id' => Auth::id(),
+            'seller_id' => Auth::user()->seller->id,
             'slug' => Str::slug($req['name'], '_'),
             'discount' => $req['discount'],
         ]);
         LOG::info('Yohoo Product Created');
-        return redirect('/');
+        return redirect('/seller/products');
     }
 
     /**
@@ -162,10 +166,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        if (User::find(Auth::id())->role == 'seller') {
-            $sid = Seller::find(['user_id' => Auth::id()])[0]->id;
+        if (Auth::user()->role == 'seller') {
+            $sid = Auth::user()->seller->id;
             $psid = Product::find($id)->seller_id;
-            log::info('Sid and Psid are' . $sid . ' ' . $psid);
             if ($sid != $psid) {
                 log::info('You cannot delete someone else product');
                 return redirect('/');
@@ -175,6 +178,6 @@ class ProductController extends Controller
         Product::find($id)->delete();
         $products = Product::all();
         $role = User::find(Auth::id())->role;
-        return view('Products')->with('data_arr', [$products, $role]);
+        return redirect('/seller/products');
     }
 }

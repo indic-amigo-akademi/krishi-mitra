@@ -11,5 +11,5 @@ class FileImage extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'type'];
+    protected $fillable = ['name', 'type', 'ref_id'];
 }

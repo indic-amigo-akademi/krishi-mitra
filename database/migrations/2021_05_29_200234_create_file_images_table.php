@@ -17,6 +17,7 @@ class CreateFileImagesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
+            $table->unsignedBigInteger('ref_id');
             $table->timestamps();
         });
     }

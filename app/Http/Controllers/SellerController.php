@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Approval;
+use App\Product;
 use App\Seller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -58,5 +59,11 @@ class SellerController extends Controller
             'title' => 'Yippee!',
             'subtitle' => 'Your registration as a seller is in progress!',
         ]);
+    }
+
+    public function product_show(Request $req, $slug)
+    {
+        $prod = Product::where(['slug' => $slug])->first();
+        return view('seller.product.show')->with('product', $prod);
     }
 }

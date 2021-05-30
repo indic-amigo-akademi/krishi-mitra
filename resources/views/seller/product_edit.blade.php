@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <form action="{{ route('product.update', $prod->id) }}" method="POST">
+    <form action="{{ route('product.update', $product->id) }}" method="POST">
         @csrf
         <div
             class="uk-width-1-1 uk-height-1-1 uk-padding-large uk-padding-remove-horizontal uk-flex uk-flex-around uk-flex-middle cproduct">

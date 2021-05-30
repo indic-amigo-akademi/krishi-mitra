@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Image;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -60,6 +61,20 @@ class ProductController extends Controller
     public function store(Request $req)
     {
         $fileName = [];
+
+        $product = Product::create([
+            'type' => $req['type'],
+            'desc' => $req['desc'],
+            'price' => $req['price'],
+            // 'cover' => join(',', $fileName),
+            'quantity' => $req['quantity'],
+            'name' => $req['name'],
+            'unit' => $req['unit'],
+            'seller_id' => Auth::user()->seller->id,
+            'slug' => Str::slug($req['name'], '_'),
+            'discount' => $req['discount'],
+        ]);
+
         if ($req->hasFile('cover')) {
             $destinationPath = public_path('uploads/products');
             foreach ($req->file('cover') as $image) {
@@ -78,23 +93,13 @@ class ProductController extends Controller
                 $img = FileImage::create([
                     'name' => $imageName,
                     'type' => 'products',
+                    'ref_id' => $product->id
                 ]);
                 array_push($fileName, $img->id);
             }
         }
 
-        Product::create([
-            'type' => $req['type'],
-            'desc' => $req['desc'],
-            'price' => $req['price'],
-            // 'cover' => join(',', $fileName),
-            'quantity' => $req['qty'],
-            'name' => $req['name'],
-            'unit' => $req['unit'],
-            'seller_id' => Auth::user()->seller->id,
-            'slug' => Str::slug($req['name'], '_'),
-            'discount' => $req['discount'],
-        ]);
+
         LOG::info('Yohoo Product Created');
         return redirect('/seller/products');
     }
@@ -135,7 +140,7 @@ class ProductController extends Controller
     public function update(Request $req, $id)
     {
         Log::info('Seller');
-        if (User::find(Auth::id())->role == 'seller') {
+        /*if (User::find(Auth::id())->role == 'seller') {
             Log::info('Seller');
             $sid = Seller::find(['user_id' => Auth::id()])[0]->id;
             $psid = Product::find($id)->seller_id;
@@ -144,18 +149,21 @@ class ProductController extends Controller
                 log::info('You cannot delete someone else product');
                 return redirect('/');
             }
-        }
+        }*/
 
         $prod = Product::find($id);
         log::info($req);
+        $prod->name = $req->name;
         $prod->type = $req->type;
         $prod->desc = $req->desc;
         $prod->price = $req->price;
         $prod->discount = $req->discount;
         $prod->save();
-        $products = Product::all();
+        log::info('Product saved' . $prod);
+        $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
+        $products = Product::where('seller_id', $sid)->get();
         $role = User::find(Auth::id())->role;
-        return view('Products')->with('data_arr', [$products, $role]);
+        return view('seller.dashboard_products')->with('products', $products);
     }
 
     /**
@@ -176,8 +184,22 @@ class ProductController extends Controller
         }
 
         Product::find($id)->delete();
-        $products = Product::all();
-        $role = User::find(Auth::id())->role;
         return redirect('/seller/products');
+    }
+    public function inactivate($id)
+    {
+        DB::table('products')
+            ->where('id', $id)
+            ->update(['active' => 0]);
+
+        return redirect('/admin/product/browse');
+    }
+    public function activate($id)
+    {
+        DB::table('products')
+            ->where('id', $id)
+            ->update(['active' => 1]);
+
+        return redirect('/admin/product/browse');
     }
 }

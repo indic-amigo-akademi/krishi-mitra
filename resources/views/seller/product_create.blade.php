@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div>
-                        <label class="uk-text-bold uk-margin-right" for="qty">Quantity :</label>
+                        <label class="uk-text-bold uk-margin-right" for="quantity">Quantity :</label>
                         <div class="uk-inline">
                             <i class="uk-form-icon ri-pencil-fill"></i>
                             <input class="uk-input" type="number" id="quantity" name="quantity" value="0">

@@ -47,7 +47,9 @@
                     <button class="form-btn submit-btn" type="button">Login</button>
                 </form>
                 <div class="footer">
-                    <p>Forgot Password ?</p>
+                    <a href="/password/reset">
+                        <p>Forgot Password ?</p>
+                    </a>
                     <span>Don't have an account</span>
                     <a uk-toggle="target: #signup-form">Sign Up</a>
                     <hr />

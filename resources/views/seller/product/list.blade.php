@@ -10,7 +10,7 @@
                 @foreach ($products as $prod)
                     <div
                         class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex
-                                                                                                                                                                             uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
+                                                                                                                                                                                             uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
                         <a href="{{ route('seller.product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
                             <img src="{{ isset($prod->coverPhotos) ? asset('uploads/products/' . $prod->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                 uk-img />
@@ -31,30 +31,28 @@
                         </div>
                         <div
                             class="uk-flex uk-flex-between uk-card-footer uk-padding-remove-bottom uk-padding-remove-horizontal">
-                            @if (Auth::user()->role == 'customer')
-                                <a href="/cart_add" type=" button" class="uk-text-primary">Add to Bag</a>
-                            @elseif (Auth::user()->role == 'seller')
-                                <a href="/cart_add" type=" button" class="uk-text-primary">Add</a>
-                                <a href="/product_edit/{{ $prod->id }}" type=" button" class="uk-text-warning">Edit</a>
-                                <a href="/product_destroy/{{ $prod->id }}" type=" button"
-                                    class="uk-text-danger">Remove</a>
-                            @elseif (Auth::user()->role == 'admin')
-                                <a href="/product_edit/{{ $prod->id }}" type=" button" class="uk-text-warning">Edit</a>
-                                <a href="/product_destroy/{{ $prod->id }}" type=" button"
-                                    class="uk-text-danger">Remove</a>
-                            @endif
+                            <a href="{{ route('seller.product.edit', $prod->id) }}" type=" button"
+                                class="uk-text-warning">Edit</a>
+
+                            <form action="{{ route('product.destroy', $product->id) }}"
+                                id="{{ 'removeProduct' . $product->id }}" method="post">
+                                @csrf
+                                <a href="#"
+                                    onclick="document.getElementById('{{ 'removeProduct' . $product->id }}').submit()"
+                                    class="uk-margin-left uk-link-heading sdetail-remove uk-text-danger uk-text-bold">Remove</a>
+                            </form>
                         </div>
                     </div>
                 @endforeach
             @else
-                <p> No Products Uploaded</p>
+                <h2 class="uk-text-center"> No Products Uploaded</h2>
             @endif
             <div
                 class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-margin-large-bottom uk-margin-right uk-margin-left">
                 <div class="uk-text-large uk-text-center uk-text-bold">Add New Product
                 </div>
                 <div class="uk-margin uk-padding-small uk-flex uk-flex-center sprod-add-new">
-                    <a href="{{ route('product.create') }}"
+                    <a href="{{ route('seller.product.create') }}"
                         class="uk-heading-small uk-text-muted uk-margin-remove uk-link-heading ri-add-circle-fill"></a>
                 </div>
             </div>

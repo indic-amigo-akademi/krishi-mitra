@@ -13,7 +13,7 @@
                         <form class="uk-form-stacked" method="POST" action="{{ route('login') }}" id="web-login-form">
                             @csrf
 
-                            <div class="form-group row">
+                            <div class="">
                                 <label for="email" class="uk-form-label">{{ __('E-Mail Address') }}</label>
 
                                 <div class="uk-form-controls">
@@ -32,7 +32,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="">
                                 <label for="password" class="uk-form-label">{{ __('Password') }}</label>
 
                                 <div class="uk-form-controls">
@@ -52,7 +52,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="">
                                 <div class="uk-margin-small-top">
                                     <div class="form-check" uk-form-custom>
                                         <input class="uk-checkbox" type="checkbox" name="remember" id="remember"
@@ -65,11 +65,11 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row mb-0">
+                            <div class=" mb-0">
                                 <div class="uk-margin-small-top">
                                     @if (Route::has('password.request'))
                                         <a class="btn btn-link" href="{{ route('password.request') }}">
-                                            {{ __('Forgot Your Password?') }}
+                                            <small>{{ __('Forgot Your Password?') }}</small>
                                         </a>
                                     @endif
 

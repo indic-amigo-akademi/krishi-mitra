@@ -24,7 +24,7 @@
                             </span>
                             <span class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
                                 ₹{{ sprintf('%.2f', $product->price / (1 - $product->discount)) }}</span>
-                            <span class="uk-inline">per {{ $product->unit }}</span>
+                            <span class="uk-inline uk-text-lowercase">per {{ $product->unit }}</span>
                         </div>
 
                         <span class="uk-text-small uk-text-bold uk-text-danger uk-margin-right sdetail-offer">(You Save :

@@ -38,6 +38,7 @@ php artisan serve
 - After every merge and pull, run the following commands note all data will be lost
 
 ```bash
+composer dump-autoload
 php artisan migrate:fresh
 php artisan db:seed
 ```

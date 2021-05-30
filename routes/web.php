@@ -34,7 +34,7 @@ Route::get('/customer', 'CustomerController@index')->name('customer.index');
 
 // Seller Routes
 Route::get('/seller', 'SellerController@index')->name('seller.index');
-Route::get('/seller/products', 'ProductController@index')->name('product.list');
+Route::get('/seller/products', 'ProductController@index')->name('seller.product.list');
 Route::get('/seller/product/create', 'ProductController@create')->name('seller.product.create');
 Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name('seller.product.edit');
 Route::get('/seller/product/{slug}', 'SellerController@product_show')->name('seller.product.view');

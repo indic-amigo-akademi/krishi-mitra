@@ -31,10 +31,9 @@ class ProductController extends Controller
         if (Auth::id() == null) {
             $role = 'browser';
         } else {
-            $role = USER::find(['id' => Auth::id()])[0]->role;
+            $role = Auth::user()->role;
         }
-        log::info('Role is' . $role);
-        return view('seller.product_list')->with('products', $products);
+        return view('seller.product.list')->with('products', $products);
     }
     /**
      * Show the form for creating a new resource.
@@ -45,7 +44,7 @@ class ProductController extends Controller
     {
         $x = User::find(Auth::id());
         if ($x->role == 'seller' || $x->role == 'admin') {
-            return view('seller.product_create');
+            return view('seller.product.create');
         } else {
             return redirect('/');
         }
@@ -87,7 +86,6 @@ class ProductController extends Controller
             'type' => $req['type'],
             'desc' => $req['desc'],
             'price' => $req['price'],
-            // 'cover' => join(',', $fileName),
             'quantity' => $req['qty'],
             'name' => $req['name'],
             'unit' => $req['unit'],
@@ -95,7 +93,7 @@ class ProductController extends Controller
             'slug' => Str::slug($req['name'], '_'),
             'discount' => $req['discount'],
         ]);
-        LOG::info('Yohoo Product Created');
+        Log::info('Yohoo Product Created');
         return redirect('/seller/products');
     }
 
@@ -120,9 +118,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $prod = Product::find($id);
-        log::info('The product info is' . $prod);
-        Log::info('HELO The id of the product to be edited is ' . $id);
-        return view('seller.product_edit')->with('product', $prod);
+        return view('seller.product.edit')->with('product', $prod);
     }
 
     /**
@@ -137,7 +133,7 @@ class ProductController extends Controller
         Log::info('Seller');
         if (User::find(Auth::id())->role == 'seller') {
             Log::info('Seller');
-            $sid = Seller::find(['user_id' => Auth::id()])[0]->id;
+            $sid = Auth::user()->seller->id;
             $psid = Product::find($id)->seller_id;
             log::info('Sid and Psid are' . $sid . ' ' . $psid);
             if ($sid != $psid) {
@@ -147,15 +143,14 @@ class ProductController extends Controller
         }
 
         $prod = Product::find($id);
-        log::info($req);
+        $prod->name = $req->name;
         $prod->type = $req->type;
         $prod->desc = $req->desc;
         $prod->price = $req->price;
         $prod->discount = $req->discount;
         $prod->save();
-        $products = Product::all();
-        $role = User::find(Auth::id())->role;
-        return view('Products')->with('data_arr', [$products, $role]);
+
+        return redirect('/seller/products');
     }
 
     /**
@@ -176,8 +171,7 @@ class ProductController extends Controller
         }
 
         Product::find($id)->delete();
-        $products = Product::all();
-        $role = User::find(Auth::id())->role;
+
         return redirect('/seller/products');
     }
 }

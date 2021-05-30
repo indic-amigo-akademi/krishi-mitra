@@ -24,7 +24,12 @@ class SellerController extends Controller
 
     public function index()
     {
-        return view('seller.dashboard');
+        $usr = Seller::where('user_id', Auth::id())->get()[0];
+        $email = User::find(Auth::id())->email;
+        $phone = User::find(Auth::id())->phone;
+        Log::info('PP' . $usr . $email);
+        $data = array('usr' => $usr, 'email' => $email, 'phone' => $phone);
+        return view('seller.dashboard')->with($data);
     }
 
     protected function create_seller(Request $req)
@@ -65,5 +70,12 @@ class SellerController extends Controller
     {
         $prod = Product::where(['slug' => $slug])->first();
         return view('seller.product.show')->with('product', $prod);
+    }
+    public function product_display()
+    {
+        $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
+        $products = Product::where('seller_id', $sid)->get();
+        Log::info('Nimish' . $products . $sid);
+        return view('seller.dashboard_products')->with('products', $products);
     }
 }

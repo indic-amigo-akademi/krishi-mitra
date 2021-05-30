@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Approval;
 use App\Seller;
+use App\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +27,9 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view('admin.dashboard');
+        $usr = User::find(Auth::id());
+        log::info('User' . $usr);
+        return view('admin.dashboard')->with('usr', $usr);
     }
 
     public function register_view()
@@ -39,7 +42,7 @@ class AdminController extends Controller
                 'code' => 'info',
                 'title' => 'Waiting!',
                 'subtitle' =>
-                    'Already signed for ' .
+                'Already signed for ' .
                     str_replace('_', ' ', $approval->type) .
                     '!',
             ]);
@@ -87,6 +90,14 @@ class AdminController extends Controller
         return view('admin.approval')
             ->with('seller_approval', $seller_approval)
             ->with('admin_approval', $admin_approval);
+    }
+    public function browse()
+    {
+        $prod = Product::all();
+        $seller = Seller::all();
+        Log::info($seller);
+        $data = array('products' => $prod, 'seller' => $seller);
+        return view('admin.admin_dash_prod')->with($data);
     }
 
     public function approval(Request $req)

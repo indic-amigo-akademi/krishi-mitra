@@ -67,7 +67,7 @@ class RegisterController extends Controller
             'password' => [
                 'required',
                 'string',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
+                // 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
                 'min:8',
                 'confirmed',
             ],
@@ -98,7 +98,7 @@ class RegisterController extends Controller
                 'min:8' => 'Password must have more than 8 characters',
                 'confirmed' => 'Password do not match',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/' =>
-                    'Password must contain at least one uppercase letter, one lowercase letter and one number',
+                'Password must contain at least one uppercase letter, one lowercase letter and one number',
             ],
             'phone' => [
                 'required' => 'Phone Number is required',

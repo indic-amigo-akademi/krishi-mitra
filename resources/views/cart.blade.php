@@ -11,13 +11,14 @@
                 <li>Type:{{ $prod->type }}</li>
                 <li>Description:{{ $prod->desc }}</li>
                 <li>Quantity:{{ $prod->qty }}</li>
-                <button id={{ $prod->id }} onclick="add()">+</button>
-                <button id={{ $prod->id }} value={{ $prod->qty }} onclick="sub()">-</button>
+                <button onclick="addToCart('{{ $prod->id }}')">+</button>
+                <button value={{ $prod->qty }} onclick="subFromCart('{{ $prod->id }}')">-</button>
                 <li>Price:{{ $prod->price * $prod->qty }}</li>
                 <li>Discount_rate:{{ $prod->discount }}</li>
                 <li>Discounted_Price:{{ $prod->price * $prod->qty * (1 - $prod->discount) }}</li>
                 <img src={{ URL::to('/uploads/products/' . $prod->cover) }} width="100" height="100">
-                <button id={{ $prod->id }} onclick="del()">Remove From Cart</button><br><br>
+                <button id={{ $prod->id }} onclick="delFromCart('{{ $prod->id }}')">Remove From
+                    Cart</button><br><br>
             </ul>
             @php
                 $x = $x + $prod->price * $prod->qty * (1 - $prod->discount);
@@ -29,11 +30,11 @@
         Cart is Empty
     @endif
 @endsection
-@push('JsScript')
+@section('scripts')
     <script>
-        function del() {
+        function delFromCart(id) {
             var x = {
-                id: event.target.id
+                id: id
             }
             console.log('ID IS');
             console.log(x)
@@ -59,9 +60,9 @@
             }, 1000);
         }
 
-        function add() {
+        function addToCart(id) {
             var x = {
-                id: event.target.id
+                id: id
             }
             console.log('ID IS');
             console.log(x)
@@ -88,9 +89,9 @@
 
         }
 
-        function sub() {
+        function subFromCart(id) {
             var x = {
-                id: event.target.id
+                id: id
             }
             if (event.target.value == 1) {
                 alert('Do you want to remove this item from the cart?')
@@ -120,4 +121,4 @@
         }
 
     </script>
-@endpush
+@endsection

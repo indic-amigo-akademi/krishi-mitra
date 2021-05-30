@@ -26,7 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/seller/register', 'SellerController@seller_form')->name('seller.register');
 Route::post('/seller/create', 'SellerController@create_seller')->name('seller.create');
 
-Route::get('/products', 'ProductController@index')->withoutMiddleware(['auth'])->name('product.browse');
+Route::get('/explore', 'HomeController@explore')->name('product.browse');
 // Route::get('/product/create', 'ProductController@create')->name('product.create');
 // Route::post('/product_store', 'ProductController@store');
 
@@ -34,21 +34,23 @@ Route::get('/customer', 'CustomerController@index')->name('customer.index');
 
 // Seller Routes
 Route::get('/seller', 'SellerController@index')->name('seller.index');
-Route::get('/seller/products', 'ProductController@index')->name('seller.product.list');
-Route::get('/seller/product/create', 'ProductController@create')->name('seller.product.create');
-Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name('seller.product.edit');
+Route::get('/seller/products', 'SellerController@product_display')->name('seller.browse.products');
+Route::get('/seller/product/create', 'ProductController@create')->name('product.create');
+Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name('product.edit');
 Route::get('/seller/product/{slug}', 'SellerController@product_show')->name('seller.product.view');
 
 Route::post('/product/store', 'ProductController@store')->name('product.store');
 Route::post('/product/update/{id}', 'ProductController@update')->name('product.update');
 Route::post('/product/destroy/{id}', 'ProductController@destroy')->name('product.destroy');
-
+Route::get('/product/inactivate/{id}', 'ProductController@inactivate')->name('product.inactivate');
+Route::get('/product/activate/{id}', 'ProductController@activate')->name('product.activate');
 // Admin Routes
 Route::get('/admin', 'AdminController@index')->name('admin.index');
 Route::get('/admin/register', 'AdminController@register_view')->name('admin.register.view');
 Route::post('/admin/register', 'AdminController@register')->name('admin.register');
 Route::get('/admin/approval', 'AdminController@approval_view')->name('admin.approval.view');
 Route::post('/admin/approval', 'AdminController@approval')->name('admin.approval');
+Route::get('/admin/product/browse', 'AdminController@browse')->name('admin.product.browse');
 
 
 // Default routes
@@ -57,7 +59,7 @@ Route::post('/contact', 'AppController@create_contact')->name('contact.create');
 Route::get('/contact', 'AppController@contact')->name('contact');
 
 // Cart Routes
-Route::post('/cart/store', 'CartController@store');
+Route::post('/cart/store', 'CartController@store')->name('cart.store');
 Route::get('/cart', 'CartController@index')->name('cart');
 Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');
 Route::post('/cart/incr', 'CartController@incr')->name('cart.increment');
@@ -74,4 +76,3 @@ Route::get('/orders/{id}', 'OrderController@showone')->name('ShowSingle');
 Route::get('/product', function () {
     return view('product');
 })->name('product');
-

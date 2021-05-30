@@ -1,0 +1,87 @@
+@extends('layouts.app')
+
+@section('content')
+    <section class="uk-height-1-1 uk-padding-small sprod">
+        <a class="uk-button uk-button-default" href="{{ route('product.create') }}"> <i class="ri-add-fill"></i> Add New
+            Product</a>
+        <div
+            class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal">
+            @if (count($products) > 0)
+                @foreach ($products as $prod)
+                    <div
+                        class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex
+                                                                                                                                                 uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
+                        <a href="/sproducts_detail/{{ $prod->id }}" class="uk-flex uk-flex-center">
+                            <img src={{ URL::to('/uploads/products/' . $prod->cover) }} uk-img />
+                        </a>
+                        <div class="uk-padding-small">
+                            <div class="uk-margin-small-bottom">
+                                <span class="uk-text-bold">{{ $prod->type }}</span> |
+                                <span style="font-family: cursive">{{ $prod->name }}</span>
+                            </div>
+                            <div class="uk-margin-small-bottom uk-text-bold uk-text-small sprod-color">₹
+                                {{ $prod->price }}
+                            </div>
+                            <div class="uk-text-small">Unit : {{ $prod->unit }}</div>
+                            {{-- <div>{!! $prod->desc !!}</div> --}}
+                        </div>
+                        <div
+                            class="uk-flex uk-flex-between uk-card-footer uk-padding-remove-bottom uk-padding-remove-horizontal">
+                            @if (Auth::user()->role == 'customer')
+                                <a href="/cart_add" type=" button" class="uk-text-primary">Add to Bag</a>
+                            @elseif (Auth::user()->role == 'seller')
+                                <a href="/cart_add" type=" button" class="uk-text-primary">Add</a>
+                                <a href="/product_edit/{{ $prod->id }}" type=" button" class="uk-text-warning">Edit</a>
+                                <a href="/product_destroy/{{ $prod->id }}" type=" button"
+                                    class="uk-text-danger">Remove</a>
+                            @elseif (Auth::user()->role == 'admin')
+                                <a href="/product_edit/{{ $prod->id }}" type=" button" class="uk-text-warning">Edit</a>
+                                <a href="/product_destroy/{{ $prod->id }}" type=" button"
+                                    class="uk-text-danger">Remove</a>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+                <div
+                    class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-margin-large-bottom uk-margin-right uk-margin-left">
+                    <div class="uk-text-large uk-text-center uk-text-bold">Add New Product
+                    </div>
+                    <div class="uk-margin uk-padding-small uk-flex uk-flex-center sprod-add-new">
+                        <a href="/create_product" type=" button"
+                            class="uk-heading-small uk-text-muted uk-margin-remove uk-link-heading ri-add-circle-fill"></a>
+                    </div>
+                </div>
+            @else
+                <p> No Products Uploaded</p>
+            @endif
+        </div>
+    </section>
+@endsection
+
+@section('scripts')
+    <script>
+        function post() {
+            var x = {
+                id: event.target.id
+            }
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '/cart/store',
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(x),
+                success: function(data) {
+                    console.log('Posted');
+                }
+
+            });
+        }
+
+    </script>
+@endsection

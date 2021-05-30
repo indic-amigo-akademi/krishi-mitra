@@ -27,22 +27,27 @@ Route::get('/seller/register', 'SellerController@seller_form')->name('seller.reg
 Route::post('/seller/create', 'SellerController@create_seller')->name('seller.create');
 
 Route::get('/products', 'ProductController@index')->withoutMiddleware(['auth'])->name('product.browse');
-Route::get('/product/create', 'ProductController@create')->name('product.create');
-Route::post('/product_store', 'ProductController@store');
+// Route::get('/product/create', 'ProductController@create')->name('product.create');
+// Route::post('/product_store', 'ProductController@store');
 
-Route::get('/admin', 'AdminController@index')->name('admin.index');
-Route::get('/seller', 'SellerController@index')->name('seller.index');
 Route::get('/customer', 'CustomerController@index')->name('customer.index');
 
+// Seller Routes
+Route::get('/seller', 'SellerController@index')->name('seller.index');
+Route::get('/seller/product/create', 'ProductController@create')->name('product.create');
+Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name('product.edit');
+
+Route::post('/product/store', 'ProductController@store')->name('product.store');
+Route::post('/product/update/{id}', 'ProductController@update')->name('product.update');
+Route::get('/product/destroy/{id}', 'ProductController@destroy')->name('product.destroy');
+
 // Admin Routes
+Route::get('/admin', 'AdminController@index')->name('admin.index');
 Route::get('/admin/register', 'AdminController@register_view')->name('admin.register.view');
 Route::post('/admin/register', 'AdminController@register')->name('admin.register');
 Route::get('/admin/approval', 'AdminController@approval_view')->name('admin.approval.view');
 Route::post('/admin/approval', 'AdminController@approval')->name('admin.approval');
 
-Route::get('/product_edit/{id}', 'ProductController@edit');
-Route::post('/product_update/{id}', 'ProductController@update');
-Route::get('/product_destroy/{id}', 'ProductController@destroy');
 
 // Default routes
 Route::get('/about', 'AppController@about')->name('about');

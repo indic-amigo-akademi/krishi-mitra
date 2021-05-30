@@ -26,9 +26,10 @@ class CreateProductsTable extends Migration
             $table->string('cover');
             $table->string('name');
             $table->string('unit');
-            $table->integer('quantity')->nullable();
+            $table->integer('quantity')->default(0);
             $table->string('slug');
-            $table->double('discount');
+            $table->double('discount')->default(0.25);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

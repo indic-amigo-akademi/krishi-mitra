@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\FileImage;
 use Illuminate\Http\Request;
 use App\Seller;
 use App\User;
 use App\Product;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Image;
@@ -32,7 +34,7 @@ class ProductController extends Controller
             $role = USER::find(['id' => Auth::id()])[0]->role;
         }
         log::info('Role is' . $role);
-        return view('Products')->with('data_arr', [$products, $role]);
+        return view('seller.product_list')->with('products', $products);
     }
     /**
      * Show the form for creating a new resource.
@@ -43,7 +45,7 @@ class ProductController extends Controller
     {
         $x = User::find(Auth::id());
         if ($x->role == 'seller' || $x->role == 'admin') {
-            return view('CreateProduct');
+            return view('seller.product_create');
         } else {
             return redirect('/');
         }
@@ -57,31 +59,37 @@ class ProductController extends Controller
      */
     public function store(Request $req)
     {
-        $sid = Seller::where('user_id', Auth::id())->get()[0];
-        Log::info($sid->user_id);
-        $image = $req->file('input_img');
-        log::info('The image is' . $image);
-
-        if ($req->hasFile('input_img')) {
-            log::info('The IMAGE IS PRESENT');
-            $image = $req->file('input_img');
-            $destinationPath = public_path('\uploads\products');
-            if (!$image->move($destinationPath, $image->getClientOriginalName())) {
-                log::info('ERROR SAVING IMAGE');
+        $fileName = [];
+        if ($req->hasFile('cover')) {
+            $destinationPath = public_path('uploads/products');
+            foreach ($req->file('cover') as $image) {
+                var_dump($image->name());
+                $imageName =
+                    $image->getClientOriginalName() +
+                    time() +
+                    '.' +
+                    $image->extension();
+                if (!$image->move($destinationPath, $imageName)) {
+                    log::info('ERROR SAVING IMAGE');
+                }
+                $img = FileImage::create([
+                    'name' => $imageName,
+                    'type' => 'products',
+                ]);
+                array_push($fileName, $img->id);
             }
-            log::info('image saved!!');
         }
 
         Product::create([
             'type' => $req['type'],
             'desc' => $req['desc'],
             'price' => $req['price'],
-            'cover' => $image->getClientOriginalName(),
+            'cover' => join(',', $fileName),
             'name' => $req['name'],
             'unit' => $req['unit'],
-            'seller_id' => $sid->id,
-            'slug' => $req['name'] . $sid->id,
-            'discount' => 0.4,
+            'seller_id' => Auth::id(),
+            'slug' => Str::slug($req['name'], '_'),
+            'discount' => $req['discount'],
         ]);
         LOG::info('Yohoo Product Created');
         return redirect('/');
@@ -96,7 +104,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $prod = Product::find($id);
-        return view('sproducts_detail')->with('prod', $prod);
+        return view('product.product')->with('product', $prod);
     }
 
     /**
@@ -110,7 +118,7 @@ class ProductController extends Controller
         $prod = Product::find($id);
         log::info('The product info is' . $prod);
         Log::info('HELO The id of the product to be edited is ' . $id);
-        return view('product_edit')->with('prod', $prod);
+        return view('seller.product_edit')->with('product', $prod);
     }
 
     /**
@@ -123,7 +131,7 @@ class ProductController extends Controller
     public function update(Request $req, $id)
     {
         Log::info('Seller');
-        if (User::find(Auth::id())->role == "seller") {
+        if (User::find(Auth::id())->role == 'seller') {
             Log::info('Seller');
             $sid = Seller::find(['user_id' => Auth::id()])[0]->id;
             $psid = Product::find($id)->seller_id;
@@ -154,7 +162,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        if (User::find(Auth::id())->role == "seller") {
+        if (User::find(Auth::id())->role == 'seller') {
             $sid = Seller::find(['user_id' => Auth::id()])[0]->id;
             $psid = Product::find($id)->seller_id;
             log::info('Sid and Psid are' . $sid . ' ' . $psid);

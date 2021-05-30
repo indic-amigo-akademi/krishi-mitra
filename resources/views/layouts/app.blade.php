@@ -51,7 +51,6 @@
     @include('partials.alert')
 
     @yield('scripts')
-    @stack('JsScript')
 
 </body>
 

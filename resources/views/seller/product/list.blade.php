@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="uk-height-1-1 uk-padding-small sprod">
-        <a class="uk-button uk-button-default" href="{{ route('product.create') }}"> <i class="ri-add-fill"></i> Add New
+        <a class="uk-button uk-button-default" href="{{ route('seller.product.create') }}"> <i class="ri-add-fill"></i> Add New
             Product</a>
         <div
             class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal">

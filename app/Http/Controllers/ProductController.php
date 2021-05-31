@@ -27,10 +27,14 @@ class ProductController extends Controller
 
     public function index()
     {
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
         $products = Product::all();
         return view('seller.product.list')->with('products', $products);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -38,12 +42,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $x = User::find(Auth::id());
-        if ($x->role == 'seller' || $x->role == 'admin') {
-            return view('seller.product.create');
-        } else {
-            return redirect(route('home'));
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
         }
+        return view('seller.product.create');
     }
 
     /**
@@ -54,6 +56,10 @@ class ProductController extends Controller
      */
     public function store(Request $req)
     {
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
         $fileName = [];
 
         $product = Product::create([
@@ -91,7 +97,7 @@ class ProductController extends Controller
                 array_push($fileName, $img->id);
             }
         }
-        return redirect(route('seller.browse.products'));
+        return redirect(route(Auth::user()->type . '.product.browse'));
     }
 
     /**
@@ -102,6 +108,10 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
         $prod = Product::find($id);
         return view('product.product')->with('product', $prod);
     }
@@ -114,6 +124,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
         $prod = Product::find($id);
         return view('seller.product.edit')->with('product', $prod);
     }
@@ -127,7 +141,10 @@ class ProductController extends Controller
      */
     public function update(Request $req, $id)
     {
-        Log::info('Seller');
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
         /*if (User::find(Auth::id())->role == 'seller') {
             Log::info('Seller');
             $sid = Auth::user()->seller->id;
@@ -146,11 +163,8 @@ class ProductController extends Controller
         $prod->price = $req->price;
         $prod->discount = $req->discount;
         $prod->save();
-        log::info('Product saved' . $prod);
-        $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
-        $products = Product::where('seller_id', $sid)->get();
-        $role = User::find(Auth::id())->role;
-        return view('seller.dashboard_products')->with('products', $products);
+
+        return redirect(route(Auth::user()->type . '.product.browse'));
     }
 
     /**
@@ -161,7 +175,11 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        if (Auth::user()->role == 'seller') {
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
+        if (Auth::user()->is_seller) {
             $sid = Auth::user()->seller->id;
             $psid = Product::find($id)->seller_id;
             if ($sid != $psid) {
@@ -171,10 +189,15 @@ class ProductController extends Controller
         }
 
         Product::find($id)->delete();
-        return redirect('/seller/products');
+
+        return redirect(route(Auth::user()->type . '.product.browse'));
     }
     public function inactivate($id)
     {
+        if (!Auth::user()->is_admin) {
+            abort(403);
+        }
+
         DB::table('products')
             ->where('id', $id)
             ->update(['active' => 0]);
@@ -183,6 +206,10 @@ class ProductController extends Controller
     }
     public function activate($id)
     {
+        if (!Auth::user()->is_admin) {
+            abort(403);
+        }
+
         DB::table('products')
             ->where('id', $id)
             ->update(['active' => 1]);

@@ -11,7 +11,7 @@
             </div>
             <div class="uk-card-body">
                 <ul class="uk-list links">
-                    <li><a href="{{ route('seller.browse.products') }}">Browse products</a></li>
+                    <li><a href="{{ route('seller.product.browse') }}">Browse products</a></li>
                 </ul>
             </div>
             <div class="uk-card-footer"></div>

@@ -2,8 +2,8 @@
 
 @section('content')
     <section class="uk-height-1-1 uk-padding-small sprod">
-        {{-- <a class="uk-button uk-button-default" href="{{ route('product.create') }}"> <i class="ri-add-fill"></i> Add New
-            Product</a> --}}
+        <a class="uk-button uk-button-default" href="{{ route('seller.product.create') }}"> <i class="ri-add-fill"></i> Add New
+            Product</a>
         <div
             class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal">
             @if (count($products) > 0)
@@ -46,15 +46,6 @@
             @else
                 <p> No Products Uploaded</p>
             @endif
-            <div
-                class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-margin-large-bottom uk-margin-right uk-margin-left">
-                <div class="uk-text-large uk-text-center uk-text-bold">Add New Product
-                </div>
-                <div class="uk-margin uk-padding-small uk-flex uk-flex-center sprod-add-new">
-                    <a href="{{ route('product.create') }}"
-                        class="uk-heading-small uk-text-muted uk-margin-remove uk-link-heading ri-add-circle-fill"></a>
-                </div>
-            </div>
         </div>
     </section>
 @endsection

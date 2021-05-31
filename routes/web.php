@@ -33,39 +33,8 @@ Route::post('/seller/create', 'SellerController@create_seller')->name(
 );
 
 Route::get('/explore', 'HomeController@explore')->name('product.browse');
-// Route::get('/product/create', 'ProductController@create')->name('product.create');
-// Route::post('/product_store', 'ProductController@store');
-
 Route::get('/profile', 'CustomerController@index')->name('customer.index');
 
-// Seller Routes
-Route::get('/seller', 'SellerController@index')->name('seller.index');
-Route::get('/seller/products', 'SellerController@product_display')->name(
-    'seller.browse.products'
-);
-Route::get('/seller/product/create', 'ProductController@create')->name(
-    'product.create'
-);
-Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name(
-    'product.edit'
-);
-Route::get('/seller/product/{slug}', 'SellerController@product_show')->name(
-    'seller.product.view'
-);
-
-Route::post('/product/store', 'ProductController@store')->name('product.store');
-Route::post('/product/update/{id}', 'ProductController@update')->name(
-    'product.update'
-);
-Route::post('/product/destroy/{id}', 'ProductController@destroy')->name(
-    'product.destroy'
-);
-Route::get('/product/inactivate/{id}', 'ProductController@inactivate')->name(
-    'product.inactivate'
-);
-Route::get('/product/activate/{id}', 'ProductController@activate')->name(
-    'product.activate'
-);
 // Admin Routes
 Route::get('/admin', 'AdminController@index')->name('admin.index');
 Route::get('/admin/register', 'AdminController@register_view')->name(
@@ -82,6 +51,36 @@ Route::post('/admin/approval', 'AdminController@approval')->name(
 );
 Route::get('/admin/product/browse', 'AdminController@browse')->name(
     'admin.product.browse'
+);
+
+// Seller Routes
+Route::get('/seller', 'SellerController@index')->name('seller.index');
+Route::get('/seller/products', 'SellerController@product_display')->name(
+    'seller.product.browse'
+);
+Route::get('/seller/product/create', 'ProductController@create')->name(
+    'seller.product.create'
+);
+Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name(
+    'seller.product.edit'
+);
+Route::get('/seller/product/{slug}', 'SellerController@product_show')->name(
+    'seller.product.view'
+);
+
+// Product routes
+Route::post('/product/store', 'ProductController@store')->name('product.store');
+Route::post('/product/update/{id}', 'ProductController@update')->name(
+    'product.update'
+);
+Route::post('/product/destroy/{id}', 'ProductController@destroy')->name(
+    'product.destroy'
+);
+Route::get('/product/inactivate/{id}', 'ProductController@inactivate')->name(
+    'product.inactivate'
+);
+Route::get('/product/activate/{id}', 'ProductController@activate')->name(
+    'product.activate'
 );
 
 // Default routes

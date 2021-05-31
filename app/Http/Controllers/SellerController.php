@@ -68,12 +68,18 @@ class SellerController extends Controller
 
     public function product_show(Request $req, $slug)
     {
+        if (!Auth::user()->is_seller) {
+            abort(403);
+        }
         $prod = Product::where(['slug' => $slug])->first();
         return view('seller.product.show')->with('product', $prod);
     }
 
     public function product_display()
     {
+        if (!Auth::user()->is_seller) {
+            abort(403);
+        }
         $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
         $products = Product::where('seller_id', $sid)->get();
         Log::info('Nimish' . $products . $sid);

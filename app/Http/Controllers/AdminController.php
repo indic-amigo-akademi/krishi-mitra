@@ -27,7 +27,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        if (Auth::user()->is_admin) {
+        if (!Auth::user()->is_admin) {
             abort(403);
         }
         return view('admin.dashboard');
@@ -82,7 +82,7 @@ class AdminController extends Controller
 
     public function approval_view()
     {
-        if (Auth::user()->is_admin) {
+        if (!Auth::user()->is_admin) {
             abort(403);
         }
         $seller_approval = Approval::all()->where(
@@ -98,7 +98,7 @@ class AdminController extends Controller
     }
     public function browse()
     {
-        if (Auth::user()->is_admin) {
+        if (!Auth::user()->is_admin) {
             abort(403);
         }
         $prod = Product::all();
@@ -110,7 +110,7 @@ class AdminController extends Controller
 
     public function approval(Request $req)
     {
-        if (Auth::user()->is_admin) {
+        if (!Auth::user()->is_admin) {
             abort(403);
         }
         $approval = $req->input('input');

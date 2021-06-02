@@ -69,5 +69,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('Shayan@1999'),
             'role' => 'admin'
         ]);
+        User::create([
+            'name' => 'Mohan Dutta',
+            'username' => 'mdutta',
+            'email' => 'mohandutta@gmail.com',
+            'phone' => '8777046465',
+            'password' => Hash::make('Mohan@1999'),
+            'role' => 'customer'
+        ]);
     }
 }

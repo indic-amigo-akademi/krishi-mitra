@@ -17,15 +17,19 @@
                     <p>Or Sign Up with Email</p>
                     <hr />
                 </div>
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register') }}" id="modal-register-form">
                     @csrf
-                    <div id="first_block">
+                    <div class="first-block">
                         <div class="group">
                             <input class="input uk-input" type="text" name="name" required autocomplete="name"
                                 autofocus />
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Name</label>
+
+                            <small class="uk-text-danger uk-margin-bottom">
+                                <strong class="error-name"></strong>
+                            </small>
                         </div>
 
                         <div class="group">
@@ -34,6 +38,10 @@
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Username</label>
+
+                            <small class="uk-text-danger uk-margin-bottom">
+                                <strong class="error-username"></strong>
+                            </small>
                         </div>
 
                         <div class="group">
@@ -41,17 +49,25 @@
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Phone Number</label>
+
+                            <small class="uk-text-danger uk-margin-bottom">
+                                <strong class="error-phone"></strong>
+                            </small>
                         </div>
 
-                        <button class="form-btn" type="submit" onclick="onEdit1();">Next</button>
+                        <button class="form-btn on-off-btn" type="button" data-on="#modal-register-form .second-block" data-off="#modal-register-form .first-block">Next</button>
                     </div>
 
-                    <div id="second_block" style="display: none">
+                    <div class="second-block" style="display: none">
                         <div class="group">
                             <input class="input uk-input" type="email" name="email" required autocomplete="email" />
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Email</label>
+
+                            <small class="uk-text-danger uk-margin-bottom">
+                                <strong class="error-email"></strong>
+                            </small>
                         </div>
 
                         <div class="group">
@@ -60,6 +76,10 @@
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Create Password</label>
+
+                            <small class="uk-text-danger uk-margin-bottom">
+                                <strong class="error-password"></strong>
+                            </small>
                         </div>
 
                         <div class="group">
@@ -72,7 +92,7 @@
 
                         <input type="checkbox" checked name="remember" class="radioBtn uk-checkbox" /><span> Keep me
                             Logged in</span>
-                        <button class="form-btn" type="submit"> {{ __('Register') }}</button>
+                        <button class="form-btn submit-btn" type="button"> {{ __('Register') }}</button>
                     </div>
                     <div class="footer">
                         <span>Already have an account</span>
@@ -84,10 +104,3 @@
         </div>
     </div>
 </div>
-<script>
-    function onEdit1() {
-        document.getElementById("second_block").style.display = "block";
-        document.getElementById("first_block").style.display = "none";
-    }
-
-</script>

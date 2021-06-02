@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Approval;
+use App\Seller;
+use App\Product;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller
 {
@@ -17,94 +22,137 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('guest')->except('logout');
+        $this->middleware('auth');
     }
 
     public function index()
     {
-        return view('admin_dashboard');
-    }
-
-    public function auth_register_view()
-    {
-        return view('admin');
-    }
-
-    public function auth_register(Request $req)
-    {
-
-        $x = User::all()->where('email', "=", $req->input('email'))->first();
-
-        if (isset($x) && $x && Hash::check($req->input('password'), $x->password)) {
-            // $x = $x->first();
-            $x->role = 'admin';
-            Log::info($x);
-            $x->save();
-            return redirect('/')->with('alert', ['code' => 'success', 'title' => 'Success!', 'subtitle' => 'You have been registered as an admin!']);
+        if (!Auth::user()->is_admin) {
+            abort(403);
         }
-        return redirect('/admin_registration')->with('alert', ['code' => 'error', 'title' => 'Error!', 'subtitle' => 'Invalid credentials!']);
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('admin.dashboard');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function register_view()
     {
-        //
+        $approval = Approval::all()
+            ->where('user_id', '=', Auth::id())
+            ->first();
+        if (isset($approval) && $approval) {
+            return redirect(route('home'))->with('alert', [
+                'code' => 'info',
+                'title' => 'Waiting!',
+                'subtitle' =>
+                    'Already signed for ' .
+                    str_replace('_', ' ', $approval->type) .
+                    '!',
+            ]);
+        }
+        return view('admin.register');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function register(Request $req)
     {
-        //
+        $x = User::all()
+            ->where('email', '=', $req->input('email'))
+            ->first();
+
+        if (
+            isset($x) &&
+            $x &&
+            Hash::check($req->input('password'), $x->password)
+        ) {
+            Approval::create([
+                'user_id' => $x->id,
+                'type' => 'admin_approval',
+            ]);
+            return redirect(route('home'))->with('alert', [
+                'code' => 'success',
+                'title' => 'Success!',
+                'subtitle' => 'Your registration as an admin is in progress!',
+            ]);
+        }
+
+        return redirect(route('admin.register'))->with('alert', [
+            'code' => 'error',
+            'title' => 'Error!',
+            'subtitle' => 'Invalid credentials!',
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $req)
+    public function approval_view()
     {
+        if (!Auth::user()->is_admin) {
+            abort(403);
+        }
+        $seller_approval = Approval::all()->where(
+            'type',
+            '=',
+            'seller_approval'
+        );
+        $admin_approval = Approval::all()->where('type', '=', 'admin_approval');
+        return view(
+            'admin.approval',
+            compact('seller_approval', 'admin_approval')
+        );
+    }
+    public function browse()
+    {
+        if (!Auth::user()->is_admin) {
+            abort(403);
+        }
+        $prod = Product::all();
+        $seller = Seller::all();
+        Log::info($seller);
+        $data = ['products' => $prod, 'seller' => $seller];
+        return view('admin.products', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function approval(Request $req)
     {
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if (!Auth::user()->is_admin) {
+            abort(403);
+        }
+        $approval = $req->input('input');
+        $sid = $req->input('id');
+        if ($approval == 'approve') {
+            $y = Approval::all()
+                ->where('id', '=', $sid)
+                ->first();
+            Log::info($y);
+            $z = User::all()
+                ->where('id', '=', $y->user_id)
+                ->first();
+            if ($y->type == 'seller_approval') {
+                $z->role = 'seller';
+            } elseif ($y->type == 'admin_approval') {
+                $z->role = 'admin';
+            }
+            $z->save();
+            $y->delete();
+            return redirect(route('admin.approval.view'))->with('alert', [
+                'code' => 'success',
+                'title' => 'Approved!',
+                'subtitle' => 'The customer have been registered as a seller!',
+            ]);
+        } elseif ($approval == 'decline') {
+            $y = Approval::all()
+                ->where('id', '=', $sid)
+                ->first();
+            if ($y->type == 'seller_approval') {
+                $w = Seller::all()
+                    ->where('user_id', '=', $y->user_id)
+                    ->first();
+                if (isset($w) && $w) {
+                    $w->delete();
+                }
+            }
+            $y->delete();
+            return redirect(route('admin.approval.view'))->with('alert', [
+                'code' => 'error',
+                'title' => 'Denied!',
+                'subtitle' => 'The customer have been denied as a seller!',
+            ]);
+        }
     }
 }

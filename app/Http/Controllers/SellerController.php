@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Approval;
+use App\Product;
 use App\Seller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class SellerController extends Controller
 {
@@ -16,29 +19,70 @@ class SellerController extends Controller
     }
     public function seller_form()
     {
-        return view("seller_form");
+        return view('seller.form');
     }
 
     public function index()
     {
-        return view("seller_dashboard");
+        $usr = Seller::where('user_id', Auth::id())->get()[0];
+        $email = User::find(Auth::id())->email;
+        $phone = User::find(Auth::id())->phone;
+        Log::info('PP' . $usr . $email);
+        $data = array('usr' => $usr, 'email' => $email, 'phone' => $phone);
+        return view('seller.dashboard')->with($data);
     }
-    
+
     protected function create_seller(Request $req)
     {
-        Log::info('Hii this seller_req method has been called!!');
-        $x = User::find(Auth::id());
-        $x->role = 'seller';
-        Log::info($req->all());
-
-        Log::info($x);
-        $x->save();
-        Seller::create([
-            'user_id' => $x->id,
-            'name' => $req['name'],
-            'gst_number' => $req['gst_num'],
-            'trade_name' => $req['trade_name'],
+        $validator = Validator::make($req->all(), [
+            'name' => 'required|string|max:255',
+            // 'gstin' => 'string|size:15',
+            'aadhaar' => 'required|string|size:12',
+            'trade_name' => 'required|string|max:255',
         ]);
-        return redirect('/home')->with('alert', ['code' => 'success', 'title' => 'Hello!', 'subtitle' => 'You have been registered as a seller!']);
+
+        if ($validator->fails()) {
+            return redirect('/seller/register')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        Seller::create([
+            'name' => $req['name'],
+            'gstin' => $req['gstin'],
+            'aadhaar' => $req['aadhaar'],
+            'trade_name' => $req['trade_name'],
+            'user_id' => Auth::id(),
+        ]);
+        Approval::create([
+            'user_id' => Auth::id(),
+            'type' => 'seller_approval',
+        ]);
+
+        return redirect('/home')->with('alert', [
+            'code' => 'success',
+            'title' => 'Yippee!',
+            'subtitle' => 'Your registration as a seller is in progress!',
+        ]);
+    }
+
+    public function product_show(Request $req, $slug)
+    {
+        if (!Auth::user()->is_seller) {
+            abort(403);
+        }
+        $prod = Product::where(['slug' => $slug])->first();
+        return view('seller.product.show')->with('product', $prod);
+    }
+
+    public function product_display()
+    {
+        if (!Auth::user()->is_seller) {
+            abort(403);
+        }
+        $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
+        $products = Product::where('seller_id', $sid)->get();
+        Log::info('Nimish' . $products . $sid);
+        return view('seller.product.list')->with('products', $products);
     }
 }

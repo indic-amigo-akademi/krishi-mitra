@@ -8,8 +8,11 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -65,5 +68,76 @@ class LoginController extends Controller
                 ]);
                 break;
         }
+    }
+
+    public function login(Request $request)
+    {
+        if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL)) {
+            $credentials = [
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+            ];
+        } else {
+            $credentials = [
+                'username' => $request->input('email'),
+                'password' => $request->input('password'),
+            ];
+        }
+
+        if (Auth::attempt($credentials)) {
+            return redirect()->intended($this->redirectPath());
+        }
+        
+        return redirect()
+            ->back()
+            ->withInput()
+            ->withErrors([
+                'login_error' => 'These credentials do not match our records.',
+            ]);
+    }
+
+    public function validateLogin(Request $request)
+    {
+        $data = $request->all();
+        $rules = [
+            'email' => 'required',
+            'password' => 'required',
+        ];
+        $messages = [
+            'email' => ['required' => 'Email is required'],
+            'password' => ['required' => 'Password is required'],
+        ];
+        $validator = Validator::make($data, $rules, $messages);
+
+        if ($validator->fails()) {
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $validator->getMessageBag(),
+            ]);
+        }
+
+        if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL)) {
+            $credentials = [
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+            ];
+        } else {
+            $credentials = [
+                'username' => $request->input('email'),
+                'password' => $request->input('password'),
+            ];
+        }
+
+        if (Auth::attempt($credentials)) {
+            return new JsonResponse([
+                'success' => true,
+                'message' => 'All fields are valid',
+            ]);
+        }
+
+        return new JsonResponse([
+            'success' => false,
+            'errors' => ['email' => 'Invalid credentials.'],
+        ]);
     }
 }

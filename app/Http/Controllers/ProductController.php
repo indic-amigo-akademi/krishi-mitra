@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\FileImage;
 use Illuminate\Http\Request;
 use App\Seller;
 use App\User;
 use App\Product;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Image;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -24,15 +27,12 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::all();
-        $role = '';
-        if (Auth::id() == null) {
-            $role = 'browser';
-        } else {
-            $role = USER::find(['id' => Auth::id()])[0]->role;
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
         }
-        log::info('Role is' . $role);
-        return view('Products')->with('data_arr', [$products, $role]);
+
+        $products = Product::all();
+        return view('seller.product.list')->with('products', $products);
     }
 
     /**
@@ -42,12 +42,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $x = User::find(Auth::id());
-        if ($x->role == 'seller' || $x->role == 'admin') {
-            return view('CreateProduct');
-        } else {
-            return redirect('/');
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
         }
+        return view('seller.product.create');
     }
 
     /**
@@ -58,34 +56,48 @@ class ProductController extends Controller
      */
     public function store(Request $req)
     {
-        $sid = Seller::find(['user_id' => Auth::id()])[0];
-        Log::info($sid->user_id);
-        $image = $req->file('input_img');
-        log::info('The image is' . $image);
-
-        if ($req->hasFile('input_img')) {
-            log::info('The IMAGE IS PRESENT');
-            $image = $req->file('input_img');
-            $destinationPath = public_path('\uploads\products');
-            if (!$image->move($destinationPath, $image->getClientOriginalName())) {
-                log::info('ERROR SAVING IMAGE');
-            }
-            log::info('image saved!!');
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
         }
 
-        Product::create([
+        $fileName = [];
+
+        $product = Product::create([
             'type' => $req['type'],
             'desc' => $req['desc'],
             'price' => $req['price'],
-            'cover' => $image->getClientOriginalName(),
+            'quantity' => $req['quantity'],
             'name' => $req['name'],
             'unit' => $req['unit'],
-            'seller_id' => $sid->id,
-            'slug' => $req['name'] . $sid->id,
-            'discount' => 0.4,
+            'seller_id' => Auth::user()->seller->id,
+            'slug' => Str::slug($req['name'], '_'),
+            'discount' => $req['discount'],
         ]);
-        LOG::info('Yohoo Product Created');
-        return redirect('/');
+
+        if ($req->hasFile('cover')) {
+            $destinationPath = public_path('uploads/products');
+            foreach ($req->file('cover') as $image) {
+                $filename = pathinfo(
+                    $image->getClientOriginalName(),
+                    PATHINFO_FILENAME
+                );
+                $extension = pathinfo(
+                    $image->getClientOriginalName(),
+                    PATHINFO_EXTENSION
+                );
+                $imageName = $filename . time() . '.' . $extension;
+                if (!$image->move($destinationPath, $imageName)) {
+                    log::info('ERROR SAVING IMAGE');
+                }
+                $img = FileImage::create([
+                    'name' => $imageName,
+                    'type' => 'products',
+                    'ref_id' => $product->id,
+                ]);
+                array_push($fileName, $img->id);
+            }
+        }
+        return redirect(route(Auth::user()->type . '.product.browse'));
     }
 
     /**
@@ -96,7 +108,12 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
+        $prod = Product::find($id);
+        return view('product.product')->with('product', $prod);
     }
 
     /**
@@ -107,10 +124,12 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
         $prod = Product::find($id);
-        log::info('The product info is' . $prod);
-        Log::info('HELO The id of the product to be edited is ' . $id);
-        return view('product_edit')->with('prod', $prod);
+        return view('seller.product.edit')->with('product', $prod);
     }
 
     /**
@@ -122,28 +141,30 @@ class ProductController extends Controller
      */
     public function update(Request $req, $id)
     {
-        Log::info('Seller');
-        if (User::find(Auth::id())->role == "seller") {
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
+        /*if (User::find(Auth::id())->role == 'seller') {
             Log::info('Seller');
-            $sid = Seller::find(['user_id' => Auth::id()])[0]->id;
+            $sid = Auth::user()->seller->id;
             $psid = Product::find($id)->seller_id;
             log::info('Sid and Psid are' . $sid . ' ' . $psid);
             if ($sid != $psid) {
                 log::info('You cannot delete someone else product');
                 return redirect('/');
             }
-        }
+        }*/
 
         $prod = Product::find($id);
-        log::info($req);
+        $prod->name = $req->name;
         $prod->type = $req->type;
         $prod->desc = $req->desc;
         $prod->price = $req->price;
         $prod->discount = $req->discount;
         $prod->save();
-        $products = Product::all();
-        $role = User::find(Auth::id())->role;
-        return view('Products')->with('data_arr', [$products, $role]);
+
+        return redirect(route(Auth::user()->type . '.product.browse'));
     }
 
     /**
@@ -154,10 +175,13 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        if (User::find(Auth::id())->role == "seller") {
-            $sid = Seller::find(['user_id' => Auth::id()])[0]->id;
+        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+            abort(403);
+        }
+
+        if (Auth::user()->is_seller) {
+            $sid = Auth::user()->seller->id;
             $psid = Product::find($id)->seller_id;
-            log::info('Sid and Psid are' . $sid . ' ' . $psid);
             if ($sid != $psid) {
                 log::info('You cannot delete someone else product');
                 return redirect('/');
@@ -165,8 +189,31 @@ class ProductController extends Controller
         }
 
         Product::find($id)->delete();
-        $products = Product::all();
-        $role = User::find(Auth::id())->role;
-        return view('Products')->with('data_arr', [$products, $role]);
+
+        return redirect(route(Auth::user()->type . '.product.browse'));
+    }
+    public function inactivate($id)
+    {
+        if (!Auth::user()->is_admin) {
+            abort(403);
+        }
+
+        DB::table('products')
+            ->where('id', $id)
+            ->update(['active' => 0]);
+
+        return redirect('/admin/product/browse');
+    }
+    public function activate($id)
+    {
+        if (!Auth::user()->is_admin) {
+            abort(403);
+        }
+
+        DB::table('products')
+            ->where('id', $id)
+            ->update(['active' => 1]);
+
+        return redirect('/admin/product/browse');
     }
 }

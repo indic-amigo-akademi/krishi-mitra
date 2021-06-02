@@ -13,10 +13,6 @@
 
     <title>{{ config('app.name', 'Laravel') }} @yield('title')</title>
 
-    <!-- Scripts -->
-    <script src="{{ mix('/js/app.js') }}" defer></script>
-    <script src="{{ mix('/js/vanilla.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -32,10 +28,12 @@
 </head>
 
 <body>
+    @include('partials.states')
 
     <header>
         @include('partials.header')
     </header>
+
 
     <main class="py-4">
         @yield('content')
@@ -44,6 +42,13 @@
     <footer>
         @include('partials.footer')
     </footer>
+
+    <!-- Scripts -->
+    <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="{{ mix('/js/vanilla.js') }}"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+
+    @include('partials.alert')
 
     @yield('scripts')
 

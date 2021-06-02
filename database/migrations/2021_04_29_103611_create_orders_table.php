@@ -25,10 +25,11 @@ class CreateOrdersTable extends Migration
                 ->foreign('product_id')
                 ->references('id')
                 ->on('products');
+            $table->integer('order_id');
             $table->integer('qty');
             $table->double('price');
             $table->double('discount');
-            $table->unsignedInteger('status');
+            $table->string('status');
             $table->string('type');
             $table->timestamps();
         });

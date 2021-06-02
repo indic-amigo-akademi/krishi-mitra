@@ -1,4 +1,4 @@
-<nav class="uk-navbar-container upper-navbar" uk-navbar>
+<nav class="uk-navbar-container  upper-navbar" uk-navbar>
     <div class="nav-overlay uk-navbar-left left-content">
         <div class="navbar-toggle uk-navbar-toggle" uk-navbar-toggle-icon uk-toggle="target: .lower-navbar"></div>
         <a class="uk-navbar-item uk-logo" href="#">
@@ -20,9 +20,9 @@
                     <div class="uk-navbar-dropdown" uk-dropdown="mode: click">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li>
-                                <a href="#">
+                                <a href="{{route('customer.index')}}">
                                     <span class="icon ri-settings-fill"></span>
-                                    <span class="text-icon">Settings</span>
+                                    <span class="text-icon">Profile</span>
                                 </a>
                             </li>
                             <li>
@@ -37,11 +37,9 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-link">
-                    <a href="#" class="text-icon">
-                        <span class="icon ri-shopping-cart-fill"></span>
-                        <span class="icon-text">{{ __('Cart') }}</span>
-                    </a>
+                <li class="uk-navbar-item nav-link">
+                    <span class="icon ri-shopping-cart-fill"></span>
+                    <a href="{{ route('cart') }}" class="icon-text">{{ __('Cart') }}</a>
                 </li>
             @else
                 <li class="uk-padding-remove nav-link" uk-toggle="target: #signin-form">
@@ -73,11 +71,11 @@
 <nav class="uk-navbar-container lower-navbar" uk-navbar>
     <ul class="uk-navbar-nav uk-navbar-center">
         <li class="uk-navbar-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="uk-navbar-item"><a href="{{ route('welcome') }}">Explore</a></li>
-        <li class="uk-navbar-item"><a href="">My Orders</a></li>
-        @if (Auth::check() && Auth::user()->role == 'seller')
+        <li class="uk-navbar-item"><a href="{{ route('product.browse') }}">Explore</a></li>
+        <li class="uk-navbar-item"><a href="{{ route('orders') }}">My Orders</a></li>
+        @if (Auth::check() && Auth::user()->is_seller)
             <li class="uk-navbar-item"><a href="{{ route('seller.index') }}">Seller Dashboard</a></li>
-        @elseif(Auth::check() && Auth::user()->role == 'admin')
+        @elseif(Auth::check() && Auth::user()->is_admin)
             <li class="uk-navbar-item"><a href="{{ route('admin.index') }}">Admin Dashboard</a></li>
         @else
             <li class="uk-navbar-item"><a href="{{ route('seller.register') }}">Sell on Krishi-Mitra</a></li>

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class product extends Model
+class Product extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,14 +13,30 @@ class product extends Model
      */
     protected $fillable = [
         'type',
+        'seller_id',
         'desc',
         'price',
-        'cover',
         'name',
         'unit',
         'quantity',
         'slug',
-        'seller_id',
         'discount',
     ];
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class, 'seller_id');
+    }
+
+    public function coverPhotos()
+    {
+        return $this->hasMany(FileImage::class, 'ref_id')->where(
+            'type',
+            'products'
+        );
+    }
+
+    public function getProductUnitAttribute()
+    {
+    }
 }

@@ -13,13 +13,15 @@ class Address extends Model
      */
     protected $fillable = [
         'user_id',
-        'type',
-        'street',
-        'house_no',
+        'name',
+        'mobile',
+        'address1',
+        'address2',
         'city',
         'state',
         'pincode',
         'landmark',
+        'type',
     ];
 
     public function user()

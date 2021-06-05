@@ -24,7 +24,6 @@
                                         ₹ {{ $prod->price }}
                                     </span>
                                     per {{ $prod->unit }}
-                                    <div>{{ $prod->coverPhotos }}</div>
                                 </div>
                                 {{-- <div>{!! $prod->desc !!}</div> --}}
                             </div>

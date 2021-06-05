@@ -11,7 +11,7 @@ class ProductSeeder extends Seeder
     {
         $contents = file_get_contents($url);
         $basename = basename($url);
-        $destinationPath = public_path('uploads/products');
+        $destinationPath = public_path('uploads'.DIRECTORY_SEPARATOR.'products');
         $filename = pathinfo(
             $basename,
             PATHINFO_FILENAME
@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
             PATHINFO_EXTENSION
         );
         $imageName = $filename . time() . '.' . $extension;
-        file_put_contents($destinationPath . '/' . $imageName, $contents);
+        file_put_contents($destinationPath . DIRECTORY_SEPARATOR . $imageName, $contents);
         return $imageName;
     }
 

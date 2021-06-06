@@ -27,9 +27,14 @@ class OrderController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index()
+    public function checkout()
     {
-        return view('profile.checkout');
+        $addresses = Address::all()->where('user_id', '=', Auth::id());
+        $cart_products = Cart::all()->where('user_id', '=', Auth::id());
+        Log::info($addresses);
+        Log::info($cart_products);
+        return view('profile.checkout', compact('addresses', 'cart_products'));
+        
     }
 
     /**

@@ -12872,3 +12872,50 @@ footer {
 .cart-dis {
   color: #3b7402;
 }
+
+.checkout_no {
+  background-color: #3b7402;
+  color: white;
+}
+.checkout_no .checkout_no1 {
+  background-color: white;
+  color: #3b7402;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.add_color {
+  color: #3b7402;
+}
+
+.add_color:hover {
+  opacity: 0.8;
+}
+
+.checkout_next {
+  background-color: #fff27a;
+  color: #3b7402;
+}
+
+.checkout_no2 {
+  background-color: #e6e6e6;
+  color: #3b7402;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.checkout_check {
+  display: inline-block;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 1.2rem;
+  background-color: #3b7402;
+  color: white;
+}
+
+.checkout_add_type {
+  background-color: #d3d0d0;
+  padding: 5px 10px;
+  border-radius: 5px;
+}

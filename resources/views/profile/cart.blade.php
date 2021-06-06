@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    @if (count($cart_products) > 0)
-        @php
-            $x = 0;
-            $y = 0;
-            $z = 0;
-        @endphp
-        <div class="uk-width-1-1 uk-margin-remove uk-padding uk-flex uk-flex-row uk-flex-around cart_bag">
+    <div class="uk-width-1-1 uk-margin-remove uk-padding uk-flex uk-flex-row uk-flex-around cart_bag">
+        @if (count($cart_products) > 0)
+            @php
+                $x = 0;
+                $y = 0;
+                $z = 0;
+            @endphp
+
             <div class="uk-width-2-3 uk-margin-large-left uk-margin-right">
                 <div class="uk-text-large uk-text-bold cart-color">MY CART</div>
                 <hr>
@@ -52,16 +53,9 @@
                         $z = $x - $y;
                     @endphp
                 @endforeach
-                <a class="uk-button uk-button-default cart-checkout" href="{{ route('checkout') }}"
-                    type="button">Checkout</a>
+
             </div>
 
-            {{-- <div class="uk-width-1-3 uk-card uk-card-default uk-padding uk-margin-large-right">
-                <li>Price:{{ $cart_product->price * $cart_product->qty }}</li>
-                <li>Discount_rate:{{ $cart_product->discount }}</li>
-                <li>Discounted_Price:{{ $cart_product->price * $cart_product->qty * (1 - $cart_product->discount) }}</li>
-                <h2>The Total price is : {{ $x }}</h2>
-            </div> --}}
             <div class="uk-width-1-3 uk-flex uk-flex-column   uk-margin-large-right">
                 <div class="uk-margin">
                     <select class="uk-select uk-form-large">
@@ -96,15 +90,16 @@
                         You will save {{ $z }} in this order
                     </div>
                 </div>
+                <a class="uk-button uk-button-default uk-margin-top cart-checkout" href="{{ route('checkout') }}"
+                    type="button">Checkout</a>
             </div>
 
-        </div>
-
-
-    @else
-        Cart is Empty
-    @endif
+        @else
+            <div class="uk-text-large uk-text-bold">Cart is Empty</div>
+        @endif
+    </div>
 @endsection
+
 @section('scripts')
     <script>
         function delFromCart(id) {

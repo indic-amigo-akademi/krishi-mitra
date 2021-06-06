@@ -14,30 +14,26 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
-    {
-        $response = $this->get('/');
+    
+    public function testlogin(){
 
-        $response->assertStatus(200);
+        //Create user
+        $data=[
+        'name' => 'Test',
+        'username' => 'Test123',
+        'phonenumber'=>'1234567890',
+        'email'=>'test@gmail.com',
+        'password' => 'secret1234',
+        'password_confirmation' => 'secret1234',
+    ];
+    //attempt login
+    $response = $this->json('POST',route('user.login.validate'),[
+        'email' => 'test@gmail.com',
+        'password' => 'secret1234',
+    ]);
+    $response->assertStatus(200);
     }
-
-
-    public function test_can_login()
-    {
-        
-        $payload = [
-            
-            'email' => 'karmakarsrija@gmail',
-            'password' => 'srija@wp.pl',
-           
-        ];
-
-        $this->json('post', '/login', $payload)
-            ->assertStatus(302);      
-        
-
-    }   
-
+    
     
     
 

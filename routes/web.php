@@ -52,6 +52,12 @@ Route::post('/admin/approval', 'AdminController@approval')->name(
 Route::get('/admin/product/browse', 'AdminController@browse')->name(
     'admin.product.browse'
 );
+Route::get('/admin/browse', 'AdminController@admin_browse_view')->name(
+    'admin.browse.view'
+);
+Route::post('/admin/browse', 'AdminController@admin_browse')->name(
+    'admin.browse'
+);
 
 // Seller Routes
 Route::get('/seller', 'SellerController@index')->name('seller.index');
@@ -105,7 +111,12 @@ Route::get('/checkout/processed/card', 'OrderController@storecard')->name(
 );
 Route::get('/orders', 'OrderController@showall')->name('orders');
 Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show');
-
+Route::get('/address', 'AddressController@address_view')->name('address');
+Route::post('/address', 'AddressController@address_edit_delete')->name('address.edit.delete');
+Route::get('/address/add', 'AddressController@add_address_view')->name('address.add.view');
+Route::post('/address/add', 'AddressController@add_address')->name('address.add');
+Route::get('/address/edit', 'AddressController@edit_address_view')->name('address.edit.view');
+Route::post('/address/edit', 'AddressController@edit_address')->name('address.edit');
 //product page
 Route::get('/product', function () {
     return view('product');

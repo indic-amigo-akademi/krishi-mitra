@@ -52,6 +52,13 @@ class LoginController extends Controller
                     'subtitle' => 'You have been logged in as an admin!',
                 ]);
                 break;
+            case 'sysadmin':
+                return redirect('/admin')->with('alert', [
+                    'code' => 'success',
+                    'title' => 'Success!',
+                    'subtitle' => 'You have been logged in as an system admin!',
+                ]);
+                break;
             case 'seller':
                 return redirect('/seller')->with('alert', [
                     'code' => 'success',

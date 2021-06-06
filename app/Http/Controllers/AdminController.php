@@ -107,6 +107,32 @@ class AdminController extends Controller
         $data = ['products' => $prod, 'seller' => $seller];
         return view('admin.products', $data);
     }
+    public function admin_browse_view()
+    {
+        if (!Auth::user()->is_sysadmin) {
+            abort(403);
+        }
+        $admin = User::all()->where('role','=','admin');
+        return view('admin.browse.view')->with('admin', $admin);
+    }
+
+    public function admin_browse(Request $req)
+    {
+        if (!Auth::user()->is_sysadmin) {
+            abort(403);
+        }
+        $unadmin = $req->input('input');
+        Log::info($unadmin);
+        $admin = User::all()->where('id',"=",$unadmin)->first();
+        Log::info($admin);
+        $admin->role = 'customer';
+        $admin->save();
+        return redirect(route('admin.browse.view'))->with('alert', [
+            'code' => 'success',
+            'title' => 'Approved!',
+            'subtitle' => 'The admin have been de-registered as a customer!',
+        ]);
+    }
 
     public function approval(Request $req)
     {

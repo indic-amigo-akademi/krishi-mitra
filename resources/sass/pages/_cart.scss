@@ -1,0 +1,31 @@
+.cart_bag {
+    background-color: #fdf9d4;
+    .cart-quan {
+        display: inline-block;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 1.2rem;
+        background-color: #4f4242;
+        color: white;
+    }
+    .card-quan-color {
+        padding: 5px 20px;
+        background-color: rgb(241, 239, 239);
+    }
+    .card-remove {
+        background-color: #4f4242;
+        color: white;
+    }
+}
+.cart-checkout {
+    background-color: #3b7402;
+    color: white;
+}
+.cart-color {
+    color: #3b7402;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.cart-dis {
+    color: #3b7402;
+}

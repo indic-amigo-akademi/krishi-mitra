@@ -12942,6 +12942,42 @@ iframe.uk-cover {
   display: none !important;
 }
 
+.pk-input-number::-webkit-inner-spin-button,
+.pk-input-number::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.ri-spin,
+.ri-spin::after,
+.ri-spin::before {
+  -webkit-animation: spinner 4s infinite linear;
+          animation: spinner 4s infinite linear;
+}
+
+@-webkit-keyframes spinner {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   display: -webkit-box;
@@ -12973,15 +13009,6 @@ footer {
 
 .font-cursive {
   font-family: "Itim", cursive;
-}
-
-.form-container {
-  /* LABEL ======================================= */
-  /* active state */
-  /* BOTTOM BARS ================================= */
-  /* active state */
-  /* HIGHLIGHTER ================================== */
-  /* active state */
 }
 
 .form-container .signup {
@@ -13113,23 +13140,29 @@ footer {
 
 .form-container .group {
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 2.25rem;
+  /* LABEL */
+  /* active state */
+  /* BOTTOM BARS */
+  /* active state */
+  /* HIGHLIGHTER */
+  /* active state */
 }
 
-.form-container .input {
-  font-size: 18px;
+.form-container .group .input {
+  font-size: 0.95rem;
   padding: 5px 10px 10px 5px;
   display: block;
   width: 300px;
   border: none;
-  border-bottom: 1px solid #757575;
+  border-bottom: 1px solid #4f4242;
 }
 
-.form-container .input:focus {
+.form-container .group .input:focus {
   outline: none;
 }
 
-.form-container label {
+.form-container .group label {
   color: #999;
   font-size: 18px;
   font-weight: normal;
@@ -13141,20 +13174,20 @@ footer {
   transition: 0.2s ease all;
 }
 
-.form-container input:focus ~ label,
-.form-container input:valid ~ label {
+.form-container .group input:focus ~ label,
+.form-container .group input:valid ~ label {
   top: -20px;
   font-size: 14px;
   color: #3b7402;
 }
 
-.form-container .bar {
+.form-container .group .bar {
   position: relative;
   display: block;
   width: 300px;
 }
 
-.form-container .bar:before, .form-container .bar:after {
+.form-container .group .bar:before, .form-container .group .bar:after {
   content: "";
   height: 2px;
   width: 0;
@@ -13165,20 +13198,20 @@ footer {
   transition: 0.2s ease all;
 }
 
-.form-container .bar:before {
+.form-container .group .bar:before {
   left: 50%;
 }
 
-.form-container .bar:after {
+.form-container .group .bar:after {
   right: 50%;
 }
 
-.form-container input:focus ~ .bar:before,
-.form-container input:focus ~ .bar:after {
+.form-container .group input:focus ~ .bar:before,
+.form-container .group input:focus ~ .bar:after {
   width: 50%;
 }
 
-.form-container .highlight {
+.form-container .group .highlight {
   position: absolute;
   height: 60%;
   width: 100px;
@@ -13188,9 +13221,14 @@ footer {
   opacity: 0.5;
 }
 
-.form-container input:focus ~ .highlight {
+.form-container .group input:focus ~ .highlight {
   -webkit-animation: inputHighlighter 0.3s ease;
           animation: inputHighlighter 0.3s ease;
+}
+
+.form-container .group small.uk-text-danger {
+  position: absolute;
+  top: 100%;
 }
 
 .form-container .uk-radio:checked,
@@ -13199,7 +13237,7 @@ footer {
   background-color: #3b7402;
 }
 
-/* ANIMATIONS ================ */
+/* ANIMATIONS */
 @-webkit-keyframes inputHighlighter {
   from {
     background: #3b7402;
@@ -13414,7 +13452,7 @@ footer {
 }
 
 .contact .contact-btn {
-  color: #fff27a;
+  color: white;
   background-color: #3b7402;
 }
 
@@ -13430,7 +13468,116 @@ footer {
   }
 }
 
-h1 {
-  color: red;
+.sboard {
+  height: 39rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.sboard .sboard-bg {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.sboard .sboard-bg .sboard-heading {
+  color: white;
+  text-shadow: 1px 1px 2px black, 0 0 25px #fff27a, 0 0 6px #3b7402;
+}
+
+.sboard .sboard-bg .sboard-btn {
+  background-color: #3b7402;
+  color: #fdf9d4 !important;
+  border-radius: 5px;
+  text-decoration: none !important;
+}
+
+.sboard .sboard-bg .sboard-btn:hover {
+  opacity: 0.8;
+}
+
+.cproduct {
+  background-color: #fdf9d4;
+}
+
+.cproduct-head {
+  color: #3b7402;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.cproduct-btn {
+  color: white;
+  background-color: #3b7402;
+}
+
+.cproduct-contain {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: 1px solid #e7e7e7;
+}
+
+.sprod {
+  background-color: #fdf9d4;
+}
+
+.sprod-color {
+  color: #3b7402;
+}
+
+.sprod-add-new {
+  background-color: whitesmoke;
+}
+
+.sdetail {
+  background-image: -webkit-gradient(linear, left top, right bottom, from(#fdf9d4), color-stop(#f6993f), color-stop(#fff27a), to(#fdf9d4));
+  background-image: linear-gradient(to bottom right, #fdf9d4, #f6993f, #fff27a, #fdf9d4);
+}
+
+.sdetail-mrp {
+  -webkit-text-decoration-line: line-through;
+  /* Safari */
+  text-decoration-line: line-through;
+}
+
+.sdetail-price {
+  color: #3b7402;
+}
+
+.sdetail-offer {
+  font-size: 12px;
+}
+
+.sdetail-size {
+  font-size: 10px;
+}
+
+.cart_bag {
+  background-color: #fdf9d4;
+}
+
+.cart_bag .cart-quan {
+  border-radius: 50%;
+}
+
+.cart_bag .card-quan-color {
+  padding: 5px 20px;
+  background-color: #f1efef;
+}
+
+.cart_bag .card-remove {
+  background-color: #4f4242;
+  color: white;
+}
+
+.cart-checkout {
+  background-color: #3b7402;
+  color: white;
+}
+
+.cart-color {
+  color: #3b7402;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.cart-dis {
+  color: #3b7402;
 }
 /*# sourceMappingURL=app.css.map */

@@ -23,13 +23,13 @@ class CartController extends Controller
         log::info('cart called' . Auth::id());
         $cart_array = Cart::where('user_id', Auth::id())->get();
         $final_array = [];
-        foreach ($cart_array as $item) {
-            $item['type'] = Product::find($item->product_id)->type;
-            $item['cover'] = Product::find($item->product_id)->cover;
-            array_push($final_array, $item);
-        }
+        // foreach ($cart_array as $item) {
+        //     $item['type'] = Product::find($item->product_id)->type;
+        //     $item['cover'] = Product::find($item->product_id)->cover;
+        //     array_push($final_array, $item);
+        // }
         log::info('Final Array', $final_array);
-        return view('profile.cart')->with('products', $final_array);
+        return view('profile.cart')->with('cart_products', $cart_array);
     }
 
     /**

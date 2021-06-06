@@ -12837,3 +12837,38 @@ footer {
 .sdetail-size {
   font-size: 10px;
 }
+
+.cart_bag {
+  background-color: #fdf9d4;
+}
+.cart_bag .cart-quan {
+  display: inline-block;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 1.2rem;
+  background-color: #4f4242;
+  color: white;
+}
+.cart_bag .card-quan-color {
+  padding: 5px 20px;
+  background-color: #f1efef;
+}
+.cart_bag .card-remove {
+  background-color: #4f4242;
+  color: white;
+}
+
+.cart-checkout {
+  background-color: #3b7402;
+  color: white;
+}
+
+.cart-color {
+  color: #3b7402;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.cart-dis {
+  color: #3b7402;
+}

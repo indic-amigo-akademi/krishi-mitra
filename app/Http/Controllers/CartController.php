@@ -26,6 +26,7 @@ class CartController extends Controller
         foreach ($cart_array as $item) {
             $item['type'] = Product::find($item->product_id)->type;
             $item['cover'] = Product::find($item->product_id)->cover;
+            $item['name'] = Product::find($item->product_id)->name;
             array_push($final_array, $item);
         }
         log::info('Final Array', $final_array);

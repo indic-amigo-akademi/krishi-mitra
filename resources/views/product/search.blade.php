@@ -1,39 +1,14 @@
 @extends('layouts.app')
-@section('styles')
-    <style>
-        .search-container {
-            float: right;
-
-        }
-
-        .search-container button {
-            float: right;
-            padding: 6px;
-            margin-top: 8px;
-            margin-right: 16px;
-            background: #ddd;
-            font-size: 17px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .search-container button:hover {
-            background-color: blue;
-        }
-
-    </style>
-@endsection
 @section('content')
     <section class="uk-height-1-1 uk-padding-small sprod">
         <div
             class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal">
-
             @if (count($products) > 0)
                 @foreach ($products as $prod)
                     @if ($prod->active == 1)
                         <div
                             class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex
-                                                                                                                                                                                                                                                                                         uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
+                                                                                                                                                                                                                                                                                                 uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
                             <a href="{{ route('seller.product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
                                 <img src="{{ isset($prod->coverPhotos) ? asset('uploads/products/' . $prod->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                     uk-img />

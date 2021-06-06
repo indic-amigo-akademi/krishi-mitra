@@ -88,6 +88,9 @@ Route::get('/product/inactivate/{id}', 'ProductController@inactivate')->name(
 Route::get('/product/activate/{id}', 'ProductController@activate')->name(
     'product.activate'
 );
+Route::get('/product/search', 'ProductController@search')->name(
+    'search.item'
+);
 
 // Default routes
 Route::get('/about', 'AppController@about')->name('about');

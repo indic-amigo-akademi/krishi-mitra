@@ -8,6 +8,7 @@
         @endphp
         @foreach ($products as $prod)
             <ul id="menu" style="display:inline;">
+                <li>Name:{{ $prod->name }}</li>
                 <li>Type:{{ $prod->type }}</li>
                 <li>Description:{{ $prod->desc }}</li>
                 <li>Quantity:{{ $prod->qty }}</li>

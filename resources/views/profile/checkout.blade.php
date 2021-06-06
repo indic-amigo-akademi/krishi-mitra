@@ -1,18 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('CheckoutForm') }}">
+    <form action="{{ route('CheckoutForm') }}" method="post">
+        @csrf
+        <div class="form-group">
+            <label for="delivery">Name:</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="delivery">Mobile:</label>
+            <input type="text" class="form-control" id="mobile" name="mobile">
+        </div>
         <div class="form-group">
             <label for="delivery">Delivery Address type:</label>
             <input type="text" class="form-control" id="type" name="type">
         </div>
         <div class="form-group">
-            <label for="delivery">Street:</label>
-            <input type="text" class="form-control" id="street" name="street">
+            {{ $buy }}{{ $prod_id }}
+            <input type="hidden" class="form-control" id="buy_type" name="buy_type" value="{{ $buy }}">
+            <input type="hidden" class="form-control" id="prod_id" name="prod_id" value="{{ $prod_id }}">
         </div>
         <div class="form-group">
-            <label for="delivery">House Number:</label>
-            <input type="number" class="form-control" id="house_no" name="house_no">
+            <label for="delivery">Address1:</label>
+            <input type="text" class="form-control" id="address1" name="address1">
+        </div>
+        <div class="form-group">
+            <label for="delivery">address2:</label>
+            <input type="text" class="form-control" id="address2" name="address2">
         </div>
         <div class="form-group">
             <label for="delivery">City:</label>

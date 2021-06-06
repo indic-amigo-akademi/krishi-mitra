@@ -105,13 +105,12 @@ Route::post('/cart/incr', 'CartController@incr')->name('cart.increment');
 Route::post('/cart/decr', 'CartController@decr')->name('cart.decrement');
 
 Route::get('/checkout', 'OrderController@index')->name('checkout');
-Route::get('/checkout/form', 'OrderController@create')->name('CheckoutForm');
-Route::get('/checkout/processed/cod', 'OrderController@storecod')->name(
-    'OrderProcessed.cod'
+Route::get('/checkout1/{id}', 'OrderController@index1')->name('checkout_buynow');
+Route::post('/checkout/form', 'OrderController@create')->name('CheckoutForm');
+Route::get('/checkout/processed', 'OrderController@store')->name(
+    'OrderProcessed'
 );
-Route::get('/checkout/processed/card', 'OrderController@storecard')->name(
-    'OrderProcessed.card'
-);
+Route::get('/checkout/processed/buynow/{id}', 'OrderController@buy_now');
 Route::get('/orders', 'OrderController@showall')->name('orders');
 Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show');
 Route::get('/address', 'AddressController@address_view')->name('address');

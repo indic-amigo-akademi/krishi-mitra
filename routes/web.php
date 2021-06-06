@@ -88,6 +88,7 @@ Route::get('/product/inactivate/{id}', 'ProductController@inactivate')->name(
 Route::get('/product/activate/{id}', 'ProductController@activate')->name(
     'product.activate'
 );
+Route::get('/product/search', 'ProductController@search')->name('search.item');
 
 // Default routes
 Route::get('/about', 'AppController@about')->name('about');
@@ -109,14 +110,33 @@ Route::get('/checkout/processed/cod', 'OrderController@storecod')->name(
 Route::get('/checkout/processed/card', 'OrderController@storecard')->name(
     'OrderProcessed.card'
 );
+// Route::get('/checkout', 'OrderController@index')->name('checkout');
+Route::get('/checkout1/{id}', 'OrderController@index1')->name(
+    'checkout_buynow'
+);
+Route::post('/checkout/form', 'OrderController@create')->name('CheckoutForm');
+Route::get('/checkout/processed', 'OrderController@store')->name(
+    'OrderProcessed'
+);
+Route::get('/checkout/processed/buynow/{id}', 'OrderController@buy_now');
 Route::get('/orders', 'OrderController@showall')->name('orders');
 Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show');
 Route::get('/address', 'AddressController@address_view')->name('address');
-Route::post('/address', 'AddressController@address_edit_delete')->name('address.edit.delete');
-Route::get('/address/add', 'AddressController@add_address_view')->name('address.add.view');
-Route::post('/address/add', 'AddressController@add_address')->name('address.add');
-Route::get('/address/edit', 'AddressController@edit_address_view')->name('address.edit.view');
-Route::post('/address/edit', 'AddressController@edit_address')->name('address.edit');
+Route::post('/address', 'AddressController@address_edit_delete')->name(
+    'address.edit.delete'
+);
+Route::get('/address/add', 'AddressController@add_address_view')->name(
+    'address.add.view'
+);
+Route::post('/address/add', 'AddressController@add_address')->name(
+    'address.add'
+);
+Route::get('/address/edit', 'AddressController@edit_address_view')->name(
+    'address.edit.view'
+);
+Route::post('/address/edit', 'AddressController@edit_address')->name(
+    'address.edit'
+);
 //product page
 Route::get('/product', function () {
     return view('product');

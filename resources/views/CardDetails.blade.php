@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('OrderProcessed.card') }}">
+    <form action="{{ route('OrderProcessed') }}">
         <div class="form-group">
             <label for="card">Select Card Type:</label>
             <input type="text" class="form-control" id="card" name="card">

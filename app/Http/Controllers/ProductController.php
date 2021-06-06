@@ -34,6 +34,23 @@ class ProductController extends Controller
         $products = Product::all();
         return view('seller.product.list')->with('products', $products);
     }
+    public function search(Request $req)
+    {
+        log::info('Purcho' . $req['search']);
+        $x = $req['search'];
+        $products = Product::where('name', 'like', '%' . $x . '%')->get();
+        log::info('Products are:-' . $products);
+        if (count($products) == 0) {
+            $sid = Seller::where('name', '=', $x)->get();
+            if (count($sid) > 0) {
+                $products = Product::where('seller_id', '=', $sid[0]->id)->get();
+            }
+        }
+        if (count($products) == 0) {
+            $products = Product::where('desc', 'like', '%' . $x . '%')->get();
+        }
+        return view('product.search')->with('products', $products);
+    }
 
     /**
      * Show the form for creating a new resource.

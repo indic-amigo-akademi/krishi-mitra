@@ -14,7 +14,12 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    
+    public function testMustEnterEmailAndPassword()
+    {
+        $this->json('POST', 'user.login.validate')  //if empty
+            ->assertStatus(404);
+           
+    }
     public function testlogin(){
 
         //Create user
@@ -33,7 +38,49 @@ class LoginTest extends TestCase
     ]);
     $response->assertStatus(200);
     }
+    //invalid credentials
+
+    public function testEmailDoesNotExist() {
+		    //Create user
+            $data=[
+                'name' => 'Test',
+                'username' => 'Test123',
+                'phonenumber'=>'1234567890',
+                'email'=>'test@gmail.com',
+                'password' => 'secret1234',
+                'password_confirmation' => 'secret1234',
+            ];
+        $response = $this->json('POST',route('user.login.validate'),[
+            'email' => 'test@123',
+            'password' => 'secret1234',
+        ]);
+        //Assert it was successful 
+        $response->assertStatus(200);
+	}
+
+
+
+	public function testPasswordDoesNotExist() {
+		
+		$data=[
+            'name' => 'Test',
+            'username' => 'Test123',
+            'phonenumber'=>'1234567890',
+            'email'=>'test@gmail.com',
+            'password' => 'secret1234',
+            'password_confirmation' => 'secret1234',
+        ];
+    $response = $this->json('POST',route('user.login.validate'),[
+        'email' => 'test@123',
+        'password' => 'abc1234',
+    ]);
+    //Assert it was successful 
+  
+    $response->assertStatus(200);
     
+   
+	}
+
     
     
 

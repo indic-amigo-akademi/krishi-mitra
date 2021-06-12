@@ -58,9 +58,14 @@
 
     <div class="nav-overlay uk-navbar-left center-content" hidden>
         <div class="uk-navbar-item search">
-            <form class="uk-search uk-search-navbar uk-text-bold uk-text-italic" action="{{ route('search.item') }}">
-                <input class="uk-search-input" type="search" placeholder="Search..." autofocus name="search" />
-                <button type="submit">Submit</button>
+            <form class="uk-search uk-search-navbar uk-text-bold uk-text-italic" action="{{ route('search.item') }}"
+                id="searchForm">
+                <div class="uk-inline">
+                    <a href="#" class="uk-form-icon uk-form-icon-flip" uk-icon="icon: search"
+                        onclick="searchFormSubmit(event)"></a>
+                    <input class="uk-input uk-search-input" type="search" placeholder="Search..." autofocus
+                        name="search" />
+                </div>
             </form>
             <a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade"
                 href="#"></a>

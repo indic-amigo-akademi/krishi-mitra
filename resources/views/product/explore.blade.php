@@ -32,8 +32,7 @@
                 @foreach ($products as $prod)
                     @if ($prod->active == 1)
                         <div
-                            class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex
-                                                                                                                                                                                                                                                                                                                                 uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
+                            class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
                             <a href="{{ route('seller.product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
                                 <img src="{{ isset($prod->coverPhotos) ? asset('uploads/products/' . $prod->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                     uk-img />
@@ -49,15 +48,15 @@
                                     </span>
                                     per {{ $prod->unit }}
                                 </div>
-                                {{-- <div>{!! $prod->desc !!}</div> --}}
                             </div>
                             <div
                                 class="uk-flex uk-flex-between uk-card-footer uk-padding-remove-bottom uk-padding-remove-horizontal">
-                                <a href="#" onclick="post('{{ $prod->id }}')" type=" button" class="uk-text-primary">Add
-                                    to
-                                    Cart</a>
-                                <a href="checkout1/{{ $prod->id }}" type=" button" class="uk-text-primary">Buy
-                                    Now</a>
+                                <a href="#" onclick="addToCart('{{ $prod->id }}')" class="uk-text-primary">
+                                    Add to Cart
+                                </a>
+                                <a href="#" onclick="buyNow('{{ $prod->id }}')" class="uk-text-primary">
+                                    Buy Now
+                                </a>
                             </div>
                         </div>
                     @endif
@@ -71,28 +70,39 @@
 
 @section('scripts')
     <script>
-        function post(id) {
+        function addToCart(id) {
             event.preventDefault();
-            var x = {
+            @if (Auth::check())
+                let x = {
                 id: id
-            }
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            });
-
-            $.ajax({
+                $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+                });
+            
+                $.ajax({
                 url: '/cart/store',
                 type: 'post',
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify(x),
                 success: function(data) {
-                    console.log('Posted');
+                console.log('Posted');
                 }
+                });
+            @else
+                UIkit.modal($("#signin-form").get(0)).show();
+            @endif
+        }
 
-            });
+        function buyNow(id) {
+            @if (Auth::check())
+                location.href = "{{ route('checkout_buynow', '') }}/"+id;
+            @else
+                UIkit.modal($("#signin-form").get(0)).show();
+            @endif
         }
 
     </script>

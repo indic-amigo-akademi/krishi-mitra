@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Address;
 use App\Seller;
 use App\User;
 use App\Product;
@@ -13,6 +14,10 @@ use Image;
 
 class CartController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,16 +25,9 @@ class CartController extends Controller
      */
     public function index()
     {
-        log::info('cart called' . Auth::id());
-        $cart_array = Cart::where('user_id', Auth::id())->get();
-        $final_array = [];
-        // foreach ($cart_array as $item) {
-        //     $item['type'] = Product::find($item->product_id)->type;
-        //     $item['cover'] = Product::find($item->product_id)->cover;
-        //     array_push($final_array, $item);
-        // }
-        log::info('Final Array', $final_array);
-        return view('profile.cart')->with('cart_products', $cart_array);
+        $cart_products = Cart::where('user_id', Auth::id())->get();
+        $addresses = Address::where('user_id', Auth::id())->get();
+        return view('profile.cart', compact('cart_products', 'addresses'));
     }
 
     /**
@@ -44,8 +42,10 @@ class CartController extends Controller
         $prod_id = $req->input('id');
         $user_id = Auth::id();
         $prod = Product::find($prod_id);
-        log::info('PURBU' . $prod);
-        $c = Cart::where([['product_id', '=', $prod_id], ['user_id', '=', Auth::id()]])->count();
+        $c = Cart::where([
+            ['product_id', '=', $prod_id],
+            ['user_id', '=', Auth::id()],
+        ])->count();
         if ($c == 0) {
             Cart::create([
                 'user_id' => $user_id,
@@ -53,10 +53,12 @@ class CartController extends Controller
                 'qty' => 1,
                 'price' => $prod->price,
                 'discount' => $prod->discount,
-
             ]);
         } else {
-            $cart_prod = Cart::where([['product_id', '=', $prod_id], ['user_id', '=', Auth::id()]])->get()[0];
+            $cart_prod = Cart::where([
+                ['product_id', '=', $prod_id],
+                ['user_id', '=', Auth::id()],
+            ])->get()[0];
             log::info('CART PRODUCT' . $cart_prod);
             $cart_prod->qty = $cart_prod->qty + 1;
             $cart_prod->save();

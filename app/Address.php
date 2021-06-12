@@ -28,4 +28,14 @@ class Address extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function getFullAddressAttribute()
+    {
+        return $this->address1 .
+            ', ' .
+            $this->address2 .
+            ($this->city ? ', ' . $this->city : '') .
+            ($this->pincode ? '-' . $this->pincode : '') .
+            ($this->landmark ? ', ' . $this->landmark : '');
+    }
 }

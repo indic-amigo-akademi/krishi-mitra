@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('address_id');
             $table
                 ->foreign('user_id')
                 ->references('id')
@@ -25,6 +26,10 @@ class CreateOrdersTable extends Migration
                 ->foreign('product_id')
                 ->references('id')
                 ->on('products');
+            $table
+                ->foreign('address_id')
+                ->references('id')
+                ->on('addresses');
             $table->integer('order_id');
             $table->integer('qty');
             $table->double('price');

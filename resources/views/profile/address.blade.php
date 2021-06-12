@@ -2,7 +2,7 @@
 
 
 @section('content')
-    <div class="uk-width-1-1 uk-padding-large uk-flex uk-flex-center cart_bag">
+    <section class="uk-width-1-1 uk-padding-large uk-flex uk-flex-center container">
 
         @if (count($address) > 0)
             <div class="uk-width-2-3@m uk-card uk-card-default uk-padding">
@@ -43,9 +43,10 @@
                     </form>
                 @endforeach
 
-                <a class="uk-link-heading uk-margin-left uk-text-bold uk-flex uk-flex-middle uk-padding-small add_color"
-                    href="{{ route('address.add.view') }}" style="color: #3b7402"><i class="ri-add-circle-line"> </i>
-                    ADD NEW ADDRESS</a>
+                <a class="uk-link-heading uk-margin-left uk-text-bold uk-flex uk-flex-middle uk-padding-small text-theme-color1"
+                    href="{{ route('address.add.view') }}">
+                    <i class="ri-add-circle-line"></i> ADD NEW ADDRESS
+                </a>
 
             </div>
         @else
@@ -53,5 +54,5 @@
             <br>
 
         @endif
-    </div>
+    </section>
 @endsection

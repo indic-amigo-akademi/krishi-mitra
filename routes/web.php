@@ -20,10 +20,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'CustomerController@home')->name('home');
 
 // Profile routes
-Route::get('/profile/account', 'HomeController@profile')->name('profile');
+Route::get('/profile/account', 'CustomerController@profile')->name('profile');
 
 Route::get('/seller/register', 'SellerController@seller_form')->name(
     'seller.register'
@@ -32,7 +32,7 @@ Route::post('/seller/create', 'SellerController@create_seller')->name(
     'seller.create'
 );
 
-Route::get('/explore', 'HomeController@explore')->name('product.browse');
+Route::get('/explore', 'AppController@explore')->name('product.browse');
 Route::get('/profile', 'CustomerController@index')->name('customer.index');
 
 // Admin Routes
@@ -96,14 +96,15 @@ Route::get('/contact', 'AppController@contact')->name('contact');
 Route::post('/contact', 'AppController@create_contact')->name('contact.create');
 
 // Cart Routes
-Route::post('/cart/store', 'CartController@store')->name('cart.store');
 Route::get('/cart', 'CartController@index')->name('cart');
-Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');
+Route::post('/cart/store', 'CartController@store')->name('cart.store');
 Route::post('/cart/incr', 'CartController@incr')->name('cart.increment');
 Route::post('/cart/decr', 'CartController@decr')->name('cart.decrement');
+Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');
 
+// Checkout Routes
 Route::get('/checkout', 'OrderController@checkout')->name('checkout');
-Route::get('/checkout/form', 'OrderController@create')->name('CheckoutForm');
+Route::get('/checkout/form', 'OrderController@create')->name('checkout.add');
 Route::get('/checkout/processed/cod', 'OrderController@storecod')->name(
     'OrderProcessed.cod'
 );
@@ -119,8 +120,11 @@ Route::get('/checkout/processed', 'OrderController@store')->name(
     'OrderProcessed'
 );
 Route::get('/checkout/processed/buynow/{id}', 'OrderController@buy_now');
+
 Route::get('/orders', 'OrderController@showall')->name('orders');
 Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show');
+
+// Address Routes
 Route::get('/address', 'AddressController@address_view')->name('address');
 Route::post('/address', 'AddressController@address_edit_delete')->name(
     'address.edit.delete'
@@ -137,6 +141,7 @@ Route::get('/address/edit', 'AddressController@edit_address_view')->name(
 Route::post('/address/edit', 'AddressController@edit_address')->name(
     'address.edit'
 );
+
 //product page
 Route::get('/product', function () {
     return view('product');

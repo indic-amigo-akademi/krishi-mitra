@@ -29,12 +29,13 @@ class OrderController extends Controller
     }
     public function checkout()
     {
+        $cart_products = Cart::where('user_id', Auth::id())->get();
         $buy = 'cart';
         $prod = 100;
 
         $data = ['buy' => $buy, 'prod_id' => $prod];
 
-        return view('profile.checkout')->with($data);
+        return view('profile.checkout', compact('cart_products'));
     }
     public function index1($id)
     {

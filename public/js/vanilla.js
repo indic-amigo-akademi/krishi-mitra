@@ -81,6 +81,11 @@ $("#modal-login-form .submit-btn").on("click", async function (event) {
     }
 });
 
+function searchFormSubmit(event) {
+    event.preventDefault();
+    console.log(event.target);
+    $("#searchForm").submit();
+}
 (($) => {})(jQuery);
 
 $(window).on("load resize", function () {

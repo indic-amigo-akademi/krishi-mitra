@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Log;
 
 class AddressController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +20,8 @@ class AddressController extends Controller
      */
     public function address_view()
     {
-        $uid =Auth::user()->id;
-        $address =Address::all()->where('user_id','=',$uid);
+        $uid = Auth::user()->id;
+        $address = Address::all()->where('user_id', '=', $uid);
 
         return view('profile.address')->with('address', $address);
     }
@@ -29,24 +33,18 @@ class AddressController extends Controller
         Log::Info($address);
         Log::info($aid);
         if ($address == 'Edit') {
-            $addr = Address::all()->where('id','=',$aid);
+            $addr = Address::all()->where('id', '=', $aid);
             return view('profile.addressEdit')->with('address', $addr);
-        }
-        elseif ($address == 'Delete') {
+        } elseif ($address == 'Delete') {
             Address::find($aid)->delete();
-            $uid =Auth::user()->id;
-            $addr =Address::all()->where('user_id','=',$uid);
+            $uid = Auth::user()->id;
+            $addr = Address::all()->where('user_id', '=', $uid);
             return view('profile.address')->with('address', $addr);
         }
-
     }
-
 
     public function add_address_view()
     {
-        if (!(Auth::user()->is_seller || Auth::user()->role=='customer')) {
-            abort(403);
-        }
         return view('profile.addressAdd');
     }
 
@@ -75,15 +73,15 @@ class AddressController extends Controller
     {
         Log::info($req);
         $addr = Address::find($req->id);
-        $addr->name =$req->name;
-        $addr->mobile =$req->mobile;
-        $addr->pincode =$req->pincode;
-        $addr->address1 =$req->address1;
-        $addr->address2 =$req->address2;
-        $addr->city =$req->city;
-        $addr->state =$req->state;
-        $addr->landmark =$req->landmark;
-        $addr->type =$req->type;
+        $addr->name = $req->name;
+        $addr->mobile = $req->mobile;
+        $addr->pincode = $req->pincode;
+        $addr->address1 = $req->address1;
+        $addr->address2 = $req->address2;
+        $addr->city = $req->city;
+        $addr->state = $req->state;
+        $addr->landmark = $req->landmark;
+        $addr->type = $req->type;
         $addr->save();
         return redirect('/address')->with('alert', [
             'code' => 'success',
@@ -91,7 +89,7 @@ class AddressController extends Controller
             'subtitle' => 'Your address was edited!',
         ]);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *

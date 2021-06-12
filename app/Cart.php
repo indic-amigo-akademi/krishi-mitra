@@ -22,4 +22,19 @@ class Cart extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    public function getDiscountedPriceAttribute()
+    {
+        return $this->price * (1 - $this->discount);
+    }
+
+    public function getTotalPriceAttribute()
+    {
+        return $this->price * $this->qty;
+    }
+
+    public function getTotalDiscountedPriceAttribute()
+    {
+        return $this->price * (1 - $this->discount) * $this->qty;
+    }
 }

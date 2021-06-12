@@ -12345,6 +12345,12 @@ h3 {
   display: none !important;
 }
 
+section.container {
+  background-color: #fdf9d4;
+  height: 100%;
+  width: 100%;
+}
+
 .pk-input-number::-webkit-inner-spin-button,
 .pk-input-number::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -12376,6 +12382,42 @@ h3 {
     transform: rotate(360deg);
   }
 }
+.text-theme-color1 {
+  color: #3b7402 !important;
+}
+
+.text-theme-color2 {
+  color: #4f4242 !important;
+}
+
+.text-theme-color3 {
+  color: #fff27a !important;
+}
+
+.text-theme-color4 {
+  color: #fdf9d4 !important;
+}
+
+.text-theme-color5 {
+  color: white !important;
+}
+
+.bg-theme-color1 {
+  background-color: #3b7402 !important;
+}
+
+.bg-theme-color2 {
+  background-color: #4f4242 !important;
+}
+
+.bg-theme-color3 {
+  background-color: #fff27a !important;
+}
+
+.bg-theme-color4 {
+  background-color: #fdf9d4 !important;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   display: flex;
@@ -12737,17 +12779,17 @@ footer {
 }
 
 /* Contact Us CSS */
-.contact {
+.contact-container {
   background-color: #fdf9d4;
 }
-.contact .contact-card span {
+.contact-container .contact-card span {
   color: #3b7402;
   font-size: 30px;
 }
-.contact .contact-text {
+.contact-container .contact-text {
   color: #3b7402;
 }
-.contact .contact-btn {
+.contact-container .contact-btn {
   color: white;
   background-color: #3b7402;
 }
@@ -12838,10 +12880,7 @@ footer {
   font-size: 10px;
 }
 
-.cart_bag {
-  background-color: #fdf9d4;
-}
-.cart_bag .cart-quan {
+.cart-quan {
   display: inline-block;
   border-radius: 50%;
   width: 30px;
@@ -12850,11 +12889,13 @@ footer {
   background-color: #4f4242;
   color: white;
 }
-.cart_bag .card-quan-color {
+
+.card-quan-color {
   padding: 5px 20px;
   background-color: #f1efef;
 }
-.cart_bag .card-remove {
+
+.card-remove {
   background-color: #4f4242;
   color: white;
 }
@@ -12869,10 +12910,6 @@ footer {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.cart-dis {
-  color: #3b7402;
-}
-
 .checkout_no {
   background-color: #3b7402;
   color: white;
@@ -12882,14 +12919,6 @@ footer {
   color: #3b7402;
   border-radius: 5px;
   padding: 5px 10px;
-}
-
-.add_color {
-  color: #3b7402;
-}
-
-.add_color:hover {
-  opacity: 0.8;
 }
 
 .checkout_next {

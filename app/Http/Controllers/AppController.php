@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
+use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,10 +13,18 @@ class AppController extends Controller
     {
         return view('app.contact');
     }
+
+    public function explore()
+    {
+        $products = Product::all();
+        return view('product.explore')->with('products', $products);
+    }
+
     public function about()
     {
         return view('app.about');
     }
+
     public function create_contact(Request $req)
     {
         $validator = Validator::make($req->all(), [

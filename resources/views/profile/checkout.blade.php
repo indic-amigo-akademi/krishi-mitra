@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('checkout.add') }}" method='post'>
+    <form action="{{ route('CheckoutForm') }}" method='post'>
         @csrf
         <div class="uk-padding uk-flex uk-flex-center uk-flex-wrap container checkout-container">
             <div class="uk-margin-top uk-width-2-3@m checkout-block address_block" style="display:block;">

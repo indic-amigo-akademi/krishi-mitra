@@ -96,7 +96,7 @@ class OrderController extends Controller
             }
         }*/
     }
-    protected function buy_now(Request $req)
+    /*protected function buy_now(Request $req)
     {
         $id = $req['prod_id'];
         $type = '';

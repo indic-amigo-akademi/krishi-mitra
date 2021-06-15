@@ -104,13 +104,13 @@ Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');
 
 // Checkout Routes
 Route::get('/checkout', 'OrderController@checkout')->name('checkout');
-Route::get('/checkout/form', 'OrderController@create')->name('checkout.add');
-Route::get('/checkout/processed/cod', 'OrderController@storecod')->name(
+//Route::get('/checkout/form', 'OrderController@create')->name('checkout.add');
+/*Route::get('/checkout/processed/cod', 'OrderController@storecod')->name(
     'OrderProcessed.cod'
 );
 Route::get('/checkout/processed/card', 'OrderController@storecard')->name(
     'OrderProcessed.card'
-);
+);*/
 // Route::get('/checkout', 'OrderController@index')->name('checkout');
 Route::get('/checkout1/{id}', 'OrderController@index1')->name(
     'checkout_buynow'
@@ -119,7 +119,7 @@ Route::post('/checkout/form', 'OrderController@create')->name('CheckoutForm');
 Route::get('/checkout/processed', 'OrderController@store')->name(
     'OrderProcessed'
 );
-Route::get('/checkout/processed/buynow/{id}', 'OrderController@buy_now');
+//Route::get('/checkout/processed/buynow/{id}', 'OrderController@buy_now');
 
 Route::get('/orders', 'OrderController@showall')->name('orders');
 Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show');

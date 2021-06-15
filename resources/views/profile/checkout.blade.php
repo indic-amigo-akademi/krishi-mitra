@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('checkout.add') }}">
+    <form action="{{ route('CheckoutForm') }}" method='post'>
+        @csrf
         <div class="uk-padding uk-flex uk-flex-center uk-flex-wrap container checkout-container">
             <div class="uk-margin-top uk-width-2-3@m checkout-block address_block" style="display:block;">
                 <div class="uk-card uk-card-default uk-margin-large ">
@@ -60,55 +61,97 @@
                         <span class="uk-margin-small-left uk-margin-right uk-text-bold checkout_no1"> 2</span>
                         <span class="uk-text-bold">ORDER SUMMARY</span>
                     </div>
-                    @foreach ($cart_products as $cart_product)
-                        <div class="uk-card-header uk-padding uk-flex uk-flex-row">
-
-                            <div class="uk-width-1-3 uk-flex-middle uk-flex uk-flex-column">
-                                <img src="{{ isset($cart_product->product->coverPhotos) ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
-                                    width="200rem" uk-img class="uk-margin-auto" />
-                                <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
-                                    <button type="button" class="uk-button-default uk-margin-left uk-margin-right cart-quan"
-                                        onclick="addToCart('{{ $cart_product->id }}')">+</button>
-                                    <span class="card-quan-color">{{ $cart_product->qty }}</span>
-                                    <button type="button" class="uk-button-default uk-margin-left uk-margin-right cart-quan"
-                                        value={{ $cart_product->qty }}
-                                        onclick="subFromCart('{{ $cart_product->id }}')">-</button>
+                    @if ($buy == 'cart')
+                        @foreach ($cart_products as $cart_product)
+                            <div class="uk-card-header uk-padding uk-flex uk-flex-row">
+                                <div class="uk-width-1-3 uk-flex-middle uk-flex uk-flex-column">
+                                    <img src="{{ isset($cart_product->product->coverPhotos) ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                                        width="200rem" uk-img class="uk-margin-auto" />
+                                    <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
+                                        <button type="button"
+                                            class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                            onclick="addToCart('{{ $cart_product->id }}')">+</button>
+                                        <span class="card-quan-color">{{ $cart_product->qty }}</span>
+                                        <button type="button"
+                                            class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                            value={{ $cart_product->qty }}
+                                            onclick="subFromCart('{{ $cart_product->id }}')">-</button>
+                                    </div>
                                 </div>
+                                <div class="uk-width-2-3 uk-flex-start uk-margin-large-left uk-margin-right">
+                                    <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
+                                        {{ $cart_product->product->name }}
+                                        ,
+                                        {{ $cart_product->product->type }} - 1 {{ $cart_product->product->unit }}
+                                    </div>
+                                    <div class="uk-text-emphasis uk-margin-bottom">
+                                        {{ $cart_product->product->seller->trade_name }}
+                                    </div>
+                                    <div class="uk-margin-small-bottom">
+                                        <span class="uk-text-bold">Quantity :</span>
+                                        <span class="uk-text-bold">{{ $cart_product->qty }}</span>
+                                    </div>
+                                    <div class="uk-margin-small-bottom">
+                                        <span class="uk-text-bold">Total Price :</span>
+                                        <span class="uk-text-bold uk-margin-small-right sdetail-price">
+                                            ₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}
+                                        </span>
+                                        <span
+                                            class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
+                                            ₹{{ sprintf('%.2f', $cart_products->sum('total_price')) }}</span>
+                                    </div>
+
+                                    <button type="button" class="uk-button uk-button-default card-remove"
+                                        id={{ $cart_product->id }}
+                                        onclick="delFromCart('{{ $cart_product->id }}')">Remove</button>
+                                </div>
+                            </div>
+                        @endforeach
+                        <div class="uk-padding-small  uk-flex uk-flex-row uk-flex-middle uk-flex-between">
+                            <span class="uk-margin-left uk-text-bold">Total:
+                                ₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}</span>
+                            <a class="uk-button uk-button-default uk-text-bold checkout_next" data-type="payment">Next</a>
+                        </div>
+
+                    @else
+                        <div class="uk-card-header uk-padding uk-flex uk-flex-row">
+                            <div class="uk-width-1-3 uk-flex-middle uk-flex uk-flex-column">
+                                <img src="{{ isset($buy_product->coverPhotos) ? asset('uploads/products/' . $buy_product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                                    width="200rem" uk-img class="uk-margin-auto" />
+
                             </div>
                             <div class="uk-width-2-3 uk-flex-start uk-margin-large-left uk-margin-right">
                                 <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
-                                    {{ $cart_product->product->name }}
+                                    {{ $buy_product->name }}
                                     ,
-                                    {{ $cart_product->product->type }} - 1 {{ $cart_product->product->unit }}
-                                </div>
-                                <div class="uk-text-emphasis uk-margin-bottom">
-                                    {{ $cart_product->product->seller->trade_name }}
-                                </div>
-                                <div class="uk-margin-small-bottom">
-                                    <span class="uk-text-bold">Quantity :</span>
-                                    <span class="uk-text-bold">{{ $cart_product->qty }}</span>
-                                </div>
-                                <div class="uk-margin-small-bottom">
-                                    <span class="uk-text-bold">Total Price :</span>
-                                    <span class="uk-text-bold uk-margin-small-right sdetail-price">
-                                        ₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}
-                                    </span>
-                                    <span
-                                        class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
-                                        ₹{{ sprintf('%.2f', $cart_products->sum('total_price')) }}</span>
+                                    {{ $buy_product->type }} - 1 {{ $buy_product->unit }}
                                 </div>
 
-                                <button type="button" class="uk-button uk-button-default card-remove"
-                                    id={{ $cart_product->id }}
-                                    onclick="delFromCart('{{ $cart_product->id }}')">Remove</button>
+                                <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
+                                    <div class="uk-margin-small-bottom">
+                                        <span class="uk-text-bold">Quantity :</span>
+                                        <span class="uk-text-bold">{{ 1 }}</span>
+                                    </div>
+                                    <div class="uk-margin-small-bottom">
+                                        <span class="uk-text-bold">Total Price :</span>
+                                        <span class="uk-text-bold uk-margin-small-right sdetail-price">
+                                            ₹{{ sprintf('%.2f', $buy_product->price * (1 - $buy_product->discount)) }}
+                                        </span>
+                                        <span
+                                            class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
+                                            ₹{{ sprintf('%.2f', $buy_product->price) }}</span>
+                                    </div>
+                                </div>
+                                <div class="uk-padding-small  uk-flex uk-flex-row uk-flex-middle uk-flex-between">
+                                    <span class="uk-margin-left uk-text-bold">Total:
+                                        ₹{{ sprintf('%.2f', $buy_product->price * (1 - $buy_product->discount)) }}</span>
+                                    <a class="uk-button uk-button-default uk-text-bold checkout_next"
+                                        data-type="payment">Next</a>
+                                </div>
                             </div>
                         </div>
-                    @endforeach
-                    <div class="uk-padding-small  uk-flex uk-flex-row uk-flex-middle uk-flex-between">
-                        <span class="uk-margin-left uk-text-bold">Total:
-                            ₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}</span>
-                        <a class="uk-button uk-button-default uk-text-bold checkout_next" data-type="payment">Next</a>
-                    </div>
+
+                    @endif
                 </div>
                 <div class="uk-card uk-card-default uk-margin-large uk-padding-small">
                     <span class="uk-margin-small-left uk-margin-right uk-text-bold checkout_no2"> 3</span>
@@ -145,6 +188,8 @@
                         </span>
                     </div>
                 </div>
+                <input type="hidden" name="buy_type" value={{ $buy }}>
+                <input type="hidden" name="prod_id" value={{ $prod_id }}>
                 <div class="uk-card uk-card-default uk-margin-large ">
                     <div class="uk-card-header uk-padding-small checkout_no">
                         <span class="uk-margin-small-left uk-margin-right uk-text-bold checkout_no1"> 3</span>
@@ -166,13 +211,13 @@
                         <input class="uk-radio uk-margin-small-left" type="radio" name="payment" value="net">
                         <span class="uk-text-bold uk-margin-left">Net Banking</span>
                         <br>
-                        <input class="uk-radio uk-margin-small-left" type="radio" name="payment" value="cash">
+                        <input class="uk-radio uk-margin-small-left" type="radio" name="payment" value="cash" checked>
                         <span class="uk-text-bold uk-margin-left">Cash on Delivery</span>
                     </div>
                     <div class="uk-padding-small uk-flex uk-flex-row uk-flex-middle uk-flex-between">
                         <a class="uk-link-heading uk-margin-left uk-text-bold add_color">Order</a>
                         <button class="uk-button uk-button-default uk-text-bold checkout_next" data-type="proceed"
-                            type="button">Proceed</button>
+                            type="submit">Proceed</button>
                     </div>
                 </div>
             </div>

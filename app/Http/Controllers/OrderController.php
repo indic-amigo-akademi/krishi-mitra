@@ -35,7 +35,11 @@ class OrderController extends Controller
         $buy = 'cart';
         $prod = 100;
 
-        $data = ['buy' => $buy, 'prod_id' => $prod, 'cart_products' => $cart_products];
+        $data = [
+            'buy' => $buy,
+            'prod_id' => $prod,
+            'cart_products' => $cart_products,
+        ];
 
         return view('profile.checkout')->with($data);
     }
@@ -46,7 +50,11 @@ class OrderController extends Controller
         $buy_now_prod = Product::find($id);
         log::info('Buy now prod');
         log::info($buy_now_prod);
-        $data = ['buy' => $buy, 'prod_id' => $prod, 'buy_product' => $buy_now_prod];
+        $data = [
+            'buy' => $buy,
+            'prod_id' => $prod,
+            'buy_product' => $buy_now_prod,
+        ];
         return view('profile.checkout')->with($data);
     }
 
@@ -58,26 +66,16 @@ class OrderController extends Controller
     public function create(Request $req)
     {
         LOG::info($req->input());
-        if (Address::where('user_id', Auth::id())->count() == 0) {
-            Address::create([
-                'name' => $req['name'],
-                'mobile' => $req['mobile'],
-                'pincode' => $req['pincode'],
-                'address1' => $req['address1'],
-                'address2' => $req['address2'],
-                'city' => $req['city'],
-                'state' => $req['state'],
-                'landmark' => $req['landmark'],
-                'type' => $req['type'],
-                'user_id' => Auth::id(),
-            ]);
-        }
         LOG::info('BUY Type is' . $req['buy_type']);
         $buy_now_id = 100;
         if ($req['buy_type'] == 'Buy_now') {
             $buy_now_id = $req['prod_id'];
         }
-        $data = ['buy_now_id' => $buy_now_id, 'addr' => $req['address_radio'], 'buy_type' => $req['buy_type']];
+        $data = [
+            'buy_now_id' => $buy_now_id,
+            'addr' => $req['address_radio'],
+            'buy_type' => $req['buy_type'],
+        ];
         if ($req['payment'] == 'cash') {
             return $this->store($req);
         } else {
@@ -184,7 +182,7 @@ class OrderController extends Controller
                     'order_id' => $oid_padded,
                     'address_id' => $request['address_radio'],
                     'qty' => 1,
-                    'price' =>  $p->price * (1 - $p->discount),
+                    'price' => $p->price * (1 - $p->discount),
                     'discount' => $p->discount,
                     'status' => 'Processed',
                     'type' => $type,

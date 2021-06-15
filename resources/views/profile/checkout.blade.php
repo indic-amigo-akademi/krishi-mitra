@@ -204,7 +204,7 @@
                         <input class="uk-radio uk-margin-small-left" type="radio" name="payment" value="net">
                         <span class="uk-text-bold uk-margin-left">Net Banking</span>
                         <br>
-                        <input class="uk-radio uk-margin-small-left" type="radio" name="payment" value="cash">
+                        <input class="uk-radio uk-margin-small-left" type="radio" name="payment" value="cash" checked>
                         <span class="uk-text-bold uk-margin-left">Cash on Delivery</span>
                     </div>
                     <div class="uk-padding-small uk-flex uk-flex-row uk-flex-middle uk-flex-between">

@@ -126,7 +126,8 @@
                             <i class=" ri-check-fill"></i>
                         </span>
                     </div>
-                    <div class="body uk-padding-small"></div>
+                    <div class="body uk-padding-small">
+                    </div>
                 </div>
                 <div class="uk-card uk-card-default uk-margin-large complete-checkout" data-type="order">
                     <div class="header uk-padding-small checkout_next" data-type="order">
@@ -136,7 +137,13 @@
                             <i class=" ri-check-fill"></i>
                         </span>
                     </div>
-                    <div class="body uk-padding-small"></div>
+                    <div class="body uk-padding-small">
+                        <span>
+                            Order total:
+                            ₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}
+                            ({{ $cart_products->sum('qty') }} items)
+                        </span>
+                    </div>
                 </div>
                 <div class="uk-card uk-card-default uk-margin-large ">
                     <div class="uk-card-header uk-padding-small checkout_no">
@@ -261,7 +268,7 @@
                 case "order":
                 case "payment":
                     let address = $("input[name='address_radio']:checked").data("address");
-                    $(".complete-checkout[data-type='address'] .body").html(`<p>${address}</p>`);
+                    $(".complete-checkout[data-type='address'] .body").html(`<span>${address}</span>`);
 
                     $(`.checkout-block.${checkoutType}_block`).show();
                     break;

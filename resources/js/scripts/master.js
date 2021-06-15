@@ -1,3 +1,8 @@
+function searchFormSubmit(event) {
+    event.preventDefault();
+    console.log(event.target);
+    $("#searchForm").submit();
+}
 (($) => {})(jQuery);
 
 $(window).on("load resize", function () {

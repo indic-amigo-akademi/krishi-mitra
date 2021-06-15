@@ -39,4 +39,9 @@ class Product extends Model
     public function getProductUnitAttribute()
     {
     }
+
+    public function getDiscountedPriceAttribute()
+    {
+        return $this->price * $this->discount;
+    }
 }

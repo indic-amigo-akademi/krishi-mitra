@@ -1,103 +1,108 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="uk-width-1-1 uk-margin-remove uk-padding uk-flex uk-flex-row uk-flex-around cart_bag">
-        @if (count($cart_products) > 0)
-            @php
-                $x = 0;
-                $y = 0;
-                $z = 0;
-            @endphp
-
-            <div class="uk-width-2-3 uk-margin-large-left uk-margin-right">
+    <section class="container cart-container">
+        <div class="uk-flex uk-flex-row uk-flex-around uk-padding uk-flex-wrap">
+            <div class="uk-width-1-1 uk-width-2-3@m">
                 <div class="uk-text-large uk-text-bold cart-color">MY CART</div>
                 <hr>
-                @foreach ($cart_products as $cart_product)
-                    <div class="uk-card uk-card-default uk-padding uk-margin-bottom uk-flex uk-flex-row">
+                @if (count($cart_products) > 0)
+                    @foreach ($cart_products as $cart_product)
+                        <div
+                            class="uk-card uk-card-default uk-padding-small uk-margin-bottom uk-flex uk-flex-row uk-flex-wrap">
+                            <div class="uk-width-1-1 uk-width-1-3@m uk-flex uk-flex-column">
+                                <img src="{{ isset($cart_product->product->coverPhotos) ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                                    width="200rem" uk-img class="uk-margin-auto" />
+                                <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
+                                    <button class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                        onclick="addToCart('{{ $cart_product->id }}')">+</button>
+                                    <span class="card-quan-color">{{ $cart_product->qty }}</span>
+                                    <button class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                        value={{ $cart_product->qty }}
+                                        onclick="subFromCart('{{ $cart_product->id }}')">-</button>
+                                </div>
+                            </div>
 
-                        <div class="uk-width-1-3 uk-flex-middle uk-flex uk-flex-center uk-flex-column">
-                            <img src="{{ isset($cart_product->product->coverPhotos) ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
-                                width="200rem" uk-img />
-                            <div class="uk-margin-top uk-flex uk-flex-row uk-flex-around">
-                                <button class="uk-button-default uk-margin-left uk-margin-right cart-quan"
-                                    onclick="addToCart('{{ $cart_product->id }}')">+</button>
-                                <span class="card-quan-color">{{ $cart_product->qty }}</span>
-                                <button class="uk-button-default uk-margin-left uk-margin-right cart-quan"
-                                    value={{ $cart_product->qty }}
-                                    onclick="subFromCart('{{ $cart_product->id }}')">-</button>
+                            <div class="uk-width-1-1 uk-width-2-3@m">
+                                <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
+                                    {{ $cart_product->product->name }}
+                                    ,
+                                    {{ $cart_product->product->type }} - 1 {{ $cart_product->product->unit }}
+                                </div>
+                                <div class="uk-text-emphasis uk-margin-bottom">
+                                    {{ $cart_product->product->seller->trade_name }}
+                                </div>
+                                <div class="uk-margin-small-bottom">
+                                    <span class="uk-text-bold">Total Price: </span>
+                                    <span class="uk-text-bold uk-margin-small-right sdetail-price">
+                                        ₹{{ sprintf('%.2f', $cart_product->total_discounted_price) }}
+                                    </span>
+                                    <span
+                                        class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
+                                        ₹{{ sprintf('%.2f', $cart_product->total_price) }}
+                                    </span>
+                                </div>
+                                <button class="uk-button uk-button-default card-remove" id={{ $cart_product->id }}
+                                    onclick="delFromCart('{{ $cart_product->id }}')">
+                                    Remove
+                                </button>
                             </div>
                         </div>
-                        <div class="uk-width-2-3 uk-flex-start uk-margin-large-left uk-margin-right">
-                            <div class="uk-text-bold uk-text-emphasis uk-margin-bottom">{{ $cart_product->product->name }}
-                                ,
-                                {{ $cart_product->product->type }} - 1 {{ $cart_product->product->unit }} </div>
-                            <div>{!! $cart_product->product->desc !!}</div>
-                            <div class="uk-margin-bottom">
-                                <span class="uk-text-bold">Price :</span>
-                                <span class="uk-text-bold uk-margin-small-right sdetail-price">
-                                    ₹{{ sprintf('%.2f', $cart_product->product->price * $cart_product->qty) }}
-                                </span>
-                                <span class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
-                                    ₹{{ sprintf('%.2f', ($cart_product->product->price * $cart_product->qty) / (1 - $cart_product->product->discount)) }}</span>
-                            </div>
-                            <button class="uk-button uk-button-default card-remove" id={{ $cart_product->id }}
-                                onclick="delFromCart('{{ $cart_product->id }}')">Remove</button>
-                        </div>
+                    @endforeach
+                @else
+                    <div class="uk-card uk-card-default uk-padding uk-margin-bottom">
+                        <p class="uk-text-bold uk-text-center">Cart is Empty</p>
                     </div>
-
-                    @php
-                        $x = sprintf('%.2f', $x + ($cart_product->product->price * $cart_product->qty) / (1 - $cart_product->product->discount));
-                        
-                        $y = sprintf('%.2f', $y + $cart_product->product->price * $cart_product->qty);
-                        
-                        $z = $x - $y;
-                    @endphp
-                @endforeach
-
+                @endif
             </div>
-
-            <div class="uk-width-1-3 uk-flex uk-flex-column   uk-margin-large-right">
+            <div
+                class="uk-width-1-1 uk-width-1-3@m uk-flex uk-flex-column{{ count($cart_products) > 0 ? '' : ' d-none' }}">
                 <div class="uk-margin">
                     <select class="uk-select uk-form-large">
-                        <option>Select Address</option>
-                        <option>Option 1</option>
+                        <option disabled>Select Address</option>
+                        @foreach ($addresses as $address)
+                            <option value="{{ $address->id }}">{{ $address->full_address }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="uk-card uk-card-default">
-                    <div class="uk-card-header uk-padding  uk-text-bold">
+                    <div class="uk-card-header uk-text-bold">
                         PRICE DETAILS
                     </div>
 
                     <div class="uk-card-body">
                         <div class="uk-flex uk-flex-row uk-flex-between uk-margin-bottom">
                             <div>Price</div>
-                            <div>{{ $x }}</div>
+                            <div>₹{{ sprintf('%.2f', $cart_products->sum('total_price')) }}</div>
                         </div>
                         <div class="uk-flex uk-flex-row uk-flex-between uk-margin-bottom">
                             <div>Discount</div>
-                            <div class="cart-dis"> - {{ $z }}</div>
+                            <div class="text-theme-color1"> -
+                                ₹{{ sprintf('%.2f', $cart_products->sum('total_price') - $cart_products->sum('total_discounted_price')) }}
+                            </div>
                         </div>
                         <div class="uk-flex uk-flex-row uk-flex-between uk-margin-bottom">
                             <div>Delivery Charges</div>
-                            <div>None</div>
+                            <div class="uk-text-primary uk-text-uppercase">None</div>
                         </div>
+                        <hr>
                         <div class="uk-flex uk-flex-row uk-text-emphasis uk-text-bold uk-flex-between">
                             <div>Total Price</div>
-                            <div>{{ $y }}</div>
+                            <div>₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}</div>
                         </div>
                     </div>
-                    <div class="uk-card-footer uk-padding uk-text-bold cart-dis">
-                        You will save {{ $z }} in this order
+                    <div class="uk-card-footer uk-text-bold text-theme-color1">
+                        You will save
+                        ₹{{ sprintf('%.2f', $cart_products->sum('total_price') - $cart_products->sum('total_discounted_price')) }}
+                        in
+                        this order
                     </div>
                 </div>
                 <a class="uk-button uk-button-default uk-margin-top cart-checkout" href="{{ route('checkout') }}"
                     type="button">Checkout</a>
             </div>
-
-        @else
-            <div class="uk-text-large uk-text-bold">Cart is Empty</div>
-        @endif
-    </div>
+        </div>
+    </section>
 @endsection
 
 @section('scripts')
@@ -122,12 +127,10 @@
                 data: JSON.stringify(x),
                 success: function(data) {
                     console.log('Posted');
+                    location.reload();
                 }
 
             });
-            setTimeout(function() {
-                location.reload();
-            }, 1000);
         }
 
         function addToCart(id) {
@@ -150,12 +153,10 @@
                 data: JSON.stringify(x),
                 success: function(data) {
                     console.log('Posted');
+                    location.reload();
                 }
 
             });
-            setTimeout(function() {
-                location.reload();
-            }, 1000);
 
         }
 
@@ -182,12 +183,10 @@
                 data: JSON.stringify(x),
                 success: function(data) {
                     console.log('Posted');
+                    location.reload();
                 }
 
             });
-            setTimeout(function() {
-                location.reload();
-            }, 1000);
         }
 
     </script>

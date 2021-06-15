@@ -29,12 +29,21 @@ class OrderController extends Controller
     }
     public function checkout()
     {
-        $addresses = Address::all()->where('user_id', '=', Auth::id());
-        $cart_products = Cart::all()->where('user_id', '=', Auth::id());
-        Log::info($addresses);
-        Log::info($cart_products);
-        return view('profile.checkout', compact('addresses', 'cart_products'));
-        
+        $cart_products = Cart::where('user_id', Auth::id())->get();
+        $buy = 'cart';
+        $prod = 100;
+
+        $data = ['buy' => $buy, 'prod_id' => $prod];
+
+        return view('profile.checkout', compact('cart_products'));
+    }
+    public function index1($id)
+    {
+        log::info('404 not found!!');
+        $buy = 'Buy_now';
+        $prod = $id;
+        $data = ['buy' => $buy, 'prod_id' => $prod];
+        return view('profile.checkout')->with($data);
     }
 
     /**
@@ -47,21 +56,47 @@ class OrderController extends Controller
         LOG::info('REQ IS' . $req);
         if (Address::where('user_id', Auth::id())->count() == 0) {
             Address::create([
-                'user_id' => Auth::id(),
-                'type' => $req['type'],
-                'street' => $req['street'],
-                'house_no' => $req['house_no'],
+                'name' => $req['name'],
+                'mobile' => $req['mobile'],
+                'pincode' => $req['pincode'],
+                'address1' => $req['address1'],
+                'address2' => $req['address2'],
                 'city' => $req['city'],
                 'state' => $req['state'],
-                'pincode' => $req['pincode'],
                 'landmark' => $req['landmark'],
+                'type' => $req['type'],
+                'user_id' => Auth::id(),
             ]);
         }
-        if ($req['optradio'] == 'COD') {
-            return redirect(route('OrderProcessed.cod'));
+        LOG::info('BUY Type is' . $req['buy_type']);
+        if ($req['buy_type'] == 'Buy_now') {
+            return $this->buy_now($req['prod_id']);
+            //return redirect('/checkout/processed/buynow/' . $req['prod_id']);
         } else {
-            return view('CardDetails');
+            if ($req['optradio'] == 'COD') {
+                return redirect(route('OrderProcessed'));
+            } else {
+                return view('CardDetails');
+            }
         }
+    }
+    protected function buy_now($id)
+    {
+        $p = Product::find($id);
+        log::info('Product id is' . $p);
+        $oid = rand(1, 999999999);
+        Order::create([
+            'user_id' => Auth::id(),
+            'product_id' => $p->id,
+            'order_id' => $oid,
+            'qty' => 1,
+            'price' => $p->price * (1 - $p->discount),
+            'discount' => $p->discount,
+            'status' => 'Processed',
+            'type' => 'cod',
+        ]);
+        log::info('ORDER PROCESSED SUCCESSFULLY FOR BUY NOW');
+        return redirect(route('home'));
     }
 
     /**
@@ -70,32 +105,17 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storecod(Request $request)
+    public function store(Request $request)
     {
         $products = Cart::where('user_id', Auth::id())->get();
         $oid = rand(1, 999999999);
-        foreach ($products as $p) {
-            Order::create([
-                'user_id' => Auth::id(),
-                'product_id' => $p->product_id,
-                'order_id' => $oid,
-                'qty' => $p->qty,
-                'price' => $p->qty * $p->price * (1 - $p->discount),
-                'discount' => $p->discount,
-                'status' => 'Processed',
-                'type' => 'cod',
-            ]);
-            Cart::find($p->id)->delete();
+        log::info('PROPERTY EXISTS' . $request['card']);
+        if ($request['card'] != '') {
+            $type = 'card';
+        } else {
+            $type = 'cod';
         }
-        log::info('ORDER PROCESSED SUCCESSFULLY');
-        return redirect(route('home'));
-    }
-    public function storecard(Request $request)
-    {
-        log::info($request);
-        log::info('PROPERTY EXISTS' . property_exists($request, 'card'));
-        $products = Cart::where('user_id', Auth::id())->get();
-        $oid = rand(1, 999999999);
+        log::info('typeis' . $type);
         foreach ($products as $p) {
             Order::create([
                 'user_id' => Auth::id(),
@@ -105,7 +125,7 @@ class OrderController extends Controller
                 'price' => $p->qty * $p->price * (1 - $p->discount),
                 'discount' => $p->discount,
                 'status' => 'Processed',
-                'type' => 'card',
+                'type' => $type,
             ]);
             Cart::find($p->id)->delete();
         }

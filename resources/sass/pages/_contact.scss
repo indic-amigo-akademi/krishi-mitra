@@ -1,0 +1,28 @@
+/* Contact Us CSS */
+.contact-container {
+    background-color: $theme-color4;
+    .contact-card {
+        span {
+            color: $theme-color1;
+            font-size: 30px;
+        }
+    }
+    .contact-text {
+        color: $theme-color1;
+    }
+    .contact-btn {
+        color: white;
+        background-color: $theme-color1;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    .contact-card {
+        border-bottom: 1px solid rgb(206, 205, 205);
+    }
+}
+@media screen and (min-width: 991px) {
+    .contact-card {
+        border-right: 1px solid rgb(206, 205, 205);
+    }
+}

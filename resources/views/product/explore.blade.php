@@ -76,7 +76,7 @@
                 let x = {
                 id: id
                 }
-                $.ajaxSetup({
+                /*$.ajaxSetup({
                 headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
@@ -91,6 +91,19 @@
                 success: function(data) {
                 console.log('Posted');
                 }
+                });*/
+                fetch('/cart/store', {
+                headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                body: JSON.stringify(x),
+                method: 'post',
+                }).then(function(response) {
+                console.log('Posted');
+                location.reload();
+                }).catch(function(error) {
+                console.error('Error:', error);
                 });
             @else
                 UIkit.modal($("#signin-form").get(0)).show();

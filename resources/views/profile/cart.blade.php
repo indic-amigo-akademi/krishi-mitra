@@ -113,23 +113,19 @@
             }
             console.log('ID IS');
             console.log(x)
-            $.ajaxSetup({
+            console.log('ID IS');
+            fetch('/cart/delete', {
                 headers: {
+                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: '/cart/delete',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(x),
-                success: function(data) {
-                    console.log('Posted');
-                    location.reload();
-                }
-
+                },
+                body: JSON.stringify(x),
+                method: 'post',
+            }).then(function(response) {
+                console.log('Posted');
+                location.reload();
+            }).catch(function(error) {
+                console.error('Error:', error);
             });
         }
 
@@ -138,24 +134,18 @@
                 id: id
             }
             console.log('ID IS');
-            console.log(x)
-            $.ajaxSetup({
+            fetch('/cart/incr', {
                 headers: {
+                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: '/cart/incr',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(x),
-                success: function(data) {
-                    console.log('Posted');
-                    location.reload();
-                }
-
+                },
+                body: JSON.stringify(x),
+                method: 'post',
+            }).then(function(response) {
+                console.log('Posted');
+                location.reload();
+            }).catch(function(error) {
+                console.error('Error:', error);
             });
 
         }
@@ -169,23 +159,18 @@
             }
             console.log('ID IS');
             console.log(x)
-            $.ajaxSetup({
+            fetch('/cart/decr', {
                 headers: {
+                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: '/cart/decr',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(x),
-                success: function(data) {
-                    console.log('Posted');
-                    location.reload();
-                }
-
+                },
+                body: JSON.stringify(x),
+                method: 'post',
+            }).then(function(response) {
+                console.log('Posted');
+                location.reload();
+            }).catch(function(error) {
+                console.error('Error:', error);
             });
         }
 

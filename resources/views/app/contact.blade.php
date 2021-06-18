@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="uk-width-1-1 uk-height-1-1 uk-flex uk-flex-around uk-flex-middle contact ">
+    <section class="uk-flex uk-flex-around uk-flex-middle container contact-container">
         <div class="uk-card uk-card-default uk-card-body uk-flex uk-flex-row uk-flex-wrap">
             <div class="uk-width-1-1 uk-width-1-3@m uk-padding-small uk-flex uk-flex-column uk-flex-center contact-card">
                 <div class="uk-text-center uk-flex uk-flex-column">
@@ -22,8 +22,7 @@
                 </div>
             </div>
 
-            <div
-                class="uk-width-1-1 uk-width-2-3@m uk-padding uk-padding-remove-top uk-padding uk-padding-remove-bottom uk-text-center">
+            <div class="uk-width-1-1 uk-width-2-3@m uk-padding uk-padding-remove-bottom uk-text-center">
                 <div class="uk-text-large uk-text-bolder contact-text">Send us a Message</div>
                 <div class="uk-margin uk-text-small uk-text-bold uk-text-emphasis">
                     Want to get in touch ? We would love to hear you. Here's how you can reach us.
@@ -31,7 +30,8 @@
                 <form id="web-contact-form" method="POST" action="{{ route('contact.create') }}">
                     @csrf
                     <div class="uk-margin">
-                        <input class="uk-input @error('name') uk-form-danger @enderror" type="text" name="name" value="{{ old('name') }}" placeholder="Name" required>
+                        <input class="uk-input @error('name') uk-form-danger @enderror" type="text" name="name"
+                            value="{{ old('name') }}" placeholder="Name" required>
                         @error('name')
                             <div class="uk-alert-danger" uk-alert>
                                 <strong>{{ $message }}</strong>
@@ -39,7 +39,8 @@
                         @enderror
                     </div>
                     <div>
-                        <input class="uk-input @error('subject') uk-form-danger @enderror" type="text" name="subject" value="{{ old('subject') }}" placeholder="Subject" required>
+                        <input class="uk-input @error('subject') uk-form-danger @enderror" type="text" name="subject"
+                            value="{{ old('subject') }}" placeholder="Subject" required>
                         @error('subject')
                             <div class="uk-alert-danger" uk-alert>
                                 <strong>{{ $message }}</strong>
@@ -47,7 +48,8 @@
                         @enderror
                     </div>
                     <div class="uk-margin">
-                        <textarea class="uk-textarea @error('message') uk-form-danger @enderror" rows="5" name="message" placeholder="Message" required>{{ old('message') }}</textarea>
+                        <textarea class="uk-textarea @error('message') uk-form-danger @enderror" rows="5" name="message"
+                            placeholder="Message" required>{{ old('message') }}</textarea>
                         @error('message')
                             <div class="uk-alert-danger" uk-alert>
                                 <strong>{{ $message }}</strong>
@@ -60,6 +62,6 @@
                 </form>
             </div>
         </div>
-    </div>
+    </section>
 
 @endsection

@@ -35,7 +35,7 @@
     </header>
 
 
-    <main class="py-4">
+    <main class="">
         @yield('content')
     </main>
 
@@ -44,7 +44,8 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="{{ mix('/js/app.js') }}"></script>
+    <script src=" {{ mix('/js/app.js') }}">
+    </script>
     <script src="{{ mix('/js/vanilla.js') }}"></script>
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 

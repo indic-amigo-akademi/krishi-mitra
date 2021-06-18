@@ -12,7 +12,7 @@
             <div class="uk-card-body">
                 <ul class="uk-list links">
                     @if (Auth::user()->is_sysadmin)
-                        <li><a href="#">Browse admins</a></li>
+                        <li><a href="{{ route('admin.browse.view') }}">Browse admins</a></li>
                     @endif
                     <li><a href="{{ route('admin.product.browse') }}">Browse products</a></li>
                     <li><a href="{{ route('admin.approval.view') }}">Approve Requests</a></li>

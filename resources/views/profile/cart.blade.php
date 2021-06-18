@@ -1,35 +1,110 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>List of all products in cart</h1>
-    @if (count($products) > 0)
-        @php
-            $x = 0;
-        @endphp
-        @foreach ($products as $prod)
-            <ul id="menu" style="display:inline;">
-                <li>Type:{{ $prod->type }}</li>
-                <li>Description:{{ $prod->desc }}</li>
-                <li>Quantity:{{ $prod->qty }}</li>
-                <button onclick="addToCart('{{ $prod->id }}')">+</button>
-                <button value={{ $prod->qty }} onclick="subFromCart('{{ $prod->id }}')">-</button>
-                <li>Price:{{ $prod->price * $prod->qty }}</li>
-                <li>Discount_rate:{{ $prod->discount }}</li>
-                <li>Discounted_Price:{{ $prod->price * $prod->qty * (1 - $prod->discount) }}</li>
-                <img src={{ URL::to('/uploads/products/' . $prod->cover) }} width="100" height="100">
-                <button id={{ $prod->id }} onclick="delFromCart('{{ $prod->id }}')">Remove From
-                    Cart</button><br><br>
-            </ul>
-            @php
-                $x = $x + $prod->price * $prod->qty * (1 - $prod->discount);
-            @endphp
-        @endforeach
-        <h2>The Total price is : {{ $x }}</h2>
-        <a href="{{ route('checkout') }}" type="button">Checkout</a>
-    @else
-        Cart is Empty
-    @endif
+    <section class="container cart-container">
+        <div class="uk-flex uk-flex-row uk-flex-around uk-padding uk-flex-wrap">
+            <div class="uk-width-1-1 uk-width-2-3@m">
+                <div class="uk-text-large uk-text-bold cart-color">MY CART</div>
+                <hr>
+                @if (count($cart_products) > 0)
+                    @foreach ($cart_products as $cart_product)
+                        <div
+                            class="uk-card uk-card-default uk-padding-small uk-margin-bottom uk-flex uk-flex-row uk-flex-wrap">
+                            <div class="uk-width-1-1 uk-width-1-3@m uk-flex uk-flex-column">
+                                <img src="{{ isset($cart_product->product->coverPhotos) ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                                    width="200rem" uk-img class="uk-margin-auto" />
+                                <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
+                                    <button class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                        onclick="addToCart('{{ $cart_product->id }}')">+</button>
+                                    <span class="card-quan-color">{{ $cart_product->qty }}</span>
+                                    <button class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                        value={{ $cart_product->qty }}
+                                        onclick="subFromCart('{{ $cart_product->id }}')">-</button>
+                                </div>
+                            </div>
+
+                            <div class="uk-width-1-1 uk-width-2-3@m">
+                                <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
+                                    {{ $cart_product->product->name }}
+                                    ,
+                                    {{ $cart_product->product->type }} - 1 {{ $cart_product->product->unit }}
+                                </div>
+                                <div class="uk-text-emphasis uk-margin-bottom">
+                                    {{ $cart_product->product->seller->trade_name }}
+                                </div>
+                                <div class="uk-margin-small-bottom">
+                                    <span class="uk-text-bold">Total Price: </span>
+                                    <span class="uk-text-bold uk-margin-small-right sdetail-price">
+                                        ₹{{ sprintf('%.2f', $cart_product->total_discounted_price) }}
+                                    </span>
+                                    <span
+                                        class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
+                                        ₹{{ sprintf('%.2f', $cart_product->total_price) }}
+                                    </span>
+                                </div>
+                                <button class="uk-button uk-button-default card-remove" id={{ $cart_product->id }}
+                                    onclick="delFromCart('{{ $cart_product->id }}')">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="uk-card uk-card-default uk-padding uk-margin-bottom">
+                        <p class="uk-text-bold uk-text-center">Cart is Empty</p>
+                    </div>
+                @endif
+            </div>
+            <div
+                class="uk-width-1-1 uk-width-1-3@m uk-flex uk-flex-column{{ count($cart_products) > 0 ? '' : ' d-none' }}">
+                <div class="uk-margin">
+                    <select class="uk-select uk-form-large">
+                        <option disabled>Select Address</option>
+                        @foreach ($addresses as $address)
+                            <option value="{{ $address->id }}">{{ $address->full_address }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="uk-card uk-card-default">
+                    <div class="uk-card-header uk-text-bold">
+                        PRICE DETAILS
+                    </div>
+
+                    <div class="uk-card-body">
+                        <div class="uk-flex uk-flex-row uk-flex-between uk-margin-bottom">
+                            <div>Price</div>
+                            <div>₹{{ sprintf('%.2f', $cart_products->sum('total_price')) }}</div>
+                        </div>
+                        <div class="uk-flex uk-flex-row uk-flex-between uk-margin-bottom">
+                            <div>Discount</div>
+                            <div class="text-theme-color1"> -
+                                ₹{{ sprintf('%.2f', $cart_products->sum('total_price') - $cart_products->sum('total_discounted_price')) }}
+                            </div>
+                        </div>
+                        <div class="uk-flex uk-flex-row uk-flex-between uk-margin-bottom">
+                            <div>Delivery Charges</div>
+                            <div class="uk-text-primary uk-text-uppercase">None</div>
+                        </div>
+                        <hr>
+                        <div class="uk-flex uk-flex-row uk-text-emphasis uk-text-bold uk-flex-between">
+                            <div>Total Price</div>
+                            <div>₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}</div>
+                        </div>
+                    </div>
+                    <div class="uk-card-footer uk-text-bold text-theme-color1">
+                        You will save
+                        ₹{{ sprintf('%.2f', $cart_products->sum('total_price') - $cart_products->sum('total_discounted_price')) }}
+                        in
+                        this order
+                    </div>
+                </div>
+                <a class="uk-button uk-button-default uk-margin-top cart-checkout" href="{{ route('checkout') }}"
+                    type="button">Checkout</a>
+            </div>
+        </div>
+    </section>
 @endsection
+
 @section('scripts')
     <script>
         function delFromCart(id) {
@@ -38,26 +113,20 @@
             }
             console.log('ID IS');
             console.log(x)
-            $.ajaxSetup({
+            console.log('ID IS');
+            fetch('/cart/delete', {
                 headers: {
+                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: '/cart/delete',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(x),
-                success: function(data) {
-                    console.log('Posted');
-                }
-
-            });
-            setTimeout(function() {
+                },
+                body: JSON.stringify(x),
+                method: 'post',
+            }).then(function(response) {
+                console.log('Posted');
                 location.reload();
-            }, 1000);
+            }).catch(function(error) {
+                console.error('Error:', error);
+            });
         }
 
         function addToCart(id) {
@@ -65,27 +134,19 @@
                 id: id
             }
             console.log('ID IS');
-            console.log(x)
-            $.ajaxSetup({
+            fetch('/cart/incr', {
                 headers: {
+                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: '/cart/incr',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(x),
-                success: function(data) {
-                    console.log('Posted');
-                }
-
-            });
-            setTimeout(function() {
+                },
+                body: JSON.stringify(x),
+                method: 'post',
+            }).then(function(response) {
+                console.log('Posted');
                 location.reload();
-            }, 1000);
+            }).catch(function(error) {
+                console.error('Error:', error);
+            });
 
         }
 
@@ -98,26 +159,19 @@
             }
             console.log('ID IS');
             console.log(x)
-            $.ajaxSetup({
+            fetch('/cart/decr', {
                 headers: {
+                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: '/cart/decr',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(x),
-                success: function(data) {
-                    console.log('Posted');
-                }
-
-            });
-            setTimeout(function() {
+                },
+                body: JSON.stringify(x),
+                method: 'post',
+            }).then(function(response) {
+                console.log('Posted');
                 location.reload();
-            }, 1000);
+            }).catch(function(error) {
+                console.error('Error:', error);
+            });
         }
 
     </script>

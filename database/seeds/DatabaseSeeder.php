@@ -7,11 +7,12 @@ class DatabaseSeeder extends Seeder
 
     public function delete_directory($path)
     {
+        $path = public_path($path);
         if (!is_dir($path)) {
             return;
         }
-        if (substr($path, strlen($path) - 1, 1) != '/') {
-            $path .= '/';
+        if (substr($path, strlen($path) - 1, 1) != DIRECTORY_SEPARATOR) {
+            $path .= DIRECTORY_SEPARATOR;
         }
         $files = glob($path . '*', GLOB_MARK);
         foreach ($files as $file) {
@@ -31,10 +32,11 @@ class DatabaseSeeder extends Seeder
         $dir = '';
         foreach ($str as $part) {
             $dir .= DIRECTORY_SEPARATOR . $part;
-            if (!is_dir($dir) && strlen($dir) > 0 && strpos($dir, ".") == false) {
-                mkdir($dir, 0777);
-            } elseif (!file_exists($dir) && strpos($dir, ".") !== false) {
-                touch($dir);
+            $abs_dir = public_path($dir);
+            if (!is_dir($abs_dir) && strlen($abs_dir) > 0 && strpos($abs_dir, ".") == false) {
+                mkdir($abs_dir, 0777);
+            } elseif (!file_exists($abs_dir) && strpos($abs_dir, ".") !== false) {
+                touch($abs_dir);
             }
         }
         print($path . " is successfully created." . PHP_EOL);
@@ -47,8 +49,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->delete_directory(public_path('uploads/products'));
-        $this->create_directory(public_path('uploads/products'));
+        $this->delete_directory('uploads'.DIRECTORY_SEPARATOR.'products');
+        $this->create_directory('uploads'.DIRECTORY_SEPARATOR.'products');
         $this->call(UserSeeder::class);
         $this->call(SellerSeeder::class);
         $this->call(ProductSeeder::class);

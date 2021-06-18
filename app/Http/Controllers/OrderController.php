@@ -202,17 +202,11 @@ class OrderController extends Controller
     public function showall()
     {
         /*$ord = Cart::select('order_id')::where('user_id', Auth::id())->get();*/
-        $ord = DB::table('orders')
-            ->where('user_id', '=', Auth::id())
-            ->select([
-                DB::raw('order_id'),
-                DB::raw("SUM(price) as 'tot'"),
-                DB::raw('max(created_at) as created_at'),
-            ])
-            ->groupBy('order_id')
+        $orders = Order::where('user_id', '=', Auth::id())
+            ->orderBy('order_id')
             ->orderBy('created_at')
             ->get();
-        return view('profile.orders')->with('ord', $ord);
+        return view('profile.orders', compact('orders'));
     }
 
     /**

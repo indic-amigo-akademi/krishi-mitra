@@ -12779,17 +12779,17 @@ footer {
 }
 
 /* Contact Us CSS */
-.contact-container {
+.contact {
   background-color: #fdf9d4;
 }
-.contact-container .contact-card span {
+.contact .contact-card span {
   color: #3b7402;
   font-size: 30px;
 }
-.contact-container .contact-text {
+.contact .contact-text {
   color: #3b7402;
 }
-.contact-container .contact-btn {
+.contact .contact-btn {
   color: white;
   background-color: #3b7402;
 }
@@ -12852,6 +12852,32 @@ footer {
   opacity: 0.9;
 }
 
+/* Contact Us CSS */
+.contact-container {
+  background-color: #fdf9d4;
+}
+.contact-container .contact-card span {
+  color: #3b7402;
+  font-size: 30px;
+}
+.contact-container .contact-text {
+  color: #3b7402;
+}
+.contact-container .contact-btn {
+  color: white;
+  background-color: #3b7402;
+}
+
+@media screen and (max-width: 990px) {
+  .contact-card {
+    border-bottom: 1px solid #cecdcd;
+  }
+}
+@media screen and (min-width: 991px) {
+  .contact-card {
+    border-right: 1px solid #cecdcd;
+  }
+}
 .sboard {
   height: 39rem;
   background-repeat: no-repeat;
@@ -12956,6 +12982,31 @@ footer {
 .cart-color {
   color: #3b7402;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.order-color {
+  background-color: #fdf9d4;
+}
+
+.order-card {
+  background-color: white;
+}
+
+.order-id {
+  color: #3b7402;
+}
+
+.order-id:hover {
+  opacity: 0.8;
+}
+
+.order-home {
+  background-color: #3b7402;
+  color: #fdf9d4;
+}
+
+.single_order {
+  border-right: 1px solid;
 }
 
 .checkout_no {

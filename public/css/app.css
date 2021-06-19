@@ -12954,6 +12954,15 @@ footer {
   font-size: 10px;
 }
 
+.product_box {
+  border-style: ridge;
+}
+
+.prod_button {
+  background-color: #fff27a;
+  color: #3b7402;
+}
+
 .cart-quan {
   display: inline-block;
   border-radius: 50%;

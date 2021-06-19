@@ -144,6 +144,4 @@ Route::post('/address/edit', 'AddressController@edit_address')->name(
 );
 
 //product page
-Route::get('/product', function () {
-    return view('product');
-})->name('product');
+Route::get('/product/{slug}', 'ProductController@show_one')->name('product.view');

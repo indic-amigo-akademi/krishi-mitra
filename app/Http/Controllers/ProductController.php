@@ -133,6 +133,12 @@ class ProductController extends Controller
         return view('product.product')->with('product', $prod);
     }
 
+    public function show_one($slug)
+    {
+        $prod = Product::where(['slug' => $slug])->first();
+        return view('product')->with('product', $prod);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

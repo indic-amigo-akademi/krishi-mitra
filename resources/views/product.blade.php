@@ -24,11 +24,11 @@
                 <hr>
                 <div class="uk-width-1-1@m uk-flex uk-flex-middle">
 
-                    <span class="uk-text-bold uk-margin-small-right"><span class="sdetail-price"> Price :</span>
-                        ₹ {{ $product->price }}
+                    <span class="uk-text-bold uk-margin-small-right">Price :
+                        <span class="sdetail-price"> ₹ {{ $product->price }}</span>
                     </span>
                     <span class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
-                        {{ sprintf('%.2f', $product->price / (1 - $product->discount)) }}</span>
+                        ₹ {{ sprintf('%.2f', $product->price / (1 - $product->discount)) }}</span>
                     <span class="uk-text-small uk-text-bold uk-text-danger uk-margin-right sdetail-offer">(You Save :
                         {{ $product->discount * 100 }}%)</span>
 

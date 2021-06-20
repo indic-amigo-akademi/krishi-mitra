@@ -8,7 +8,7 @@
                     @if ($prod->active == 1)
                         <div
                             class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex
-                                                                                                                                                                                                                                                                                                 uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
+                                                                                                                                                                                                                                                                                                     uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
                             <a href="{{ route('seller.product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
                                 <img src="{{ isset($prod->coverPhotos) ? asset('uploads/products/' . $prod->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                     uk-img />
@@ -49,7 +49,7 @@
             var x = {
                 id: id
             }
-            $.ajaxSetup({
+            /*$.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
@@ -65,6 +65,19 @@
                     console.log('Posted');
                 }
 
+            });*/
+            fetch('/cart/store', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                body: JSON.stringify(x),
+                method: 'post',
+            }).then(function(response) {
+                console.log('Posted');
+                location.reload();
+            }).catch(function(error) {
+                console.error('Error:', error);
             });
         }
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Feature;
+
 use App\User;
 use App\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,74 +17,74 @@ class ProductUpdateTest extends TestCase
      * @return void
      */
     use RefreshDatabase;
-    
+
     public function testCreateProduct()
     {
-       $data = [
-           'id'=>3,
-        'type' => 'Vegetable',
-        'seller_id' => 2,
-        'desc' => '<p>This is a potato<p>',
-        'price' => 15,
-        'name' => 'Aloo Jyoti',
-        'unit' => 'KGS',
-        'quantity' => '133',
-        'slug' => 'aloo_jyoti',
-        'discount' => 0.3,
-                    ];
-                    
-    $response = $this->post(route('product.store'), $data);
+        $data = [
+            'id' => 3,
+            'type' => 'Vegetable',
+            'seller_id' => 2,
+            'desc' => '<p>This is a potato<p>',
+            'price' => 15,
+            'name' => 'Aloo Jyoti',
+            'unit' => 'KGS',
+            'quantity' => '133',
+            'slug' => 'aloo_jyoti',
+            'discount' => 0.3,
+        ];
 
-// Your assertions here
-    $response->assertStatus(302);
-        }
+        $response = $this->post(route('product.store'), $data);
 
- public function testupdateProduct()
+        // Your assertions here
+        $response->assertStatus(302);
+    }
 
- {
-  
+    public function testupdateProduct()
 
-    $response = $this->json('GET', 'product');
-    $response->assertStatus(200);
-    
-    $product = [
-        'id'=>3,
-     'type' => 'Vegetable',
-     'seller_id' => 2,
-     'desc' => '<p>This is a potato<p>',
-     'price' => 15,
-     'name' => 'Aloo Jyoti',
-     'unit' => 'KGS',
-     'quantity' => '133',
-     'slug' => 'aloo_jyoti',
-     'discount' => 0.3,
-                 ];
-              
-        $update = $this->json('POST', '/products/update/3',['name' => "Changed for test"]);
+    {
+
+
+        $response = $this->json('GET', 'product');
+        $response->assertStatus(200);
+
+        $product = [
+            'id' => 3,
+            'type' => 'Vegetable',
+            'seller_id' => 2,
+            'desc' => '<p>This is a potato<p>',
+            'price' => 15,
+            'name' => 'Aloo Jyoti',
+            'unit' => 'KGS',
+            'quantity' => '133',
+            'slug' => 'aloo_jyoti',
+            'discount' => 0.3,
+        ];
+
+        $update = $this->json('POST', '/products/update/3', ['name' => "Changed for test"]);
         //$update->assertStatus(200);
-}
-//$user = factory(\App\User::class)->create();
-//$response = $this->actingAs($user, 'api')->json('POST', '/api/products',$data);
+    }
+    //$user = factory(\App\User::class)->create();
+    //$response = $this->actingAs($user, 'api')->json('POST', '/api/products',$data);
 
-public function testDeleteProduct()
+    public function testDeleteProduct()
     {
         $response = $this->json('GET', 'product');
         $response->assertStatus(200);
 
-        
-    $product = [
-        'id'=>3,
-        'type' => 'Vegetable',
-        'seller_id' => 2,
-        'desc' => '<p>This is a potato<p>',
-        'price' => 15,
-        'name' => 'Aloo Jyoti',
-        'unit' => 'KGS',
-        'quantity' => '133',
-        'slug' => 'aloo_jyoti',
-        'discount' => 0.3,
-                    ];
+
+        $product = [
+            'id' => 3,
+            'type' => 'Vegetable',
+            'seller_id' => 2,
+            'desc' => '<p>This is a potato<p>',
+            'price' => 15,
+            'name' => 'Aloo Jyoti',
+            'unit' => 'KGS',
+            'quantity' => '133',
+            'slug' => 'aloo_jyoti',
+            'discount' => 0.3,
+        ];
         $delete = $this->delete('/products/destroy/3');
-       //$delete->assertStatus(200);
-                }
+        //$delete->assertStatus(200);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Feature;
+
 use App\User;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,84 +15,80 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-
-
     public function testMustEnterEmailAndPassword()
     {
         $this->json('POST', 'user.login.validate')  //if empty
             ->assertStatus(404);
-           
     }
-    
-    public function testlogin(){
+
+    public function testlogin()
+    {
 
         //Create user
-        $data=[
-        'name' => 'Test',
-        'username' => 'Test123',
-        'phonenumber'=>'1234567890',
-        'email'=>'test@gmail.com',
-        'password' => 'secret1234',
-        'password_confirmation' => 'secret1234',
-    ];
-    //attempt login
-    $response = $this->json('POST',route('user.login.validate'),[
-        'email' => 'test@gmail.com',
-        'password' => 'secret1234',
-    ]);
-    //Assert it was successful 
-    $response->assertStatus(200);
-    
-    
+        $data = [
+            'name' => 'Test',
+            'username' => 'Test123',
+            'phonenumber' => '1234567890',
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+            'password_confirmation' => 'secret1234',
+        ];
+        //attempt login
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]);
+        //Assert it was successful 
+        $response->assertStatus(200);
     }
-    
-//invalid credentials
 
-    public function testEmailDoesNotExist() {
-		    //Create user
-            $data=[
-                'name' => 'Test',
-                'username' => 'Test123',
-                'phonenumber'=>'1234567890',
-                'email'=>'test@gmail.com',
-                'password' => 'secret1234',
-                'password_confirmation' => 'secret1234',
-            ];
-        $response = $this->json('POST',route('user.login.validate'),[
+    //invalid credentials
+
+    public function testEmailDoesNotExist()
+    {
+        //Create user
+        $data = [
+            'name' => 'Test',
+            'username' => 'Test123',
+            'phonenumber' => '1234567890',
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+            'password_confirmation' => 'secret1234',
+        ];
+        $response = $this->json('POST', route('user.login.validate'), [
             'email' => 'test@123',
             'password' => 'secret1234',
         ]);
         //Assert it was successful 
         $response->assertStatus(200);
-	}
+    }
 
 
 
-	public function testPasswordDoesNotExist() {
-		
-		$data=[
+    public function testPasswordDoesNotExist()
+    {
+
+        $data = [
             'name' => 'Test',
             'username' => 'Test123',
-            'phonenumber'=>'1234567890',
-            'email'=>'test@gmail.com',
+            'phonenumber' => '1234567890',
+            'email' => 'test@gmail.com',
             'password' => 'secret1234',
             'password_confirmation' => 'secret1234',
         ];
-    $response = $this->json('POST',route('user.login.validate'),[
-        'email' => 'test@123',
-        'password' => 'abc1234',
-    ]);
-    //Assert it was successful 
-  
-    $response->assertStatus(200);
-    
-   
-	}
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => 'test@123',
+            'password' => 'abc1234',
+        ]);
+        //Assert it was successful 
+
+        $response->assertStatus(200);
+    }
 
 
 
 
-  /*  public function deactivatedadminCannotLogin()
+    /*  public function deactivatedadminCannotLogin()
     {
         $user = user::factory()->create([
             'email' => 'test@gmail',
@@ -107,6 +104,4 @@ class LoginTest extends TestCase
                 'inactive' => 'Your account has been blocked. Please contact the administrators.',
             ]);
     }*/
-
-
 }

@@ -1,0 +1,25 @@
+.cart-quan {
+    display: inline-block;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+    background-color: $theme-color2;
+    color: white;
+}
+.card-quan-color {
+    padding: 5px 20px;
+    background-color: rgb(241, 239, 239);
+}
+.card-remove {
+    background-color: $theme-color2;
+    color: white;
+}
+.cart-checkout {
+    background-color: $theme-color1;
+    color: white;
+}
+.cart-color {
+    color: $theme-color1;
+    font-family: Arial, Helvetica, sans-serif;
+}

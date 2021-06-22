@@ -20,13 +20,15 @@ class CreateAddressesTable extends Migration
                 ->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table->string('type');
-            $table->string('street');
-            $table->string('house_no');
+            $table->string('name');
+            $table->bigInteger('mobile');
+            $table->string('address1');
+            $table->string('address2');
             $table->string('city');
             $table->string('state');
             $table->integer('pincode');
             $table->string('landmark');
+            $table->string('type');
             $table->timestamps();
         });
     }

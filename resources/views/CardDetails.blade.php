@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('OrderProcessed.card') }}">
+    <form action="{{ route('OrderProcessed') }}">
         <div class="form-group">
             <label for="card">Select Card Type:</label>
             <input type="text" class="form-control" id="card" name="card">
+        </div>
+        <div class="form-group">
+            <input type="hidden" class="form-control" id="card" name="address_radio" value={{ $addr }}>
+            <input type="hidden" class="form-control" id="card" name="buy_type" value={{ $buy_type }}>
+            <input type="hidden" class="form-control" id="card" name="prod_id" value={{ $buy_now_id }}>
         </div>
         <div class="form-group">
             <label for="card">Enter Card Number:</label>

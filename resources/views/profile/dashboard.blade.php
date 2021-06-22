@@ -14,7 +14,7 @@
                     <li><a href="{{ route('profile') }}">My Profile</a></li>
                     <li><a href="{{ route('cart') }}">My Cart</a></li>
                     <li><a href="{{ route('orders') }}">My Orders</a></li>
-
+                    <li><a href="{{ route('address') }}">My Address</a></li>
                     @if (!(Auth::user()->is_admin || Auth::user()->is_seller))
                         <li><a href="{{ route('seller.register') }}">Register as Seller</a></li>
                     @endif

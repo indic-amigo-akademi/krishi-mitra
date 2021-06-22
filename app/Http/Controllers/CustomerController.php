@@ -14,8 +14,23 @@ use Illuminate\Support\Facades\Input;
 
 class CustomerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        return view("profile.dashboard");
+        return view('profile.dashboard');
+    }
+
+    public function home()
+    {
+        return view('home');
+    }
+
+    public function profile()
+    {
+        return view('profile.account');
     }
 }

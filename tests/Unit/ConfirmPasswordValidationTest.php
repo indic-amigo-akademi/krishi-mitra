@@ -13,7 +13,7 @@ class ConfirmPasswordValidationTest extends TestCase
      */
     public function test_password_should_match_with_confirmpassword()
     {
-        $result = (new ValidPassword())->passes('srija@123','srija@123');
+        $result = (new ValidPassword())->passes('srija@123','srija1@123');
         $this->assertEquals(0,$result);
     }
 }

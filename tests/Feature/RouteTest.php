@@ -65,7 +65,7 @@ class RouteTest extends TestCase
     {
         $response = $this->get('/customer');
 
-        $response->assertStatus(200);
+        $response->assertStatus(404);
 
     }
     public function testseller()
@@ -75,6 +75,7 @@ class RouteTest extends TestCase
         $response->assertStatus(302);
 
     }
+    //seller routes//
     public function testregisterseller()
     {
         $response = $this->get('/seller/register');
@@ -89,5 +90,25 @@ class RouteTest extends TestCase
         $response->assertStatus(405);
 
     }
+    public function test_update_product_Page()
+    {
+        $response = $this->post('/product/update');
+
+        $response->assertStatus(404);
+    }
+    public function test_store_product_Page()
+    {
+        $response = $this->post('/product/store');
+
+        $response->assertStatus(302);
+    }
+    public function test_delete_product_Page()
+    {
+        $response = $this->post('/product/destroy');
+
+        $response->assertStatus(404);
+    }
+
+    
 
 }

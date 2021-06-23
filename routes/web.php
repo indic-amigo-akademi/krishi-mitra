@@ -124,6 +124,7 @@ Route::get('/checkout/processed', 'OrderController@store')->name(
 
 Route::get('/orders', 'OrderController@showall')->name('orders');
 Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show');
+Route::post('/orders/{id}', 'OrderController@cancel_delete')->name('orders.show.cancel.delete');
 
 // Address Routes
 Route::get('/address', 'AddressController@address_view')->name('address');

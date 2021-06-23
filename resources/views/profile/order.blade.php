@@ -38,12 +38,27 @@
                             <span class="uk-text-emphasis">Phone : {{ $o->address->mobile }}</span>
                             <br>
                             <span>{{ $o->address->full_address }}</span>
-                            <br class="uk-margin">
-                            <span class="uk-text-emphasis">Ordered on : </span>
-                            {{ $o->created_at }}
+                            <br>
+                            <span class="uk-text-emphasis">Ordered on : {{ $o->created_at }}</span>
+                            <br>
+                            <span class="uk-text-emphasis">Order Status : {{ $o->status }}</span>
                         </div>
                     </div>
-
+                    <form action="{{ route('orders.show.cancel.delete',$o->order_id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" id="id" name="id" value ="{{ $o->id }}">
+                        @if($o->status=="Processed")
+                            <button id='{{ $o->id }}c' type="submit" name="input" value="Cancel"
+                                class="uk-align-right uk-button uk-button-link uk-text-danger  uk-text-bold">
+                                <i class="ri-close-line"></i> Cancel Order
+                            </button>                     
+                        @else
+                            <button id='{{ $o->id }}c' type="submit" name="input" value="Delete"
+                                class="uk-align-right uk-button uk-button-link uk-text-danger  uk-text-bold">
+                                <i class="ri-close-line"></i> Delete Order
+                            </button>    
+                        @endif
+                    </form>
                 </div>
             @endforeach
         @else

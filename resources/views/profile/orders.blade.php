@@ -32,6 +32,8 @@
                                 href="{{ route('orders.show', $o->order_id) }}">{{ $o->order_id }}</a>
                             <br>
                             <span class="uk-text-emphasis"> Ordered On: </span><span>{{ $o->created_at }}</span>
+                            <br>
+                            <span class="uk-text-emphasis">Order Status : {{ $o->status }}</span>
                         </div>
                     </div>
                 </div>

@@ -23,7 +23,7 @@ class AddressController extends Controller
         $uid = Auth::user()->id;
         $address = Address::all()->where('user_id', '=', $uid);
 
-        return view('profile.address')->with('address', $address);
+        return view('profile.address.list')->with('address', $address);
     }
 
     public function address_edit_delete(Request $req)
@@ -34,18 +34,16 @@ class AddressController extends Controller
         Log::info($aid);
         if ($address == 'Edit') {
             $addr = Address::all()->where('id', '=', $aid);
-            return view('profile.addressEdit')->with('address', $addr);
+            return view('profile.address.edit')->with('address', $addr);
         } elseif ($address == 'Delete') {
             Address::find($aid)->delete();
-            $uid = Auth::user()->id;
-            $addr = Address::all()->where('user_id', '=', $uid);
-            return view('profile.address')->with('address', $addr);
+            return redirect(route('address'));
         }
     }
 
     public function add_address_view()
     {
-        return view('profile.addressAdd');
+        return view('profile.address.add');
     }
 
     public function add_address(Request $req)
@@ -62,7 +60,7 @@ class AddressController extends Controller
             'type' => $req['type'],
             'user_id' => Auth::id(),
         ]);
-        return redirect('/address')->with('alert', [
+        return redirect(route('address'))->with('alert', [
             'code' => 'success',
             'title' => 'Yippee!',
             'subtitle' => 'Your address was added!',
@@ -83,7 +81,7 @@ class AddressController extends Controller
         $addr->landmark = $req->landmark;
         $addr->type = $req->type;
         $addr->save();
-        return redirect('/address')->with('alert', [
+        return redirect(route('address'))->with('alert', [
             'code' => 'success',
             'title' => 'Yippee!',
             'subtitle' => 'Your address was edited!',

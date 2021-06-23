@@ -5,9 +5,8 @@
     <section class="container">
         <div class="uk-background-cover uk-light header-content" data-src="{{ asset('images/background/img8.jpg') }}"
             uk-img>
-            <div class="uk-width-1-1 uk-margin-xlarge-top">
-                <div
-                    class="uk-width-1-2@m uk-align-right uk-margin-xlarge-top uk-margin-left uk-margin-right uk-padding uk-text-center welcome-content">
+            <div class="uk-width-1-1 uk-margin-xlarge-top uk-padding-small">
+                <div class="uk-width-1-2@m uk-align-right uk-margin-xlarge-top uk-padding uk-text-center welcome-content">
                     <div class="uk-text-large uk-text-bold uk-text-italic mySlides fade">"Agriculture is the greatest and
                         fundamentally the
                         most important
@@ -16,7 +15,8 @@
                         the
                         branches of the tree of national life, the roots of which go deeply into the land. We all flourish
                         or
-                        decline with the farmer."</div>
+                        decline with the farmer."
+                    </div>
                     <div class="uk-text-bold mySlides fade">
                         <p class="uk-text-large uk-text-italic uk-margin-bottom">"The farmer is the
                             only man in our

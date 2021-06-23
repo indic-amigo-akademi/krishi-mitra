@@ -14,7 +14,7 @@ class RouteTest extends TestCase
      */
     public function testRegisterPage()
     {
-        $response = $this->get('/Register');
+        $response = $this->get('/register');
 
         $response->assertStatus(404);
     }
@@ -42,5 +42,4 @@ class RouteTest extends TestCase
 
         $response->assertStatus(404);
     }
-    
 }

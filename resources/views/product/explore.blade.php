@@ -26,7 +26,7 @@
 @section('content')
     <section class="uk-height-1-1 uk-padding-small sprod">
         <div
-            class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal">
+            class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal product-slider">
 
             @if (count($products) > 0)
                 @foreach ($products as $prod)
@@ -117,6 +117,27 @@
                 UIkit.modal($("#signin-form").get(0)).show();
             @endif
         }
+
+        $('.product-slider').slick({
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            adaptiveHeight: true,
+            responsive: [{
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
 
     </script>
 @endsection

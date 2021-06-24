@@ -19,8 +19,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
 
-
-
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 
@@ -48,6 +46,7 @@
     </script>
     <script src="{{ mix('/js/vanilla.js') }}"></script>
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+
 
     @include('partials.alert')
 

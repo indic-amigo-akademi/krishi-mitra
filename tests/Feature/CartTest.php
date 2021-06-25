@@ -18,22 +18,19 @@ class CartTest extends TestCase
      */
 
 
-
     public function user_can_add_product_to_cart()
     {
         $response = $this->json('POST', route('user.login.validate'), [
             'email' => 'test@gmail.com',
             'password' => 'secret1234',
         ]);
-        $product =[
+        $product = [
             'user_id' => 1,
             'product_id' => 2,
             'quantity' => 'KGS',
             'price' => 10,
             'discount' => 0.3
         ];
-
-        
     }
     public function cart_store()
     {
@@ -81,35 +78,8 @@ class CartTest extends TestCase
             'discount' => 0.3
         ];
         //$delete = $this->post(route('cart.destroy'), $product);
-        $response->json('POST', '/cart/destroy/3',$product);
+        $response->json('POST', '/cart/destroy/3', $product);
         // Your assertions here
         $response->assertStatus(200);
     }
-    /*public function it_can_increment_numeric_values_inside_collections()
-    {
-        $data = [
-            
-            'qty' => 0,
-            
-        ];
-       
-        $this->json('POST', '/cart/increment/');
-        $this->assertStatus(200);
-    }
-    public function it_can_decrement_numeric_values_inside_collections()
-    {
-        $data = new Collection([
-            'qty' => 10,
-        ]);
-
-        $this->assertSame(10, $data->get('qty'));
-
-        $this->assertSame(9, $data->decrement('qty', 1)->get('qty'));
-        $this->assertSame(9, $data->get('qty'));
-
-        $this->assertSame(10, $data->decrement('qty', -1)->get('qty'));
-        $this->assertSame(10, $data->get('qty'));
-        $this->json('POST', '/cart/decrement/');
-        $this->assertStatus(200);
-    }*/
 }

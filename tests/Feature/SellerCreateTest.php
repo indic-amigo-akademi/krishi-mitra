@@ -38,10 +38,5 @@ class SellerCreateTest extends TestCase
         $response->json('POST', route('seller.create'), $data);
         //Assert it was successful
         $response->assertStatus(200);
-
-
-        //Assert we received a token
-        //$this->assertArrayHasKey('token',$response->json());
-
     }
 }

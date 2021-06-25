@@ -18,7 +18,12 @@
                     <label class="uk-width-1-5@m uk-text-bold" for="type">Type :</label>
                     <div class="uk-inline uk-width-1-1 uk-width-4-5@m">
                         <i class="uk-form-icon ri-pencil-fill"></i>
-                        <input class="uk-input" type="text" id="type" name="type">
+                        {{-- <input class="uk-input" type="text" id="type" name="type"> --}}
+                        <select name="type" id="type" class="uk-input uk-select">
+                            @foreach (App\Product::$categories as $index => $category)
+                                <option value="{{ $index }}">{{ $category }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="uk-flex uk-flex-between uk-flex-middle uk-flex-wrap">
@@ -27,53 +32,15 @@
                         <div class="uk-inline">
                             <i class="uk-form-icon ri-pencil-fill"></i>
                             <select class="uk-input uk-select" name="unit" id="unit">
-                                <optgroup label="Recently Used">
-                                    <option value="KGS" selected>Kilograms (KGS)</option>
-                                    <option value="PCS">Pieces (PCS)</option>
-                                    <option value="UNT">Units (UNT)</option>
-                                    <option value="NOS">Numbers (NOS)</option>
+                                <optgroup label="Mostly Used">
+                                    @foreach (array_slice(App\Product::$units, 0, 4) as $abbrev => $unit)
+                                        <option value="{{ $abbrev }}">{{ $unit }}</option>
+                                    @endforeach
                                 </optgroup>
-                                <option value="BAG">Bags (BAG)</option>
-                                <option value="BAL">Bale (BAL)</option>
-                                <option value="BDL">Bundles (BDL)</option>
-                                <option value="BKL">Buckles (BKL)</option>
-                                <option value="BOU">Billions Of Units (BOU)</option>
-                                <option value="BOX">Box (BOX) </option>
-                                <option value="BTL">Bottles (BTL)</option>
-                                <option value="BUN">Bunches (BUN)</option>
-                                <option value="CAN">Cans (CAN)</option>
-                                <option value="CBM">Cubic Meter (CBM)</option>
-                                <option value="CCM">Cubic Centimeter (CCM)</option>
-                                <option value="CMS">Centimeter (CMS)</option>
-                                <option value="CTN">Cartons (CTN)</option>
-                                <option value="DOZ">Dozen (DOZ)</option>
-                                <option value="DRM">Drum (DRM)</option>
-                                <option value="GGR">Great Gross (GGR)</option>
-                                <option value="GMS">Grams (GMS)</option>
-                                <option value="GRS">Gross (GRS)</option>
-                                <option value="GYD">Gross Yards (GYD)</option>
-                                <option value="KLR">Kiloliter (KLR)</option>
-                                <option value="KME">Kilometre (KME)</option>
-                                <option value="MLT">Millilitre (MLT)</option>
-                                <option value="MTR">Meters (MTR)</option>
-                                <option value="MTS">Metric Tons (MTS)</option>
-                                <option value="PAC">Packs (PAC)</option>
-                                <option value="PRS">Pairs (PRS)</option>
-                                <option value="QTL">Quintal (QTL)</option>
-                                <option value="ROL">Rolls (ROL)</option>
-                                <option value="SET">Sets (SET)</option>
-                                <option value="SQF">Square Feet (SQF)</option>
-                                <option value="SQM">Square Meters (SQM)</option>
-                                <option value="SQY">Square Yards (SQY)</option>
-                                <option value="TBS">Tablets (TBS)</option>
-                                <option value="TGM">Ten Gross (TGM)</option>
-                                <option value="THD">Thousands (THD)</option>
-                                <option value="TON">Tonnes (TON)</option>
-                                <option value="TUB">Tubes (TUB)</option>
-                                <option value="UGS">Us Gallons (UGS)</option>
-                                <option value="YDS">Yards (YDS)</option>
+                                @foreach (array_slice(App\Product::$units, 4) as $abbrev => $unit)
+                                    <option value="{{ $abbrev }}">{{ $unit }}</option>
+                                @endforeach
                             </select>
-                            {{-- <input class="uk-input" type="string" id="unit" name="unit"> --}}
                         </div>
                     </div>
                     <div class="uk-padding-small">
@@ -95,16 +62,16 @@
                     <div class="uk-padding-small">
                         <label class="uk-text-bold uk-margin-right" for="discount">Discount :</label>
                         <div class="uk-inline">
-                                <div class="uk-form-icon uk-form-icon-flip">
-                                    <span class="ri-percent-fill"></span>
-                                </div>
-                                <input class="uk-input" class="discount" name="discount" type="number" min="0.05" max="0.75"
-                                    step="0.01" />
+                            <div class="uk-form-icon uk-form-icon-flip">
+                                <span class="ri-percent-fill"></span>
                             </div>
+                            <input class="uk-input" class="discount" name="discount" type="number" min="0.05" max="0.75"
+                                step="0.01" />
+                        </div>
                         <div>
-                            <input class="uk-range" type="range" min="0.05" max="0.75" step="0.01"
-                                id="discount-range" name="discount-range">
-                            
+                            <input class="uk-range" type="range" min="0.05" max="0.75" step="0.01" id="discount-range"
+                                name="discount-range">
+
                         </div>
                     </div>
                 </div>
@@ -212,6 +179,5 @@
 
 
         });
-
     </script>
 @endsection

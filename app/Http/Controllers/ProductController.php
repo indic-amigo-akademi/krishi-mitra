@@ -34,23 +34,6 @@ class ProductController extends Controller
         $products = Product::all();
         return view('seller.product.list')->with('products', $products);
     }
-    public function search(Request $req)
-    {
-        log::info('Purcho' . $req['search']);
-        $x = $req['search'];
-        $products = Product::where('name', 'like', '%' . $x . '%')->get();
-        log::info('Products are:-' . $products);
-        if (count($products) == 0) {
-            $sid = Seller::where('name', '=', $x)->get();
-            if (count($sid) > 0) {
-                $products = Product::where('seller_id', '=', $sid[0]->id)->get();
-            }
-        }
-        if (count($products) == 0) {
-            $products = Product::where('desc', 'like', '%' . $x . '%')->get();
-        }
-        return view('product.search')->with('products', $products);
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -87,7 +70,7 @@ class ProductController extends Controller
             'name' => $req['name'],
             'unit' => $req['unit'],
             'seller_id' => Auth::user()->seller->id,
-            'slug' => Str::slug($req['name'], '_'),
+            'slug' => Str::slug($req['name'], '-'),
             'discount' => $req['discount'],
         ]);
 
@@ -167,17 +150,6 @@ class ProductController extends Controller
         if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
             abort(403);
         }
-
-        /*if (User::find(Auth::id())->role == 'seller') {
-            Log::info('Seller');
-            $sid = Auth::user()->seller->id;
-            $psid = Product::find($id)->seller_id;
-            log::info('Sid and Psid are' . $sid . ' ' . $psid);
-            if ($sid != $psid) {
-                log::info('You cannot delete someone else product');
-                return redirect('/');
-            }
-        }*/
 
         $prod = Product::find($id);
         $prod->name = $req->name;

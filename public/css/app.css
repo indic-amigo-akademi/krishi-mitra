@@ -13200,6 +13200,44 @@ footer {
   color: #3b7402;
 }
 
+.product-box {
+  border: 1px solid #e5e5e5;
+}
+.product-box .uk-card-body {
+  border-top: 1px solid #e5e5e5;
+}
+.product-box .uk-card-footer {
+  padding: 0.5rem;
+}
+.product-box a {
+  color: #1e87f0 !important;
+}
+.product-box .uk-card-media-top {
+  display: flex;
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+}
+.product-box .uk-card-media-top img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  vertical-align: middle;
+}
+
+@media screen and (max-width: 767px) {
+  .product-box .icon-text {
+    display: none;
+  }
+}
+.product-slider a.slidenav {
+  color: #4f4242 !important;
+}
+
 .cart-quan {
   display: inline-block;
   border-radius: 50%;

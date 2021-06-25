@@ -37,7 +37,7 @@
                 </div>
 
             @endforeach
-            <a class="uk-button order-home" href="{{ route('product.browse') }}">Back To Home</a>
+            <a class="uk-button order-home" href="{{ route('home') }}">Back To Home</a>
         @else
             <div class="uk-card uk-card-default uk-padding uk-margin-bottom">
                 <p class="uk-text-bold uk-text-center">No Order History</p>

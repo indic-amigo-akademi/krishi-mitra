@@ -94,7 +94,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             return redirect()->intended($this->redirectPath());
         }
-        
+
         return redirect()
             ->back()
             ->withInput()

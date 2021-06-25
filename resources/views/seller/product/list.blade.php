@@ -11,7 +11,7 @@
                 @foreach ($products as $prod)
                     <div
                         class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex
-                                                                                                                                                                                                                 uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
+                                                                                                                                                                                                                     uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
                         <a href="{{ route('seller.product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
                             <img src="{{ isset($prod->coverPhotos) ? asset('uploads/products/' . $prod->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                 uk-img />
@@ -34,11 +34,11 @@
                             <a href="{{ route('seller.product.edit', $prod->id) }}" type=" button"
                                 class="uk-text-warning">Edit</a>
 
-                            <form action="{{ route('product.destroy', $product->id) }}"
-                                id="{{ 'removeProduct' . $product->id }}" method="post">
+                            <form action="{{ route('product.destroy', $prod->id) }}"
+                                id="{{ 'removeProduct' . $prod->id }}" method="post">
                                 @csrf
                                 <a href="#"
-                                    onclick="document.getElementById('{{ 'removeProduct' . $product->id }}').submit()"
+                                    onclick="document.getElementById('{{ 'removeProduct' . $prod->id }}').submit()"
                                     class="uk-margin-left uk-link-heading sdetail-remove uk-text-danger uk-text-bold">Remove</a>
                             </form>
                         </div>
@@ -75,6 +75,5 @@
 
             });
         }
-
     </script>
 @endsection

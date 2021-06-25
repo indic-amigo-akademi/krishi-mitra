@@ -19,6 +19,9 @@ class SellerController extends Controller
     }
     public function seller_form()
     {
+        if (Auth::user()->is_seller || Auth::user()->is_admin) {
+            return redirect()->back();
+        }
         return view('seller.form');
     }
 

@@ -26,39 +26,82 @@ class GetRoutesTest extends TestCase
     protected function testSellerSingleGetRoute(
         $url,
         $status = ["customer" => 200, "seller" => 200],
-        $redirectUri = ["guest" => '/login']
+        $redirectUri = ["guest" => '/login'],
+        $fromUri = '/explore'
     ) {
-        $response = $this->get($url);
+        $response = $this->from($fromUri)->get($url);
         if ($response->status() == 302)
             $response->assertRedirect($redirectUri["guest"]);
 
-        $response = $this->actingAs($this->customer)->get($url);
+        $response = $this->from($fromUri)->actingAs($this->customer)->get($url);
         if ($response->status() == 403)
             $response->assertStatus(403);
+        elseif ($response->status() == 302)
+            $response->assertRedirect($redirectUri["customer"]);
         else
             $response->assertStatus($status["customer"]);
 
-        $response = $this->actingAs($this->seller)->get($url);
+        $response = $this->from($fromUri)->actingAs($this->seller)->get($url);
         if ($response->status() == 403)
             $response->assertStatus(403);
+        elseif ($response->status() == 302)
+            $response->assertRedirect($redirectUri["seller"]);
         else
             $response->assertStatus($status["seller"]);
 
-        $response = $this->actingAs($this->admin)->get($url);
-        $response->assertStatus(200);
-        $response = $this->actingAs($this->sysadmin)->get($url);
-        $response->assertStatus(200);
+        $response = $this->from($fromUri)->actingAs($this->admin)->get($url);
+        if ($response->status() == 200)
+            $response->assertStatus(200);
+        elseif ($response->status() == 302)
+            $response->assertRedirect($redirectUri["admin"]);
+        $response = $this->from($fromUri)->actingAs($this->sysadmin)->get($url);
+        if ($response->status() == 200)
+            $response->assertStatus(200);
+        elseif ($response->status() == 302)
+            $response->assertRedirect($redirectUri["sysadmin"]);
 
         Auth::logout();
     }
 
     public function testSellerRoute()
     {
+        $status = [
+            "seller" => 302,
+            "admin" => 302,
+            "customer" => 200,
+            "seller" => 200,
+        ];
         $this->testSellerSingleGetRoute(route("profile"));
-        $this->testSellerSingleGetRoute(route("seller.register"));
+        $this->testSellerSingleGetRoute(route("seller.register"), $status,  [
+            "seller" => '/explore',
+            "admin" => '/explore',
+            "sysadmin" => '/explore',
+            "guest" => '/login'
+        ]);
+
+        $this->testSellerSingleGetRoute(route("home"));
         $this->testSellerSingleGetRoute(route("product.browse"));
         $this->testSellerSingleGetRoute(route("customer.index"));
+        $this->testSellerSingleGetRoute(route("search.item"));
         $this->testSellerSingleGetRoute(route("about"));
         $this->testSellerSingleGetRoute(route("contact"));
+        $this->testSellerSingleGetRoute(route("checkout"));
+        $this->testSellerSingleGetRoute(route("orders"));
+        $status = [
+            "seller" => 200,
+            "admin" => 200,
+            "customer" => 200
+        ];
+        $this->testSellerSingleGetRoute(route("OrderProcessed"), $status, [
+            "guest" => "/login",
+            "customer" => '/home',
+            "seller" => '/home',
+            "admin" => '/home',
+            "sysadmin" => '/home'
+        ]);
+        // $this->testSellerSingleGetRoute(route("orders.show", 16240389968));
+        $this->testSellerSingleGetRoute(route("address"));
+        $this->testSellerSingleGetRoute(route("address.add.view"));
+        // $this->testSellerSingleGetRoute(route("address.edit.view"));
     }
 }

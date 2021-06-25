@@ -19,8 +19,12 @@ class SellerCreateTest extends TestCase
 
         $response->assertStatus(200);
     }
-    public function testsellerRegister()
+   public function testsellerRegister()
     {
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]);
         //User's data
         $data = [
             'user_id' => 1,
@@ -31,13 +35,10 @@ class SellerCreateTest extends TestCase
 
         ];
         //Send post request
-        $response = $this->json('POST', route('seller.create'), $data);
+        $response->json('POST', route('seller.create'), $data);
         //Assert it was successful
-        $response->assertStatus(401);
+        $response->assertStatus(200);
 
-
-        //Assert we received a token
-        //$this->assertArrayHasKey('token',$response->json());
 
     }
 }

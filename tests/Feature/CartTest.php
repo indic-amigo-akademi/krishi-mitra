@@ -18,25 +18,28 @@ class CartTest extends TestCase
      */
 
 
-
-    public function user_can_add_product_to_cart()
+ public function user_can_add_product_to_cart()
     {
-        $this->assertTrue(Cart::doesNotExist());
-        $product = Product::create([
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]);
+        $product =[
             'user_id' => 1,
             'product_id' => 2,
             'quantity' => 'KGS',
             'price' => 10,
             'discount' => 0.3
-        ]);
+        ];
 
-        Cart::addItem($product);
-
-        $this->assertTrue(Cart::exists());
+        
     }
     public function cart_store()
     {
-
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]);
         $data = [
             'user_id' => 1,
             'product_id' => 2,
@@ -46,7 +49,7 @@ class CartTest extends TestCase
 
         ];
 
-        $response = $this->post(route('cart.store'), $data);
+        $response->post(route('cart.store'), $data);
 
         // Your assertions here
         $response->assertStatus(200);
@@ -56,7 +59,7 @@ class CartTest extends TestCase
 
     public function test_it_fails_to_destroy_if_the_user_is_unauthorized()
     {
-        $this->json('DELETE', 'api/cart/1')
+        $this->json('DELETE', 'cart/destroy/1')
             ->assertStatus(404);
     }
 
@@ -65,7 +68,10 @@ class CartTest extends TestCase
     public function test_it_deletes_the_product_from_cart()
     {
 
-
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]);
         $product = [
             'user_id' => 1,
             'product_id' => 2,
@@ -74,11 +80,11 @@ class CartTest extends TestCase
             'discount' => 0.3
         ];
         //$delete = $this->post(route('cart.destroy'), $product);
-        $delete = $this->delete('/cart/destroy/');
+        $response->json('POST', '/cart/destroy/3',$product);
         // Your assertions here
-        $delete->assertStatus(404);
+        $response->assertStatus(200);
     }
-    public function it_can_increment_numeric_values_inside_collections()
+  /*  public function it_can_increment_numeric_values_inside_collections()
     {
         $data = new Collection([
             'qty' => 0,
@@ -109,5 +115,5 @@ class CartTest extends TestCase
         $this->assertSame(10, $data->get('qty'));
         $this->json('POST', '/cart/decrement/');
         $this->assertStatus(200);
-    }
+    }*/
 }

@@ -20,6 +20,10 @@ class ProductUpdateTest extends TestCase
 
     public function testCreateProduct()
     {
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]);
         $data = [
             'id' => 3,
             'type' => 'Vegetable',
@@ -32,20 +36,19 @@ class ProductUpdateTest extends TestCase
             'slug' => 'aloo_jyoti',
             'discount' => 0.3,
         ];
-
-        $response = $this->post(route('product.store'), $data);
-
+        $response->json('POST', 'product.store', $data);
         // Your assertions here
-        $response->assertStatus(302);
+        $response->assertStatus(200);
     }
 
     public function testupdateProduct()
 
     {
 
-
-        $response = $this->json('GET', 'product');
-        $response->assertStatus(200);
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]);
 
         $product = [
             'id' => 3,
@@ -59,18 +62,30 @@ class ProductUpdateTest extends TestCase
             'slug' => 'aloo_jyoti',
             'discount' => 0.3,
         ];
-
-        $update = $this->json('POST', '/products/update/3', ['name' => "Changed for test"]);
-        //$update->assertStatus(200);
+        $update = ['name' => 'changed'];
+        $response->json('POST', '/products/update/3', [
+            $product['id'],
+            $product['type'],
+            $product['seller_id'],
+            $product['desc'],
+            $product['price'] => 15,
+            $update['name'],
+            $product['unit'],
+            $product['quantity'],
+            $product['slug'],
+            $product['discount']
+        ]);
+        $response->assertStatus(200);
     }
     //$user = factory(\App\User::class)->create();
     //$response = $this->actingAs($user, 'api')->json('POST', '/api/products',$data);
 
     public function testDeleteProduct()
     {
-        $response = $this->json('GET', 'product');
-        $response->assertStatus(200);
-
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]);
 
         $product = [
             'id' => 3,
@@ -84,7 +99,7 @@ class ProductUpdateTest extends TestCase
             'slug' => 'aloo_jyoti',
             'discount' => 0.3,
         ];
-        $delete = $this->delete('/products/destroy/3');
-        //$delete->assertStatus(200);
+        $response->json('POST', '/products/destroy/3', $product);
+        $response->assertStatus(200);
     }
 }

@@ -14,9 +14,9 @@ class RouteTest extends TestCase
      */
     public function testRegisterPage()
     {
-        $response = $this->get('/Register');
+        $response = $this->get('/register');
 
-        $response->assertStatus(404);
+        $response->assertStatus(200);
     }
     public function testLoginPage()
     {
@@ -24,16 +24,6 @@ class RouteTest extends TestCase
 
         $response->assertStatus(200);
     }
-
-
-    public function testLogoutPage()
-    {
-        $response = $this->post('/logout');
-
-        $response->assertStatus(302);
-    }
-
-
     public function testForgotpasswordPage()
     {
         $response = $this->get('/forgotpassword');
@@ -51,64 +41,7 @@ class RouteTest extends TestCase
         $response = $this->get('/confirmpassword');
 
         $response->assertStatus(404);
-    }
-    //home,customer,seller,seller register, seller create
-
-    public function testhomepage()
-    {
-        $response = $this->get('/home');
-
-        $response->assertStatus(302);
 
     }
-    public function testcustomer()
-    {
-        $response = $this->get('/customer');
-
-        $response->assertStatus(404);
-
-    }
-    public function testseller()
-    {
-        $response = $this->get('/seller');
-
-        $response->assertStatus(302);
-
-    }
-    //seller routes//
-    public function testregisterseller()
-    {
-        $response = $this->get('/seller/register');
-
-        $response->assertStatus(302);
-
-    }
-    public function testcreateseller()
-    {
-        $response = $this->get('/seller/create');
-
-        $response->assertStatus(405);
-
-    }
-    public function test_update_product_Page()
-    {
-        $response = $this->post('/product/update');
-
-        $response->assertStatus(404);
-    }
-    public function test_store_product_Page()
-    {
-        $response = $this->post('/product/store');
-
-        $response->assertStatus(302);
-    }
-    public function test_delete_product_Page()
-    {
-        $response = $this->post('/product/destroy');
-
-        $response->assertStatus(404);
-    }
-
-    
 
 }

@@ -34,11 +34,11 @@
                             <a href="{{ route('seller.product.edit', $prod->id) }}" type=" button"
                                 class="uk-text-warning">Edit</a>
 
-                            <form action="{{ route('product.destroy', $prod->id) }}"
-                                id="{{ 'removeProduct' . $prod->id }}" method="post">
+                            <form action="{{ route('product.destroy', $product->id) }}"
+                                id="{{ 'removeProduct' . $product->id }}" method="post">
                                 @csrf
                                 <a href="#"
-                                    onclick="document.getElementById('{{ 'removeProduct' . $prod->id }}').submit()"
+                                    onclick="document.getElementById('{{ 'removeProduct' . $product->id }}').submit()"
                                     class="uk-margin-left uk-link-heading sdetail-remove uk-text-danger uk-text-bold">Remove</a>
                             </form>
                         </div>

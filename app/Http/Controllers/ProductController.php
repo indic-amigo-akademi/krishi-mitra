@@ -73,6 +73,7 @@ class ProductController extends Controller
             'slug' => Str::slug($req['name'], '-'),
             'discount' => $req['discount'],
         ]);
+        log::info('This method store is called');
 
         if ($req->hasFile('cover')) {
             $destinationPath = public_path('uploads/products');
@@ -97,7 +98,7 @@ class ProductController extends Controller
                 array_push($fileName, $img->id);
             }
         }
-        return redirect(route(Auth::user()->type . '.product.browse'));
+        return redirect(route(Auth::user()->role . '.product.browse'));
     }
 
     /**
@@ -158,8 +159,8 @@ class ProductController extends Controller
         $prod->price = $req->price;
         $prod->discount = $req->discount;
         $prod->save();
-
-        return redirect(route(Auth::user()->type . '.product.browse'));
+        log::info('Type of user is' . Auth::user()->role);
+        return redirect(route(Auth::user()->role . '.product.browse'));
     }
 
     /**
@@ -185,7 +186,7 @@ class ProductController extends Controller
 
         Product::find($id)->delete();
 
-        return redirect(route(Auth::user()->type . '.product.browse'));
+        return redirect(route(Auth::user()->role . '.product.browse'));
     }
     public function inactivate($id)
     {

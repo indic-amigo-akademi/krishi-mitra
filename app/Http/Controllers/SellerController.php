@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Approval;
+use App\Helpers\Notiflix;
 use App\Product;
 use App\Seller;
 use App\User;
@@ -28,7 +29,7 @@ class SellerController extends Controller
         $email = User::find(Auth::id())->email;
         $phone = User::find(Auth::id())->phone;
         Log::info('PP' . $usr . $email);
-        $data = array('usr' => $usr, 'email' => $email, 'phone' => $phone);
+        $data = ['usr' => $usr, 'email' => $email, 'phone' => $phone];
         return view('seller.dashboard')->with($data);
     }
 
@@ -59,11 +60,15 @@ class SellerController extends Controller
             'type' => 'seller_approval',
         ]);
 
-        return redirect('/home')->with('alert', [
-            'code' => 'success',
-            'title' => 'Yippee!',
-            'subtitle' => 'Your registration as a seller is in progress!',
-        ]);
+        return redirect('/home')->with(
+            'alert',
+            Notiflix::make([
+                'code' => 'success',
+                'title' => 'Yippee!',
+                'type' => 'Report',
+                'subtitle' => 'Your registration as a seller is in progress!',
+            ])
+        );
     }
 
     public function product_show(Request $req, $slug)

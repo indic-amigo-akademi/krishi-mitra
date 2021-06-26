@@ -21,7 +21,11 @@
                                     {{ $o->product->seller->trade_name }}
                                 </div>
                                 <div class="uk-text-bold uk-margin-small-bottom sdetail-price">
-                                    ₹{{ sprintf('%.2f', $o->total_discounted_price) }}</div>
+                                    ₹{{ sprintf('%.2f', $o->total_discounted_price) }}
+                                    <span class="uk-text-muted uk-text-strikethrough uk-text-small uk-margin-small-left">
+                                        ₹ {{ sprintf('%.2f', $o->total_price) }}
+                                    </span>
+                                </div>
                                 <div class="uk-text-small uk-margin-bottom">
                                     Quantity : {{ $o->qty }}
                                 </div>

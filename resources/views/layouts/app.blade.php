@@ -42,6 +42,8 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/gh/cosmogicofficial/quantumalert@latest/minfile/quantumalert.js" charset="utf-8">
+    </script>
     <script src=" {{ mix('/js/app.js') }}">
     </script>
     <script src="{{ mix('/js/vanilla.js') }}"></script>

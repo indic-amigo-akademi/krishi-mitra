@@ -6,6 +6,7 @@
 
 require("./bootstrap");
 // require('slick-carousel');
+window.Notiflix = require("notiflix");
 
 // window.Vue = require('vue');
 

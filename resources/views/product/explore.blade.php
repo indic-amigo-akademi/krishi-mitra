@@ -76,8 +76,11 @@
                 body: JSON.stringify(x),
                 method: 'post',
                 }).then(function(response) {
-                console.log('Posted');
+                Notiflix.Confirm.show('Yippee!', 'Product added to the cart!' , 'Go To Cart', 'Stay', function(){
+                location.href = "{{ route('cart') }}";
+                }, function(){
                 location.reload();
+                });
                 }).catch(function(error) {
                 console.error('Error:', error);
                 });

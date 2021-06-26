@@ -12,7 +12,7 @@ try {
     window.UIkit = require("uikit");
     require("uikit/dist/js/uikit-icons");
     require("remixicon/fonts/remixicon.css");
-    require("jquery-migrate");
+    // require("jquery-migrate");
 } catch (e) {}
 
 /**

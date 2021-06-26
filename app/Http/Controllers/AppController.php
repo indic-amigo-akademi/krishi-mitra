@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
+use App\Helpers\Notiflix;
 use App\Product;
 use App\Seller;
 use Illuminate\Http\Request;
@@ -39,11 +40,14 @@ class AppController extends Controller
 
         return redirect()
             ->route('contact')
-            ->with('alert', [
-                'code' => 'success',
-                'title' => 'Success!',
-                'subtitle' => 'Message sent successfully!',
-            ]);
+            ->with(
+                'alert',
+                Notiflix::make([
+                    'code' => 'success',
+                    'title' => 'Hoorah!',
+                    'subtitle' => 'Message sent successfully!',
+                ])
+            );
     }
 
     public function explore(Request $req)

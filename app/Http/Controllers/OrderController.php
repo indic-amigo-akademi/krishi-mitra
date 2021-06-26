@@ -7,6 +7,7 @@ use App\User;
 use App\Product;
 use App\Cart;
 use App\Address;
+use App\Helpers\Notiflix;
 use Carbon\Carbon;
 use App\Order;
 use Illuminate\Support\Facades\Auth;
@@ -149,7 +150,7 @@ class OrderController extends Controller
                     'order_id' => $oid_padded,
                     'address_id' => $request['address_radio'],
                     'qty' => $p->qty,
-                    'price' => $p->qty * $p->price * (1 - $p->discount),
+                    'price' => $p->price,
                     'discount' => $p->discount,
                     'status' => 'Processed',
                     'type' => $type,
@@ -157,7 +158,17 @@ class OrderController extends Controller
                 Cart::find($p->id)->delete();
             }
             log::info('ORDER PROCESSED SUCCESSFULLY');
-            return redirect(route('home'));
+            return redirect()
+                ->route('orders')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Yippee!',
+                        'type' => 'Notify',
+                        'subtitle' => 'Order is successfully placed!',
+                    ])
+                );
         } else {
             log::info('request is' . $request);
             log::info('request product id is' . $request['prod_id']);
@@ -182,14 +193,24 @@ class OrderController extends Controller
                     'order_id' => $oid_padded,
                     'address_id' => $request['address_radio'],
                     'qty' => 1,
-                    'price' => $p->price * (1 - $p->discount),
+                    'price' => $p->price,
                     'discount' => $p->discount,
                     'status' => 'Processed',
                     'type' => $type,
                 ]);
             }
             log::info('ORDER PROCESSED SUCCESSFULLY');
-            return redirect(route('home'));
+            return redirect()
+                ->route('orders')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Yippee!',
+                        'type' => 'Notify',
+                        'subtitle' => 'Order is successfully placed!',
+                    ])
+                );
         }
     }
 

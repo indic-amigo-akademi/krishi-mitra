@@ -43,7 +43,8 @@
                                     </span>
                                 </div>
                                 <button class="uk-button uk-button-default card-remove" id={{ $cart_product->id }}
-                                    onclick="delFromCart('{{ $cart_product->id }}')">
+                                    onclick="Notiflix.confirmdb('Are u sure!', 'Do you want to delete this product from cart?', war, 'Yes', 'No', 'delFromCart
+                                                                                        ', '');">
                                     Remove
                                 </button>
                             </div>
@@ -111,9 +112,6 @@
             var x = {
                 id: id
             }
-            console.log('ID IS');
-            console.log(x)
-            console.log('ID IS');
             fetch('/cart/delete', {
                 headers: {
                     'Content-Type': 'application/json',
@@ -122,10 +120,11 @@
                 body: JSON.stringify(x),
                 method: 'post',
             }).then(function(response) {
-                console.log('Posted');
+                Notiflix.Notify.success('Yippee!', 'Product deleted from the cart!');
                 location.reload();
             }).catch(function(error) {
                 console.error('Error:', error);
+                Notiflix.Notify.error('Oops!', 'Product couldn\'t be deleted from the cart!');
             });
         }
 
@@ -142,10 +141,11 @@
                 body: JSON.stringify(x),
                 method: 'post',
             }).then(function(response) {
-                console.log('Posted');
+                Notiflix.Notify.success('Yippee!', 'Product added to the cart!');
                 location.reload();
             }).catch(function(error) {
                 console.error('Error:', error);
+                Notiflix.Notify.error('Oops!', 'Product couldn\'t be added to the cart!');
             });
 
         }
@@ -167,12 +167,12 @@
                 body: JSON.stringify(x),
                 method: 'post',
             }).then(function(response) {
-                console.log('Posted');
+                Notiflix.Notify.success('Yippee!', 'Product subtracted from the cart!');
                 location.reload();
             }).catch(function(error) {
                 console.error('Error:', error);
+                Notiflix.Notify.error('Oops!', 'Product couldn\'t be subtracted from the cart!');
             });
         }
-
     </script>
 @endsection

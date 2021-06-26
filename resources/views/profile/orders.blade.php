@@ -22,6 +22,9 @@
                                 </div>
                                 <div class="uk-text-bold uk-margin-small-bottom sdetail-price">
                                     ₹ {{ sprintf('%.2f', $o->total_discounted_price) }}
+                                    <span class="uk-text-muted uk-text-strikethrough uk-text-small uk-margin-small-left">
+                                        ₹ {{ sprintf('%.2f', $o->total_price) }}
+                                    </span>
                                 </div>
                             </div>
                         </div>

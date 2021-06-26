@@ -4597,7 +4597,7 @@ select.uk-form-width-xsmall {
    Component: Sticky
  ========================================================================== */
 /*
- * 1. Resolve frame rate issues on devices with lower frame rates by forcing hardware acceleration
+ * 1. Force new layer to resolve frame rate issues on devices with lower frame rates
  */
 .uk-sticky-fixed {
   z-index: 980;
@@ -5710,7 +5710,7 @@ ul.uk-nav-sub {
 
 /* Divider
  ========================================================================== */
-.uk-nav-divider {
+.uk-nav > .uk-nav-divider {
   margin: 5px 0;
 }
 
@@ -5835,6 +5835,14 @@ ul.uk-nav-sub {
 /* Parent icon modifier  */
 .uk-nav-center.uk-nav-parent-icon > .uk-parent > a::after {
   position: absolute;
+}
+
+/* Style modifier
+ ========================================================================== */
+.uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider) {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 1px solid #e5e5e5;
 }
 
 /* ========================================================================
@@ -9371,7 +9379,7 @@ iframe.uk-cover {
  * 2. Create position context
  * 3. Prevent content overflow
  * 4. Behave like most inline-block elements
- * 5. Force hardware acceleration without creating a new stacking context
+ * 5. Force new layer without creating a new stacking context
  *    to fix 1px glitch when combined with overlays and transitions in Webkit
  * 6. Clip child elements
  */
@@ -9508,34 +9516,32 @@ iframe.uk-cover {
 /*
  * 1. Set position.
  * 2. Set style
- * 3. Blur doesn't work on pseudo elements with negative `z-index` in Edge.
- *    Solved by using `before` and add position context to child elements.
+ * 3. Fix shadow being clipped in Safari if container is animated
  */
 @supports (filter: blur(0)) {
   .uk-box-shadow-bottom {
     display: inline-block;
     position: relative;
+    z-index: 0;
     max-width: 100%;
     vertical-align: middle;
   }
 
-  .uk-box-shadow-bottom::before {
+  .uk-box-shadow-bottom::after {
     content: "";
     /* 1 */
     position: absolute;
     bottom: -30px;
     left: 0;
     right: 0;
+    z-index: -1;
     /* 2 */
     height: 30px;
     border-radius: 100%;
     background: #444;
     filter: blur(20px);
-  }
-
-  /* 3 */
-  .uk-box-shadow-bottom > * {
-    position: relative;
+    /* 3 */
+    will-change: filter;
   }
 }
 /* Drop cap
@@ -11979,6 +11985,9 @@ iframe.uk-cover {
 .uk-light .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-section-primary:not(.uk-preserve-color) .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-section-secondary:not(.uk-preserve-color) .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-tile-primary:not(.uk-preserve-color) .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-tile-secondary:not(.uk-preserve-color) .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-card-primary.uk-card-body .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-card-primary > :not([class*=uk-card-media]) .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-card-secondary.uk-card-body .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-card-secondary > :not([class*=uk-card-media]) .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-overlay-primary .uk-nav-primary .uk-nav-sub li.uk-active > a, .uk-offcanvas-bar .uk-nav-primary .uk-nav-sub li.uk-active > a {
   color: #fff;
 }
+.uk-light .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-section-primary:not(.uk-preserve-color) .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-section-secondary:not(.uk-preserve-color) .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-tile-primary:not(.uk-preserve-color) .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-tile-secondary:not(.uk-preserve-color) .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-card-primary.uk-card-body .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-card-primary > :not([class*=uk-card-media]) .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-card-secondary.uk-card-body .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-card-secondary > :not([class*=uk-card-media]) .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-overlay-primary .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider), .uk-offcanvas-bar .uk-nav.uk-nav-divider > :not(.uk-nav-divider) + :not(.uk-nav-header, .uk-nav-divider) {
+  border-top-color: rgba(255, 255, 255, 0.2);
+}
 .uk-light .uk-navbar-nav > li > a, .uk-section-primary:not(.uk-preserve-color) .uk-navbar-nav > li > a, .uk-section-secondary:not(.uk-preserve-color) .uk-navbar-nav > li > a, .uk-tile-primary:not(.uk-preserve-color) .uk-navbar-nav > li > a, .uk-tile-secondary:not(.uk-preserve-color) .uk-navbar-nav > li > a, .uk-card-primary.uk-card-body .uk-navbar-nav > li > a, .uk-card-primary > :not([class*=uk-card-media]) .uk-navbar-nav > li > a, .uk-card-secondary.uk-card-body .uk-navbar-nav > li > a, .uk-card-secondary > :not([class*=uk-card-media]) .uk-navbar-nav > li > a, .uk-overlay-primary .uk-navbar-nav > li > a, .uk-offcanvas-bar .uk-navbar-nav > li > a {
   color: rgba(255, 255, 255, 0.5);
 }
@@ -12655,6 +12664,14 @@ section.container {
   background-color: #fdf9d4 !important;
 }
 
+.modal-icon {
+  font-size: 5rem;
+}
+
+.uk-text-strikethrough {
+  text-decoration: line-through;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   display: flex;
@@ -13208,6 +13225,9 @@ footer {
 }
 .product-box .uk-card-footer {
   padding: 0.5rem;
+}
+.product-box .uk-card-footer a {
+  color: #1e87f0 !important;
 }
 .product-box a {
   color: #1e87f0 !important;

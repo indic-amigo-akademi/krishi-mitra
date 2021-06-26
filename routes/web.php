@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'CustomerController@home')->name('home');
+//Route::get('/home', 'CustomerController@home')->name('home');
 
 // Profile routes
 Route::get('/profile/account', 'CustomerController@profile')->name('profile');
@@ -33,7 +33,7 @@ Route::post('/seller/create', 'SellerController@create_seller')->name(
     'seller.create'
 );
 
-Route::get('/explore', 'AppController@explore')->name('product.browse');
+Route::get('/home', 'AppController@explore')->name('product.browse');
 Route::get('/profile', 'CustomerController@index')->name('customer.index');
 
 // Admin Routes

@@ -20,6 +20,12 @@ class AppController extends Controller
         return view('product.explore')->with('products', $products);
     }
 
+    public function home()
+    {
+        $products = Product::all();
+        return view('product.home')->with('products', $products);
+    }
+
     public function about()
     {
         return view('app.about');

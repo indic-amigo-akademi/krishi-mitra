@@ -13089,6 +13089,28 @@ footer {
   opacity: 0.9;
 }
 
+.footer-content {
+  font-size: 13px;
+  color: #7474fd;
+}
+
+.about-background {
+  background-color: #fdf9d4;
+}
+
+.about-heading {
+  font-family: cursive;
+  color: #522323;
+}
+
+.img-width {
+  max-width: 100%;
+}
+
+.o_image {
+  border-radius: 50%;
+}
+
 /* Contact Us CSS */
 .contact-container {
   background-color: #fdf9d4;

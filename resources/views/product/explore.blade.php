@@ -118,12 +118,11 @@
             @endif
         }
 
-        $('.product-slider').slick({
+        $('.autoplay').slick({
             slidesToShow: 5,
             slidesToScroll: 1,
             autoplay: true,
             autoplaySpeed: 2000,
-            adaptiveHeight: true,
             responsive: [{
                     breakpoint: 768,
                     settings: {

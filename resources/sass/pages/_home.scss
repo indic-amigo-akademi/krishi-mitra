@@ -459,3 +459,24 @@ footer {
 .welcome-btn:hover {
     opacity: 0.9;
 }
+
+//Footer//
+.footer-content {
+    font-size: 13px;
+    color: rgb(116, 116, 253);
+}
+
+//about us
+.about-background {
+    background-color: $theme-color4;
+}
+.about-heading {
+    font-family: cursive;
+    color: rgb(82, 35, 35);
+}
+.img-width {
+    max-width: 100%;
+}
+.o_image {
+    border-radius: 50%;
+}

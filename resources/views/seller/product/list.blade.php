@@ -38,7 +38,7 @@
                                 id="{{ 'removeProduct' . $product->id }}" method="post">
                                 @csrf
                                 <a href="#"
-                                    onclick="document.getElementById('{{ 'removeProduct' . $product->id }}').submit()"
+                                    onclick="document.getElementById('{{ '/product/destroy/' . $product->id }}').submit()"
                                     class="uk-margin-left uk-link-heading sdetail-remove uk-text-danger uk-text-bold">Remove</a>
                             </form>
                         </div>

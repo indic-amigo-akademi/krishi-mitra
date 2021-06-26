@@ -83,7 +83,7 @@ class SellerController extends Controller
         }
         $x = Seller::where('user_id', Auth::user()->id)->get()[0];
         $products = DB::table('orders')
-            ->select(DB::raw('product_id as id,count(*) as qty,max(name)as name,sum(orders.price) as price'))
+            ->select(DB::raw('product_id as id,sum(qty) as qty,max(name)as name,sum(orders.price) as price'))
             ->join('products', 'products.id', '=', 'orders.product_id')
             ->where('products.seller_id', $x->id)
             ->groupBy('product_id')

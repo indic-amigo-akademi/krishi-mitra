@@ -181,13 +181,11 @@ class LoginController extends Controller
             ->route('welcome')
             ->with(
                 'alert',
-                json_decode(
-                    json_encode([
-                        'code' => 'success',
-                        'title' => 'Adieu!',
-                        'subtitle' => 'You have been logged out!',
-                    ])
-                )
+                Notiflix::make([
+                    'code' => 'success',
+                    'title' => 'Adieu!',
+                    'subtitle' => 'You have been logged out!',
+                ])
             );
     }
 }

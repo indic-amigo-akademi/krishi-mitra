@@ -169,7 +169,8 @@
                             <i class=" ri-check-fill"></i>
                         </span>
                     </div>
-                    <div class="body uk-padding-small"></div>
+                    <div class="body uk-padding-small">
+                    </div>
                 </div>
                 <div class="uk-card uk-card-default uk-margin-large complete-checkout" data-type="order">
                     <div class="header uk-padding-small checkout_next" data-type="order">
@@ -179,7 +180,13 @@
                             <i class=" ri-check-fill"></i>
                         </span>
                     </div>
-                    <div class="body uk-padding-small"></div>
+                    <div class="body uk-padding-small">
+                        <span>
+                            Order total:
+                            ₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}
+                            ({{ $cart_products->sum('qty') }} items)
+                        </span>
+                    </div>
                 </div>
                 <input type="hidden" name="buy_type" value={{ $buy }}>
                 <input type="hidden" name="prod_id" value={{ $prod_id }}>
@@ -204,7 +211,7 @@
                         <input class="uk-radio uk-margin-small-left" type="radio" name="payment" value="net">
                         <span class="uk-text-bold uk-margin-left">Net Banking</span>
                         <br>
-                        <input class="uk-radio uk-margin-small-left" type="radio" name="payment" value="cash">
+                        <input class="uk-radio uk-margin-small-left" type="radio" name="payment" value="cash" checked>
                         <span class="uk-text-bold uk-margin-left">Cash on Delivery</span>
                     </div>
                     <div class="uk-padding-small uk-flex uk-flex-row uk-flex-middle uk-flex-between">
@@ -306,7 +313,7 @@
                 case "order":
                 case "payment":
                     let address = $("input[name='address_radio']:checked").data("address");
-                    $(".complete-checkout[data-type='address'] .body").html(`<p>${address}</p>`);
+                    $(".complete-checkout[data-type='address'] .body").html(`<span>${address}</span>`);
 
                     $(`.checkout-block.${checkoutType}_block`).show();
                     break;

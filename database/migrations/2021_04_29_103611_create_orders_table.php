@@ -30,7 +30,7 @@ class CreateOrdersTable extends Migration
                 ->foreign('address_id')
                 ->references('id')
                 ->on('addresses');
-            $table->integer('order_id');
+            $table->unsignedBigInteger('order_id');
             $table->integer('qty');
             $table->double('price');
             $table->double('discount');

@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+
 Auth::routes();
 
 Route::get('/home', 'CustomerController@home')->name('home');
@@ -63,6 +64,9 @@ Route::post('/admin/browse', 'AdminController@admin_browse')->name(
 Route::get('/seller', 'SellerController@index')->name('seller.index');
 Route::get('/seller/products', 'SellerController@product_display')->name(
     'seller.product.browse'
+);
+Route::get('/seller/products/browse/orders', 'SellerController@product_ordered')->name(
+    'seller.product.browse.orders'
 );
 Route::get('/seller/product/create', 'ProductController@create')->name(
     'seller.product.create'
@@ -143,6 +147,4 @@ Route::post('/address/edit', 'AddressController@edit_address')->name(
 );
 
 //product page
-Route::get('/product', function () {
-    return view('product');
-})->name('product');
+Route::get('/product/{slug}', 'ProductController@show_one')->name('product.view');

@@ -7,6 +7,7 @@ use App\Approval;
 use App\Product;
 use App\Seller;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -73,6 +74,24 @@ class SellerController extends Controller
         }
         $prod = Product::where(['slug' => $slug])->first();
         return view('seller.product.show')->with('product', $prod);
+    }
+
+    public function product_ordered()
+    {
+        if (!Auth::user()->is_seller) {
+            abort(403);
+        }
+        $x = Seller::where('user_id', Auth::user()->id)->get()[0];
+        $products = DB::table('orders')
+            ->select(DB::raw('product_id as id,count(*) as qty,max(name)as name,sum(orders.price) as price'))
+            ->join('products', 'products.id', '=', 'orders.product_id')
+            ->where('products.seller_id', $x->id)
+            ->groupBy('product_id')
+            // ->having('products.seller_id', $x->id)
+            ->get()->toArray();
+        log::info('The orders for this seller are');
+        //var_dump($products[0]);
+        return view('seller.orders')->with('products', $products);
     }
 
     public function product_display()

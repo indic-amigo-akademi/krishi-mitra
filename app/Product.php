@@ -23,6 +23,8 @@ class Product extends Model
         'discount',
     ];
 
+    public $units = [];
+
     public function seller()
     {
         return $this->belongsTo(Seller::class, 'seller_id');

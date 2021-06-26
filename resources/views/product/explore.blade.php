@@ -26,14 +26,14 @@
 @section('content')
     <section class="uk-height-1-1 uk-padding-small sprod">
         <div
-            class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal">
+            class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal product-slider">
 
             @if (count($products) > 0)
                 @foreach ($products as $prod)
                     @if ($prod->active == 1)
                         <div
                             class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
-                            <a href="{{ route('seller.product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
+                            <a href="{{ route('product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
                                 <img src="{{ isset($prod->coverPhotos) ? asset('uploads/products/' . $prod->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                     uk-img />
                             </a>
@@ -117,6 +117,27 @@
                 UIkit.modal($("#signin-form").get(0)).show();
             @endif
         }
+
+        $('.product-slider').slick({
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            adaptiveHeight: true,
+            responsive: [{
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
 
     </script>
 @endsection

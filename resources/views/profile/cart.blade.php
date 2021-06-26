@@ -9,7 +9,7 @@
                 @if (count($cart_products) > 0)
                     @foreach ($cart_products as $cart_product)
                         <div
-                            class="uk-card uk-card-default uk-padding-small uk-margin-bottom uk-flex uk-flex-row uk-flex-wrap">
+                            class="uk-card uk-card-default uk-padding-small uk-margin-bottom uk-margin-right uk-flex uk-flex-row uk-flex-wrap">
                             <div class="uk-width-1-1 uk-width-1-3@m uk-flex uk-flex-column">
                                 <img src="{{ isset($cart_product->product->coverPhotos) ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                     width="200rem" uk-img class="uk-margin-auto" />

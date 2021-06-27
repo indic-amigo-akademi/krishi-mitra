@@ -62,7 +62,7 @@ class OrderController extends Controller
         LOG::info($req->input());
         LOG::info('BUY Type is' . $req['buy_type']);
         $buy_now_id = 100;
-        if ($req['buy_type'] == 'Buy_now') {
+        if ($req['buy_type'] == 'buyNow') {
             $buy_now_id = $req['prod_id'];
         }
         $data = [

@@ -38,6 +38,7 @@ class SellerController extends Controller
     {
         $validator = Validator::make($req->all(), [
             'name' => 'required|string|max:255',
+
             // 'gstin' => 'string|size:15',
             'aadhaar' => 'required|string|size:12',
             'trade_name' => 'required|string|max:255',
@@ -88,12 +89,17 @@ class SellerController extends Controller
         }
         $x = Seller::where('user_id', Auth::user()->id)->get()[0];
         $products = DB::table('orders')
-            ->select(DB::raw('product_id as id,sum(qty) as qty,max(name)as name,sum(orders.price) as price'))
+            ->select(
+                DB::raw(
+                    'product_id as id,sum(qty) as qty,max(name)as name,sum(orders.price) as price'
+                )
+            )
             ->join('products', 'products.id', '=', 'orders.product_id')
             ->where('products.seller_id', $x->id)
             ->groupBy('product_id')
             // ->having('products.seller_id', $x->id)
-            ->get()->toArray();
+            ->get()
+            ->toArray();
         log::info('The orders for this seller are');
         //var_dump($products[0]);
         return view('seller.orders')->with('products', $products);

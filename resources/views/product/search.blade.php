@@ -14,7 +14,7 @@
                             </a>
                             <div class="uk-padding-small">
                                 <div class="uk-margin-small-bottom">
-                                    <span class="uk-text-bold">{{ $prod->type }}</span> |
+                                    <span class="uk-text-bold">{{ $prod->category }}</span> |
                                     <span style="font-family: cursive">{{ $prod->name }}</span>
                                 </div>
                                 <div class="uk-margin-small-bottom uk-text-bold uk-text-small">
@@ -27,7 +27,8 @@
                             </div>
                             <div
                                 class="uk-flex uk-flex-between uk-card-footer uk-padding-remove-bottom uk-padding-remove-horizontal">
-                                <a href="#" onclick="post('{{ $prod->id }}')" type=" button" class="uk-text-primary">Add
+                                <a href="#" onclick="addToCart('{{ $prod->id }}')" type=" button"
+                                    class="uk-text-primary">Add
                                     to
                                     Cart</a>
                             </div>
@@ -39,46 +40,4 @@
             @endif
         </div>
     </section>
-@endsection
-
-@section('scripts')
-    <script>
-        function post(id) {
-            event.preventDefault();
-            var x = {
-                id: id
-            }
-            /*$.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: '/cart/store',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(x),
-                success: function(data) {
-                    console.log('Posted');
-                }
-
-            });*/
-            fetch('/cart/store', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                body: JSON.stringify(x),
-                method: 'post',
-            }).then(function(response) {
-                console.log('Posted');
-                location.reload();
-            }).catch(function(error) {
-                console.error('Error:', error);
-            });
-        }
-
-    </script>
 @endsection

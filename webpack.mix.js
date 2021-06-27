@@ -13,8 +13,9 @@ const mix = require("laravel-mix");
 
 mix.js("resources/js/app.js", "public/js")
     .sass("resources/sass/app.scss", "public/css")
+    .sourceMaps()
     .version();
+mix.combine("resources/js/scripts/", "public/js/vanilla.js");
 
 if (!mix.inProduction()) {
-    mix.combine("resources/js/scripts/", "public/js/vanilla.js");
 }

@@ -101,6 +101,12 @@ class Product extends Model
 
     public function getProductUnitAttribute()
     {
+        return $this::$units[$this->unit];
+    }
+
+    public function getCategoryAttribute()
+    {
+        return $this::$categories[$this->type];
     }
 
     public function getDiscountedPriceAttribute()

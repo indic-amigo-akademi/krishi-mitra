@@ -8,7 +8,7 @@
 
         <div class="uk-card uk-container uk-card-default">
             <div class="uk-card-header">
-                <h3 class="uk-card-title">My Profile</h3>
+                <h1 class="uk-text-large uk-text-bold uk-text-uppercase text-theme-color1 uk-card-title">My Profile</h3>
             </div>
 
             <div class="uk-card-body">
@@ -25,7 +25,7 @@
                     <p>
                         <b>Name:</b> {{ Auth::user()->seller->name }}<br>
                         <b>Tradename:</b> {{ Auth::user()->seller->trade_name }}<br>
-                        <b>GSTIN:</b> {{ Auth::user()->seller->gstin ?? 'Not a Registered GST Seller'}}<br>
+                        <b>GSTIN:</b> {{ Auth::user()->seller->gstin ?? 'Not a Registered GST Seller' }}<br>
                         <b>Aadhar Number:</b> {{ Auth::user()->seller->aadhaar }}<br>
                     </p>
                 @endif

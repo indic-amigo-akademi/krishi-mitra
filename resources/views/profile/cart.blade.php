@@ -4,7 +4,7 @@
     <section class="container cart-container">
         <div class="uk-flex uk-flex-row uk-flex-around uk-padding uk-flex-wrap">
             <div class="uk-width-1-1 uk-width-2-3@m">
-                <div class="uk-text-large uk-text-bold cart-color">MY CART</div>
+                <h1 class="uk-text-large uk-text-bold uk-text-uppercase text-theme-color1">My Cart</h1>
                 <hr>
                 @if (count($cart_products) > 0)
                     @foreach ($cart_products as $cart_product)
@@ -27,7 +27,7 @@
                                 <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
                                     {{ $cart_product->product->name }}
                                     ,
-                                    {{ $cart_product->product->type }} - 1 {{ $cart_product->product->unit }}
+                                    {{ $cart_product->product->category }} - 1 {{ $cart_product->product->unit }}
                                 </div>
                                 <div class="uk-text-emphasis uk-margin-bottom">
                                     {{ $cart_product->product->seller->trade_name }}
@@ -43,8 +43,7 @@
                                     </span>
                                 </div>
                                 <button class="uk-button uk-button-default card-remove" id={{ $cart_product->id }}
-                                    onclick="Notiflix.confirmdb('Are u sure!', 'Do you want to delete this product from cart?', war, 'Yes', 'No', 'delFromCart
-                                                                                        ', '');">
+                                    onclick="delFromCart('{{ $cart_product->id }}')">
                                     Remove
                                 </button>
                             </div>
@@ -109,30 +108,35 @@
 @section('scripts')
     <script>
         function delFromCart(id) {
-            var x = {
+            let x = {
                 id: id
             }
-            fetch('/cart/delete', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            Notiflix.Confirm.show('Are u sure!', 'Do you want to remove this item from the cart?', 'Yes', 'No',
+                function() {
+                    fetch('/cart/delete', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        body: JSON.stringify(x),
+                        method: 'post',
+                    }).then(function(response) {
+                        Notiflix.Notify.success('Product deleted from the cart!');
+                        location.reload();
+                    }).catch(function(error) {
+                        console.error('Error:', error);
+                        Notiflix.Notify.error('Product couldn\'t be deleted from the cart!');
+                    });
                 },
-                body: JSON.stringify(x),
-                method: 'post',
-            }).then(function(response) {
-                Notiflix.Notify.success('Yippee!', 'Product deleted from the cart!');
-                location.reload();
-            }).catch(function(error) {
-                console.error('Error:', error);
-                Notiflix.Notify.error('Oops!', 'Product couldn\'t be deleted from the cart!');
-            });
+                function() {}
+            );
+
         }
 
         function addToCart(id) {
-            var x = {
+            let x = {
                 id: id
             }
-            console.log('ID IS');
             fetch('/cart/incr', {
                 headers: {
                     'Content-Type': 'application/json',
@@ -141,24 +145,23 @@
                 body: JSON.stringify(x),
                 method: 'post',
             }).then(function(response) {
-                Notiflix.Notify.success('Yippee!', 'Product added to the cart!');
+                Notiflix.Notify.success('Product added to the cart!');
                 location.reload();
             }).catch(function(error) {
                 console.error('Error:', error);
-                Notiflix.Notify.error('Oops!', 'Product couldn\'t be added to the cart!');
+                Notiflix.Notify.error('Product couldn\'t be added to the cart!');
             });
 
         }
 
         function subFromCart(id) {
-            var x = {
+            let x = {
                 id: id
             }
             if (event.target.value == 1) {
-                alert('Do you want to remove this item from the cart?')
+                delFromCart(id);
+                return;
             }
-            console.log('ID IS');
-            console.log(x)
             fetch('/cart/decr', {
                 headers: {
                     'Content-Type': 'application/json',
@@ -167,11 +170,11 @@
                 body: JSON.stringify(x),
                 method: 'post',
             }).then(function(response) {
-                Notiflix.Notify.success('Yippee!', 'Product subtracted from the cart!');
+                Notiflix.Notify.success('Product subtracted from the cart!');
                 location.reload();
             }).catch(function(error) {
                 console.error('Error:', error);
-                Notiflix.Notify.error('Oops!', 'Product couldn\'t be subtracted from the cart!');
+                Notiflix.Notify.error('Product couldn\'t be subtracted from the cart!');
             });
         }
     </script>

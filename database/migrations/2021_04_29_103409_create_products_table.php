@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
                 ->foreign('seller_id')
                 ->references('id')
                 ->on('sellers');
-            $table->string('type');
+            $table->unsignedBigInteger('type');
             $table->text('desc');
             $table->double('price');
             $table->string('name');

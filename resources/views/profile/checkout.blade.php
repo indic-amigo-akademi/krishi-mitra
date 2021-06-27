@@ -61,19 +61,17 @@
                         <span class="uk-margin-small-left uk-margin-right uk-text-bold checkout_no1"> 2</span>
                         <span class="uk-text-bold">ORDER SUMMARY</span>
                     </div>
-                    @if ($buy == 'cart')
+                    @isset($cart_products)
                         @foreach ($cart_products as $cart_product)
                             <div class="uk-card-header uk-padding uk-flex uk-flex-row">
                                 <div class="uk-width-1-3 uk-flex-middle uk-flex uk-flex-column">
                                     <img src="{{ isset($cart_product->product->coverPhotos) ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                         width="200rem" uk-img class="uk-margin-auto" />
                                     <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
-                                        <button type="button"
-                                            class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                        <button type="button" class="uk-button-default uk-margin-left uk-margin-right cart-quan"
                                             onclick="addToCart('{{ $cart_product->id }}')">+</button>
                                         <span class="card-quan-color">{{ $cart_product->qty }}</span>
-                                        <button type="button"
-                                            class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                        <button type="button" class="uk-button-default uk-margin-left uk-margin-right cart-quan"
                                             value={{ $cart_product->qty }}
                                             onclick="subFromCart('{{ $cart_product->id }}')">-</button>
                                     </div>
@@ -82,7 +80,7 @@
                                     <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
                                         {{ $cart_product->product->name }}
                                         ,
-                                        {{ $cart_product->product->type }} - 1 {{ $cart_product->product->unit }}
+                                        {{ $cart_product->product->category }} - 1 {{ $cart_product->product->unit }}
                                     </div>
                                     <div class="uk-text-emphasis uk-margin-bottom">
                                         {{ $cart_product->product->seller->trade_name }}
@@ -107,51 +105,59 @@
                                 </div>
                             </div>
                         @endforeach
-                        <div class="uk-padding-small  uk-flex uk-flex-row uk-flex-middle uk-flex-between">
+                        <div class="uk-padding-small uk-flex uk-flex-row uk-flex-middle uk-flex-between">
                             <span class="uk-margin-left uk-text-bold">Total:
                                 ₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}</span>
                             <a class="uk-button uk-button-default uk-text-bold checkout_next" data-type="payment">Next</a>
                         </div>
+                    @endisset
 
-                    @else
+                    @isset($buy_product)
                         <div class="uk-card-header uk-padding uk-flex uk-flex-row">
                             <div class="uk-width-1-3 uk-flex-middle uk-flex uk-flex-column">
                                 <img src="{{ isset($buy_product->coverPhotos) ? asset('uploads/products/' . $buy_product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                     width="200rem" uk-img class="uk-margin-auto" />
-
+                                <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
+                                    {{-- <button type="button" class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                        onclick="addToCart('{{ $buy_product->id }}')">+</button> --}}
+                                    <span class="card-quan-color">1</span>
+                                    {{-- <button type="button" class="uk-button-default uk-margin-left uk-margin-right cart-quan"
+                                        value="1" onclick="subFromCart('{{ $buy_product->id }}')">-</button> --}}
+                                </div>
                             </div>
                             <div class="uk-width-2-3 uk-flex-start uk-margin-large-left uk-margin-right">
                                 <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
                                     {{ $buy_product->name }}
                                     ,
-                                    {{ $buy_product->type }} - 1 {{ $buy_product->unit }}
+                                    {{ $buy_product->category }} - 1 {{ $buy_product->unit }}
+                                </div>
+                                <div class="uk-text-emphasis uk-margin-bottom">
+                                    {{ $buy_product->seller->trade_name }}
+                                </div>
+                                <div class="uk-margin-small-bottom">
+                                    <span class="uk-text-bold">Quantity :</span>
+                                    <span class="uk-text-bold">1</span>
+                                </div>
+                                <div class="uk-margin-small-bottom">
+                                    <span class="uk-text-bold">Total Price :</span>
+                                    <span class="uk-text-bold uk-margin-small-right sdetail-price">
+                                        ₹{{ sprintf('%.2f', $buy_product->discounted_price) }}
+                                    </span>
+                                    <span class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
+                                        ₹{{ sprintf('%.2f', $buy_product->price) }}</span>
                                 </div>
 
-                                <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
-                                    <div class="uk-margin-small-bottom">
-                                        <span class="uk-text-bold">Quantity :</span>
-                                        <span class="uk-text-bold">{{ 1 }}</span>
-                                    </div>
-                                    <div class="uk-margin-small-bottom">
-                                        <span class="uk-text-bold">Total Price :</span>
-                                        <span class="uk-text-bold uk-margin-small-right sdetail-price">
-                                            ₹{{ sprintf('%.2f', $buy_product->price * (1 - $buy_product->discount)) }}
-                                        </span>
-                                        <span
-                                            class="uk-text-muted uk-text-small uk-padding-large-left uk-margin-right sdetail-mrp">
-                                            ₹{{ sprintf('%.2f', $buy_product->price) }}</span>
-                                    </div>
-                                </div>
-                                <div class="uk-padding-small  uk-flex uk-flex-row uk-flex-middle uk-flex-between">
-                                    <span class="uk-margin-left uk-text-bold">Total:
-                                        ₹{{ sprintf('%.2f', $buy_product->price * (1 - $buy_product->discount)) }}</span>
-                                    <a class="uk-button uk-button-default uk-text-bold checkout_next"
-                                        data-type="payment">Next</a>
-                                </div>
+                                {{-- <button type="button" class="uk-button uk-button-default card-remove"
+                                    id={{ $buy_product->id }}
+                                    onclick="delFromCart('{{ $buy_product->id }}')">Remove</button> --}}
                             </div>
                         </div>
-
-                    @endif
+                        <div class="uk-padding-small  uk-flex uk-flex-row uk-flex-middle uk-flex-between">
+                            <span class="uk-margin-left uk-text-bold">Total:
+                                ₹{{ sprintf('%.2f', $buy_product->discounted_price) }}</span>
+                            <a class="uk-button uk-button-default uk-text-bold checkout_next" data-type="payment">Next</a>
+                        </div>
+                    @endisset
                 </div>
                 <div class="uk-card uk-card-default uk-margin-large uk-padding-small">
                     <span class="uk-margin-small-left uk-margin-right uk-text-bold checkout_no2"> 3</span>
@@ -183,8 +189,14 @@
                     <div class="body uk-padding-small">
                         <span>
                             Order total:
-                            ₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}
-                            ({{ $cart_products->sum('qty') }} items)
+                            @isset($cart_products)
+                                ₹{{ sprintf('%.2f', $cart_products->sum('total_discounted_price')) }}
+                                ({{ $cart_products->sum('qty') }} items)
+                            @endisset
+                            @isset($buy_product)
+                                ₹{{ sprintf('%.2f', $buy_product->discounted_price) }}
+                                (1 {{ $buy_product->unit }})
+                            @endisset
                         </span>
                     </div>
                 </div>
@@ -319,7 +331,6 @@
                     break;
             }
         });
-
     </script>
 @endsection
 @endsection

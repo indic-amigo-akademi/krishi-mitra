@@ -64,9 +64,10 @@ Route::get('/seller', 'SellerController@index')->name('seller.index');
 Route::get('/seller/products', 'SellerController@product_display')->name(
     'seller.product.browse'
 );
-Route::get('/seller/products/browse/orders', 'SellerController@product_ordered')->name(
-    'seller.product.browse.orders'
-);
+Route::get(
+    '/seller/products/browse/orders',
+    'SellerController@product_ordered'
+)->name('seller.product.browse.orders');
 Route::get('/seller/product/create', 'ProductController@create')->name(
     'seller.product.create'
 );
@@ -115,9 +116,6 @@ Route::get('/checkout/processed/card', 'OrderController@storecard')->name(
     'OrderProcessed.card'
 );*/
 // Route::get('/checkout', 'OrderController@index')->name('checkout');
-Route::get('/checkout1/{id}', 'OrderController@index1')->name(
-    'checkout_buynow'
-);
 Route::post('/checkout/form', 'OrderController@create')->name('CheckoutForm');
 Route::get('/checkout/processed', 'OrderController@store')->name(
     'OrderProcessed'

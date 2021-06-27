@@ -60,7 +60,7 @@
 
                         @foreach ($admin_approval as $approval)
                             <tr>
-                                <form action="{{ route('routeadmin.approval') }}" method="POST">
+                                <form action="{{ route('admin.approval') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $approval->id }}">
                                     <td> {{ $approval->id }} </td>

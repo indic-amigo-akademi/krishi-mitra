@@ -27,7 +27,7 @@
                                                     </a>
                                                     |
                                                     <a href="{{ route('explore') . '?c=' . $prod->type }}">
-                                                        <span class="uk-text-bold">{{ $prod->type }}</span>
+                                                        <span class="uk-text-bold">{{ $prod->category }}</span>
                                                     </a>
                                                 </div>
                                                 <div class="uk-margin-small-bottom uk-text-bold uk-text-small">
@@ -64,41 +64,4 @@
             @endif
         </div>
     </section>
-@endsection
-
-
-@section('scripts')
-    <script>
-        function addToCart(id) {
-            event.preventDefault();
-            @if (Auth::check())
-                let x = {
-                id: id
-                }
-                fetch('/cart/store', {
-                headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                body: JSON.stringify(x),
-                method: 'post',
-                }).then(function(response) {
-                console.log('Posted');
-                location.reload();
-                }).catch(function(error) {
-                console.error('Error:', error);
-                });
-            @else
-                UIkit.modal($("#signin-form").get(0)).show();
-            @endif
-        }
-
-        function buyNow(id) {
-            @if (Auth::check())
-                location.href = "{{ route('checkout_buynow', '') }}/"+id;
-            @else
-                UIkit.modal($("#signin-form").get(0)).show();
-            @endif
-        }
-    </script>
 @endsection

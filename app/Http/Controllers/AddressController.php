@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Address;
+use App\Helpers\Notiflix;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -23,7 +24,7 @@ class AddressController extends Controller
         $uid = Auth::user()->id;
         $address = Address::all()->where('user_id', '=', $uid);
 
-        return view('profile.address')->with('address', $address);
+        return view('profile.address.list')->with('address', $address);
     }
 
     public function address_edit_delete(Request $req)
@@ -34,18 +35,26 @@ class AddressController extends Controller
         Log::info($aid);
         if ($address == 'Edit') {
             $addr = Address::all()->where('id', '=', $aid);
-            return view('profile.addressEdit')->with('address', $addr);
+            return view('profile.address.edit')->with('address', $addr);
         } elseif ($address == 'Delete') {
             Address::find($aid)->delete();
-            $uid = Auth::user()->id;
-            $addr = Address::all()->where('user_id', '=', $uid);
-            return view('profile.address')->with('address', $addr);
+            return redirect()
+                ->route('address')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Hey!',
+                        'type' => 'Report',
+                        'subtitle' => 'Your address was deleted!',
+                    ])
+                );
         }
     }
 
     public function add_address_view()
     {
-        return view('profile.addressAdd');
+        return view('profile.address.add');
     }
 
     public function add_address(Request $req)
@@ -62,11 +71,17 @@ class AddressController extends Controller
             'type' => $req['type'],
             'user_id' => Auth::id(),
         ]);
-        return redirect('/address')->with('alert', [
-            'code' => 'success',
-            'title' => 'Yippee!',
-            'subtitle' => 'Your address was added!',
-        ]);
+        return redirect()
+            ->route($req['redirect_name'])
+            ->with(
+                'alert',
+                Notiflix::make([
+                    'code' => 'success',
+                    'title' => 'Yippee!',
+                    'type' => 'Report',
+                    'subtitle' => 'Your address was added!',
+                ])
+            );
     }
 
     public function edit_address(Request $req)
@@ -83,10 +98,16 @@ class AddressController extends Controller
         $addr->landmark = $req->landmark;
         $addr->type = $req->type;
         $addr->save();
-        return redirect('/address')->with('alert', [
-            'code' => 'success',
-            'title' => 'Yippee!',
-            'subtitle' => 'Your address was edited!',
-        ]);
+        return redirect()
+            ->route('address')
+            ->with(
+                'alert',
+                Notiflix::make([
+                    'code' => 'success',
+                    'title' => 'Yo!',
+                    'type' => 'Report',
+                    'subtitle' => 'Your address was edited!',
+                ])
+            );
     }
 }

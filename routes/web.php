@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'CustomerController@home')->name('home');
+Route::get('/home', 'AppController@home')->name('home');
 
 // Profile routes
 Route::get('/profile/account', 'CustomerController@profile')->name('profile');
@@ -32,7 +32,7 @@ Route::post('/seller/create', 'SellerController@create_seller')->name(
     'seller.create'
 );
 
-Route::get('/explore', 'AppController@explore')->name('product.browse');
+Route::get('/explore', 'AppController@explore')->name('explore');
 Route::get('/profile', 'CustomerController@index')->name('customer.index');
 
 // Admin Routes
@@ -64,6 +64,9 @@ Route::get('/seller', 'SellerController@index')->name('seller.index');
 Route::get('/seller/products', 'SellerController@product_display')->name(
     'seller.product.browse'
 );
+Route::get('/seller/products/browse/orders', 'SellerController@product_ordered')->name(
+    'seller.product.browse.orders'
+);
 Route::get('/seller/product/create', 'ProductController@create')->name(
     'seller.product.create'
 );
@@ -88,7 +91,7 @@ Route::get('/product/inactivate/{id}', 'ProductController@inactivate')->name(
 Route::get('/product/activate/{id}', 'ProductController@activate')->name(
     'product.activate'
 );
-Route::get('/product/search', 'ProductController@search')->name('search.item');
+// Route::get('/product/search', 'AppController@search')->name('search.item');
 
 // Default routes
 Route::get('/about', 'AppController@about')->name('about');
@@ -143,6 +146,6 @@ Route::post('/address/edit', 'AddressController@edit_address')->name(
 );
 
 //product page
-Route::get('/product', function () {
-    return view('product');
-})->name('product');
+Route::get('/product/{slug}', 'ProductController@show_one')->name(
+    'product.view'
+);

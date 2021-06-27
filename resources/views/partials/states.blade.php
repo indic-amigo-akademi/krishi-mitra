@@ -27,7 +27,6 @@
             Notiflix.Confirm.show('Yippee!', 'Product added to the cart!' , 'Go To Cart', 'Stay', function(){
             location.href = "{{ route('cart') }}";
             }, function(){
-            location.reload();
             });
             }).catch(function(error) {
             console.error('Error:', error);
@@ -40,7 +39,7 @@
 
     function buyNow(id) {
         @if (Auth::check())
-            location.href = "{{ route('checkout_buynow', '') }}/"+id;
+            location.href = `{{ route('checkout') }}?type=buyNow&id=${id}`;
         @else
             UIkit.modal($("#signin-form").get(0)).show();
         @endif

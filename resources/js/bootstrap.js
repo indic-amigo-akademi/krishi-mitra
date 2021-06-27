@@ -11,8 +11,8 @@ try {
 
     window.UIkit = require("uikit");
     require("uikit/dist/js/uikit-icons");
-    // require("uikit/src/js/core/icon");
     require("remixicon/fonts/remixicon.css");
+    // require("jquery-migrate");
 } catch (e) {}
 
 /**

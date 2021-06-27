@@ -34,23 +34,6 @@ class ProductController extends Controller
         $products = Product::all();
         return view('seller.product.list')->with('products', $products);
     }
-    public function search(Request $req)
-    {
-        log::info('Purcho' . $req['search']);
-        $x = $req['search'];
-        $products = Product::where('name', 'like', '%' . $x . '%')->get();
-        log::info('Products are:-' . $products);
-        if (count($products) == 0) {
-            $sid = Seller::where('name', '=', $x)->get();
-            if (count($sid) > 0) {
-                $products = Product::where('seller_id', '=', $sid[0]->id)->get();
-            }
-        }
-        if (count($products) == 0) {
-            $products = Product::where('desc', 'like', '%' . $x . '%')->get();
-        }
-        return view('product.search')->with('products', $products);
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -87,9 +70,10 @@ class ProductController extends Controller
             'name' => $req['name'],
             'unit' => $req['unit'],
             'seller_id' => Auth::user()->seller->id,
-            'slug' => Str::slug($req['name'], '_'),
+            'slug' => Str::slug($req['name'], '-'),
             'discount' => $req['discount'],
         ]);
+        log::info('This method store is called');
 
         if ($req->hasFile('cover')) {
             $destinationPath = public_path('uploads/products');
@@ -114,7 +98,7 @@ class ProductController extends Controller
                 array_push($fileName, $img->id);
             }
         }
-        return redirect(route(Auth::user()->type . '.product.browse'));
+        return redirect(route(Auth::user()->role . '.product.browse'));
     }
 
     /**
@@ -131,6 +115,12 @@ class ProductController extends Controller
 
         $prod = Product::find($id);
         return view('product.product')->with('product', $prod);
+    }
+
+    public function show_one($slug)
+    {
+        $prod = Product::where(['slug' => $slug])->first();
+        return view('product')->with('product', $prod);
     }
 
     /**
@@ -162,17 +152,6 @@ class ProductController extends Controller
             abort(403);
         }
 
-        /*if (User::find(Auth::id())->role == 'seller') {
-            Log::info('Seller');
-            $sid = Auth::user()->seller->id;
-            $psid = Product::find($id)->seller_id;
-            log::info('Sid and Psid are' . $sid . ' ' . $psid);
-            if ($sid != $psid) {
-                log::info('You cannot delete someone else product');
-                return redirect('/');
-            }
-        }*/
-
         $prod = Product::find($id);
         $prod->name = $req->name;
         $prod->type = $req->type;
@@ -180,8 +159,8 @@ class ProductController extends Controller
         $prod->price = $req->price;
         $prod->discount = $req->discount;
         $prod->save();
-
-        return redirect(route(Auth::user()->type . '.product.browse'));
+        log::info('Type of user is' . Auth::user()->role);
+        return redirect(route(Auth::user()->role . '.product.browse'));
     }
 
     /**
@@ -207,7 +186,7 @@ class ProductController extends Controller
 
         Product::find($id)->delete();
 
-        return redirect(route(Auth::user()->type . '.product.browse'));
+        return redirect(route(Auth::user()->role . '.product.browse'));
     }
     public function inactivate($id)
     {

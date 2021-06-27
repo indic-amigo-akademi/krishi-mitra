@@ -1,23 +1,13 @@
-@isset ($alert)
-    <div id="alert-modal" uk-modal>
-        <div class="uk-modal-dialog">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <div class="uk-modal-header">
-                <h2 class="uk-modal-title">{{ $alert['title'] }}</h2>
-            </div>
-            <div class="uk-modal-body">
-                <p>{{ $alert['subtitle'] }}
-                </p>
-            </div>
-            <div class="uk-modal-footer uk-text-center">
-                <button class="uk-button uk-button-primary uk-modal-close" type="button">Ok</button>
-            </div>
-        </div>
-    </div>
-
+@php
+$alert = Session::get('alert');
+@endphp
+@if ($alert)
     <script>
-        UIkit.modal($('#alert-modal').get(0)).show();
-
+        @if ($alert->type == 'Notify')
+            Notiflix["{{ $alert->type }}"]["{{ $alert->code }}"]('{{ $alert->subtitle }}')
+        @elseif ($alert->type == 'Report')
+            Notiflix["{{ $alert->type }}"]["{{ $alert->code }}"]( '{{ $alert->title }}', '{{ $alert->subtitle }}',
+            '{{ $alert->confirm }}' );
+        @endif
     </script>
-
-@endisset
+@endif

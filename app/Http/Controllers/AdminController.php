@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Approval;
+use App\Helpers\Notiflix;
 use App\Seller;
 use App\Product;
 use Illuminate\Support\Facades\Auth;
@@ -39,14 +40,20 @@ class AdminController extends Controller
             ->where('user_id', '=', Auth::id())
             ->first();
         if (isset($approval) && $approval) {
-            return redirect(route('home'))->with('alert', [
-                'code' => 'info',
-                'title' => 'Waiting!',
-                'subtitle' =>
-                    'Already signed for ' .
-                    str_replace('_', ' ', $approval->type) .
-                    '!',
-            ]);
+            return redirect()
+                ->route('home')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'info',
+                        'type' => 'Report',
+                        'title' => 'Waiting!',
+                        'subtitle' =>
+                            'Already signed for ' .
+                            str_replace('_', ' ', $approval->type) .
+                            '!',
+                    ])
+                );
         }
         return view('admin.register');
     }
@@ -66,18 +73,31 @@ class AdminController extends Controller
                 'user_id' => $x->id,
                 'type' => 'admin_approval',
             ]);
-            return redirect(route('home'))->with('alert', [
-                'code' => 'success',
-                'title' => 'Success!',
-                'subtitle' => 'Your registration as an admin is in progress!',
-            ]);
+            return redirect()
+                ->route('home')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'warning',
+                        'type' => 'Report',
+                        'title' => 'Waiting!',
+                        'subtitle' =>
+                            'Your registration as an admin is in progress!',
+                    ])
+                );
         }
 
-        return redirect(route('admin.register'))->with('alert', [
-            'code' => 'error',
-            'title' => 'Error!',
-            'subtitle' => 'Invalid credentials!',
-        ]);
+        return redirect()
+            ->route('admin.register')
+            ->with(
+                'alert',
+                Notiflix::make([
+                    'code' => 'failure',
+                    'type' => 'Report',
+                    'title' => 'Error!',
+                    'subtitle' => 'Invalid credentials!',
+                ])
+            );
     }
 
     public function approval_view()
@@ -112,7 +132,7 @@ class AdminController extends Controller
         if (!Auth::user()->is_sysadmin) {
             abort(403);
         }
-        $admin = User::all()->where('role','=','admin');
+        $admin = User::all()->where('role', '=', 'admin');
         return view('admin.browse.view')->with('admin', $admin);
     }
 
@@ -123,15 +143,23 @@ class AdminController extends Controller
         }
         $unadmin = $req->input('input');
         Log::info($unadmin);
-        $admin = User::all()->where('id',"=",$unadmin)->first();
+        $admin = User::all()
+            ->where('id', '=', $unadmin)
+            ->first();
         Log::info($admin);
         $admin->role = 'customer';
         $admin->save();
-        return redirect(route('admin.browse.view'))->with('alert', [
-            'code' => 'success',
-            'title' => 'Approved!',
-            'subtitle' => 'The admin have been de-registered as a customer!',
-        ]);
+        return redirect()
+            ->route('admin.browse.view')
+            ->with(
+                'alert',
+                Notiflix::make([
+                    'code' => 'success',
+                    'title' => 'Approved!',
+                    'subtitle' =>
+                        'The admin have been de-registered as a customer!',
+                ])
+            );
     }
 
     public function approval(Request $req)
@@ -156,11 +184,15 @@ class AdminController extends Controller
             }
             $z->save();
             $y->delete();
-            return redirect(route('admin.approval.view'))->with('alert', [
-                'code' => 'success',
-                'title' => 'Approved!',
-                'subtitle' => 'The customer have been registered as a seller!',
-            ]);
+            return redirect(route('admin.approval.view'))->with(
+                'alert',
+                Notiflix::make([
+                    'code' => 'success',
+                    'title' => 'Approved!',
+                    'subtitle' =>
+                        'The customer have been registered as a seller!',
+                ])
+            );
         } elseif ($approval == 'decline') {
             $y = Approval::all()
                 ->where('id', '=', $sid)
@@ -174,11 +206,17 @@ class AdminController extends Controller
                 }
             }
             $y->delete();
-            return redirect(route('admin.approval.view'))->with('alert', [
-                'code' => 'error',
-                'title' => 'Denied!',
-                'subtitle' => 'The customer have been denied as a seller!',
-            ]);
+            return redirect()
+                ->route('admin.approval.view')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Denied!',
+                        'subtitle' =>
+                            'The customer have been declined as a seller!',
+                    ])
+                );
         }
     }
 }

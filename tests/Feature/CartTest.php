@@ -32,6 +32,30 @@ class CartTest extends TestCase
             'discount' => 0.3
         ];
     }
+    public function user_can_add_multiple_product_to_cart()
+    {
+        $response=$this->json('POST', route('user.login.validate'), [
+            'email' => 'test@gmail.com',
+            'password' => 'secret1234',
+        ]);
+        $product = [
+            'user_id' => 1,
+            'product_id' => 2,
+            'quantity' => 'KGS',
+            'price' => 10,
+            'discount' => 0.3
+        ];
+        $product1 = [
+            'user_id' => 1,
+            'product_id' => 3,
+            'quantity' => 'KGS',
+            'price' => 20,
+            'discount' => 0.6
+        ];
+        $response->post(route('cart.store'), $product);
+        $response->post(route('cart.store'), $product1);
+        $response->assertStatus(200);
+    }
     public function cart_store()
     {
         $response = $this->json('POST', route('user.login.validate'), [
@@ -51,6 +75,7 @@ class CartTest extends TestCase
 
         // Your assertions here
         $response->assertStatus(200);
+        
     }
 
 

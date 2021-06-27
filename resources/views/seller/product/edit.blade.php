@@ -57,8 +57,8 @@
                     <div>
                         <label class="uk-text-bold uk-margin-right" for="price">Price :</label>
                         <div class="uk-inline">
-                            <a class="uk-form-icon" href="#"></a>
-                            <input class="uk-input" type="number" placeholder="₹" id="price" name="price"
+                            <span class="uk-form-icon">₹</span>
+                            <input class="uk-input" type="number" placeholder="₹" id="price" name="price" min="0"
                                 value={{ $product->price }}>
                         </div>
                     </div>
@@ -66,8 +66,8 @@
                         <label class="uk-text-bold uk-margin-right" for="disc">Discount :</label>
                         <div class="uk-inline">
                             <a class="uk-form-icon uk-form-icon-flip ri-percent-fill" href="#"></a>
-                            <input class="uk-input" type="number" id="discount" name="discount"
-                                value={{ $product->discount }}>
+                            <input class="uk-input" type="number" id="discount" name="discount" min="0.05" max="0.75"
+                                step="0.01" value={{ $product->discount }}>
                         </div>
                     </div>
                 </div>

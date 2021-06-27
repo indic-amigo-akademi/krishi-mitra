@@ -71,17 +71,15 @@ class AddressController extends Controller
             'type' => $req['type'],
             'user_id' => Auth::id(),
         ]);
-        return redirect()
-            ->route($req['redirect_name'])
-            ->with(
-                'alert',
-                Notiflix::make([
-                    'code' => 'success',
-                    'title' => 'Yippee!',
-                    'type' => 'Report',
-                    'subtitle' => 'Your address was added!',
-                ])
-            );
+        return redirect($req['redirect_name'])->with(
+            'alert',
+            Notiflix::make([
+                'code' => 'success',
+                'title' => 'Yippee!',
+                'type' => 'Report',
+                'subtitle' => 'Your address was added!',
+            ])
+        );
     }
 
     public function edit_address(Request $req)

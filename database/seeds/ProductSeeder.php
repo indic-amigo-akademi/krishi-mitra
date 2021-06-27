@@ -60,7 +60,7 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $product1 = Product::create([
-            'type' => 'Vegetables',
+            'type' => 0,
             'seller_id' => 1,
             'desc' => '<p>This is a potato</p>',
             'price' => 15,
@@ -89,7 +89,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product2 = Product::create([
-            'type' => 'Vegetables',
+            'type' => 0,
             'seller_id' => 3,
             'desc' => '<p>This is an onion</p>',
             'price' => 25,
@@ -118,7 +118,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product3 = Product::create([
-            'type' => 'Vegetables',
+            'type' => 0,
             'seller_id' => 3,
             'desc' => '<p>This is a carrot</p>',
             'price' => 10,
@@ -139,7 +139,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product4 = Product::create([
-            'type' => 'Vegetables',
+            'type' => 0,
             'seller_id' => 3,
             'desc' => '<p>This is a cauliflower</p>',
             'price' => 20,
@@ -160,7 +160,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product5 = Product::create([
-            'type' => 'Vegetables',
+            'type' => 0,
             'seller_id' => 2,
             'desc' => '<p>This is a brinjal</p>',
             'price' => 20,
@@ -181,7 +181,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product6 = Product::create([
-            'type' => 'Fruits',
+            'type' => 1,
             'seller_id' => 2,
             'desc' => '<p>This is an apple</p>',
             'price' => 20,
@@ -202,7 +202,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product7 = Product::create([
-            'type' => 'Fruits',
+            'type' => 1,
             'seller_id' => 1,
             'desc' => '<p>This is a mango</p>',
             'price' => 20,
@@ -223,7 +223,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product8 = Product::create([
-            'type' => 'Cereals',
+            'type' => 2,
             'seller_id' => 2,
             'desc' => '<p>This is wheat</p>',
             'price' => 20,
@@ -244,7 +244,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product9 = Product::create([
-            'type' => 'Cereals',
+            'type' => 3,
             'seller_id' => 2,
             'desc' => '<p>This is moong pulse</p>',
             'price' => 20,
@@ -265,7 +265,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product10 = Product::create([
-            'type' => 'Fruits',
+            'type' => 1,
             'seller_id' => 2,
             'desc' => '<p>This is lemon</p>',
             'price' => 20,
@@ -286,7 +286,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product11 = Product::create([
-            'type' => 'Fruits',
+            'type' => 1,
             'seller_id' => 3,
             'desc' => '<p>This is sapota</p>',
             'price' => 20,
@@ -307,7 +307,7 @@ class ProductSeeder extends Seeder
         ]);
 
         $product12 = Product::create([
-            'type' => 'Fruits',
+            'type' => 1,
             'seller_id' => 2,
             'desc' => '<p>This is guava</p>',
             'price' => 20,
@@ -330,8 +330,7 @@ class ProductSeeder extends Seeder
         for ($i = 0; $i < 50; $i++) {
             $product_name = $this->faker->bothify('Product**##');
             $product = Product::create([
-                'type' =>
-                    Product::$categories[array_rand(Product::$categories)],
+                'type' => array_rand(Product::$categories),
                 'seller_id' => random_int(1, 3),
                 'desc' => sprintf('<p>%s</p>', $this->faker->paragraph(3)),
                 'price' => random_int(5, 50),

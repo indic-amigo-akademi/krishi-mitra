@@ -1,36 +1,39 @@
 <div>
-    <div class="uk-text-small uk-flex uk-flex-row uk-flex-between uk-padding copyright">
-        <div class="uk-margin-small-left uk-margin-small-right">
-            <div style="color: rgb(184, 184, 184)">ABOUT</div>
-            <div class="uk-margin-small-top footer-content">
-                <a href="{{ route('about') }}" style="color: white">About Us</a><br>
-                <a href="{{ route('contact') }}" style="color: white">Contact Us</a>
+    <div class="uk-text-small uk-flex uk-flex-row uk-padding footer-links">
+        <div class="uk-width-1-2 uk-width-3-4@m uk-flex uk-flex-row uk-flex-wrap">
+            <div class="uk-width-1-1 uk-width-1-3@m">
+                <div style="color: rgb(184, 184, 184)">ABOUT</div>
+                <div class="uk-margin-small-top footer-content">
+                    <a class="text-theme-color5" href="{{ route('about') }}">About Us</a><br>
+                    <a class="text-theme-color5" href="{{ route('contact') }}">Contact Us</a>
+                </div>
+            </div>
+            <div class="uk-width-1-1 uk-width-1-3@m">
+                <div style=" color: rgb(184, 184, 184)">SOCIAL</div>
+                <div class="uk-margin-small-top footer-content">
+                    <a class="text-theme-color5" href="https://www.facebook.com">Facebook</a><br>
+                    <a class="text-theme-color5" href="https://www.instagram.com">Instagram</a><br>
+                    <a class="text-theme-color5" href="https://www.youtube.com/">You Tube</a>
+                </div>
+            </div>
+            <div class="uk-width-1-1 uk-width-1-3@m">
+                <div style="color: rgb(184, 184, 184)">POLICY</div>
+                <div class="uk-margin-small-top footer-content">
+                    <a class="text-theme-color5">Return Policy</a><br>
+                    <a class="text-theme-color5">Term of Use</a><br>
+                    <a class="text-theme-color5">Security</a><br>
+                    <a class="text-theme-color5">Privacy</a>
+                </div>
             </div>
         </div>
-        <div class="uk-margin-small-right">
-            <div style=" color: rgb(184, 184, 184)">SOCIAL</div>
-            <div class="uk-margin-small-top footer-content">
-                <a href="https://www.facebook.com" style="color: white">Facebook</a><br>
-                <a href="https://www.instagram.com" style="color: white">Instagram</a><br>
-                <a href="https://www.youtube.com/" style="color: white">You Tube</a>
-            </div>
-        </div>
-        <div class="uk-margin-small-left uk-margin-small-right">
-            <div style="color: rgb(184, 184, 184)">POLICY</div>
-            <div class="uk-margin-small-top footer-content">
-                <a style="color: white">Return Policy</a><br>
-                <a style="color: white">Term of Use</a><br>
-                <a style="color: white">Security</a><br>
-                <a style="color: white">Privacy</a>
-            </div>
-        </div>
-        <div class="uk-margin-small-left">
+        <div class="uk-width-1-2 uk-width-1-4@m">
             <div style="color: rgb(184, 184, 184)">REGISTERED ADDRESS</div>
-            <div class="uk-margin-small-top footer-content">
-                <span style="color: white">Tarulia 1st Lane Krishnaur, Kestopur</span><br>
-                <span style="color: white">Kolkata, PIN-700102</span><br>
-                <span>Phone: </span><a style="color: white">1800045678</a><br>
-                <span>Email: </span><a style="color: white">contact@zen-geeks.com</a><br>
+            <h5 class="uk-margin-small-top uk-margin-remove-bottom text-theme-color5">Krishi Mitra & Co Ltd.</h5>
+            <div class="uk-margin-small-top footer-content text-theme-color5">
+                <span>Tarulia 1st Lane Krishnaur, Kestopur</span><br>
+                <span>Kolkata, PIN-700102</span><br>
+                <span>Phone: </span><a>1800045678</a><br>
+                <span>Email: </span><a>contact@zen-geeks.com</a><br>
             </div>
         </div>
     </div>

@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="uk-padding-small uk-flex uk-flex-middle uk-flex-wrap">
-                    <label class="uk-width-1-5@m uk-text-bold" for="type">Type :</label>
+                    <label class="uk-width-1-5@m uk-text-bold" for="type">Category :</label>
                     <div class="uk-inline uk-width-1-1 uk-width-4-5@m">
                         <i class="uk-form-icon ri-pencil-fill"></i>
                         {{-- <input class="uk-input" type="text" id="type" name="type"> --}}
@@ -47,7 +47,7 @@
                         <label class="uk-text-bold uk-margin-right" for="quantity">Quantity :</label>
                         <div class="uk-inline">
                             <i class="uk-form-icon ri-pencil-fill"></i>
-                            <input class="uk-input" type="number" id="quantity" name="quantity" value="0">
+                            <input class="uk-input" type="number" id="quantity" name="quantity" value="1" min="1">
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                         <label class="uk-text-bold uk-margin-right" for="price">Price :</label>
                         <div class="uk-inline">
                             <span class="uk-form-icon">₹</span>
-                            <input class="uk-input" type="number" placeholder="" id="price" name="price" value="0">
+                            <input class="uk-input" type="number" placeholder="" id="price" name="price" value="0" min="0">
                         </div>
                     </div>
                     <div class="uk-padding-small">

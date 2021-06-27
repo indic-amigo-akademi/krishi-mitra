@@ -82,7 +82,7 @@
                                     <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
                                         {{ $cart_product->product->name }}
                                         ,
-                                        {{ $cart_product->product->type }} - 1 {{ $cart_product->product->unit }}
+                                        {{ $cart_product->product->category }} - 1 {{ $cart_product->product->unit }}
                                     </div>
                                     <div class="uk-text-emphasis uk-margin-bottom">
                                         {{ $cart_product->product->seller->trade_name }}
@@ -124,7 +124,7 @@
                                 <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
                                     {{ $buy_product->name }}
                                     ,
-                                    {{ $buy_product->type }} - 1 {{ $buy_product->unit }}
+                                    {{ $buy_product->category }} - 1 {{ $buy_product->unit }}
                                 </div>
 
                                 <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
@@ -319,7 +319,6 @@
                     break;
             }
         });
-
     </script>
 @endsection
 @endsection

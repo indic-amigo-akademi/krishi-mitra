@@ -52,7 +52,7 @@ class ProductTest extends TestCase
         $expect->price = 10;
 
         $expect->discount = 0.3;
-        $expect1 = $expect->price * $expect->discount;
+        $expect1 = $expect->price *(1- $expect->discount);
         $this->assertEquals($expect1, $output);
     }
     public function testgetcategory()

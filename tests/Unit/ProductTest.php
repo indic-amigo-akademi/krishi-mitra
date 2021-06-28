@@ -50,11 +50,19 @@ class ProductTest extends TestCase
 
         $model->discount = 0.3;
         $output = $model->getDiscountedPriceAttribute($model);
+<<<<<<< HEAD
         $expect = new Product();
         $expect->price = 10;
 
         $expect->discount = 0.3;
         $expect1 = $expect->price * (1 - $expect->discount);
+=======
+    	$expect = new Product();
+    	$expect->price = 10;
+    	
+    	$expect->discount = 0.3;
+        $expect1 = $expect->price * (1-$expect->discount);
+>>>>>>> refs/remotes/origin/karmakarsrija-patch-1
         $this->assertEquals($expect1, $output);
     }
     public function testgetcategory()

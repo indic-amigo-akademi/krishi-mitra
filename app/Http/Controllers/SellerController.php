@@ -21,17 +21,6 @@ class SellerController extends Controller
     }
     public function seller_form()
     {
-        return view('seller.form');
-    }
-
-    public function index()
-    {
-        $user = Seller::where('user_id', Auth::id())->first();
-        return view('seller.dashboard', compact('user'));
-    }
-
-    protected function create_seller(Request $req)
-    {
         $approval = Approval::all()
             ->where('user_id', '=', Auth::id())
             ->first();
@@ -45,12 +34,42 @@ class SellerController extends Controller
                         'type' => 'Report',
                         'title' => 'Waiting!',
                         'subtitle' =>
-                            'Already signed for ' .
+                        'Already signed for ' .
                             str_replace('_', ' ', $approval->type) .
                             '!',
                     ])
                 );
         }
+        return view('seller.form');
+    }
+
+    public function index()
+    {
+        $user = Seller::where('user_id', Auth::id())->first();
+        return view('seller.dashboard', compact('user'));
+    }
+
+    protected function create_seller(Request $req)
+    {
+        // $approval = Approval::all()
+        //     ->where('user_id', '=', Auth::id())
+        //     ->first();
+        // if (isset($approval) && $approval) {
+        //     return redirect()
+        //         ->route('home')
+        //         ->with(
+        //             'alert',
+        //             Notiflix::make([
+        //                 'code' => 'info',
+        //                 'type' => 'Report',
+        //                 'title' => 'Waiting!',
+        //                 'subtitle' =>
+        //                 'Already signed for ' .
+        //                     str_replace('_', ' ', $approval->type) .
+        //                     '!',
+        //             ])
+        //         );
+        // }
 
         $validator = Validator::make($req->all(), [
             'name' => 'required|string|max:255',
@@ -88,7 +107,7 @@ class SellerController extends Controller
                     'title' => 'Yippee!',
                     'type' => 'Report',
                     'subtitle' =>
-                        'Your registration as a seller is in progress!',
+                    'Your registration as a seller is in progress!',
                 ])
             );
     }

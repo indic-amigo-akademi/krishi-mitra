@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Unit;
+
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Product;
@@ -53,7 +54,7 @@ class ProductTest extends TestCase
         $expect->price = 10;
 
         $expect->discount = 0.3;
-        $expect1 = $expect->price *(1- $expect->discount);
+        $expect1 = $expect->price * (1 - $expect->discount);
         $this->assertEquals($expect1, $output);
     }
     public function testgetcategory()
@@ -76,5 +77,5 @@ class ProductTest extends TestCase
         $expect = 'KGS';
         $this->assertEquals($expect, $output);
     }
-    
+  
 }

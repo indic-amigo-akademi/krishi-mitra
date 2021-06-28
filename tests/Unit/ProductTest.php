@@ -1,7 +1,6 @@
 <?php
 
 namespace Tests\Unit;
-
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Product;

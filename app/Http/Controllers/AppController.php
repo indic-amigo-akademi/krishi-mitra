@@ -54,37 +54,41 @@ class AppController extends Controller
     {
         $query = $req['q'];
         $category = $req['c'];
-        $page_title = '';
+        $seller = $req['s'];
+
+        $products = Product::where('active', 1)->paginate(12);
+        $page_title = sprintf('Recently added');
         if (isset($query)) {
-            $products = Product::where(
-                'name',
-                'like',
-                '%' . $query . '%'
-            )->paginate(12);
+            $products = Product::where('active', 1)
+                ->where('name', 'like', '%' . $query . '%')
+                ->paginate(12);
             if (count($products) == 0) {
                 $sid = Seller::where('name', '=', $query)->get();
                 if (count($sid) > 0) {
-                    $products = Product::where(
-                        'seller_id',
-                        '=',
-                        $sid[0]->id
-                    )->paginate(12);
+                    $products = Product::where('active', 1)
+                        ->where('seller_id', '=', $sid[0]->id)
+                        ->paginate(12);
                 }
             }
             if (count($products) == 0) {
-                $products = Product::where(
-                    'desc',
-                    'like',
-                    '%' . $query . '%'
-                )->paginate(12);
+                $products = Product::where('active', 1)
+                    ->where('desc', 'like', '%' . $query . '%')
+                    ->paginate(12);
             }
             $page_title = sprintf('Search Results for %s', $query);
         } elseif (isset($category)) {
-            $products = Product::where('type', $category)->paginate(12);
+            $products = Product::where('active', 1)
+                ->where('type', $category)
+                ->paginate(12);
             $page_title = sprintf('Category "%s"', $category);
-        } else {
-            $products = Product::where('active', 1)->paginate(12);
-            $page_title = sprintf('Recently added');
+        } elseif (isset($seller)) {
+            $seller = Seller::where('id', $seller)->first();
+            if (isset($seller)) {
+                $products = Product::where('active', 1)
+                    ->where('seller_id', $seller->id)
+                    ->paginate(12);
+                $page_title = sprintf('Seller "%s"', $seller->trade_name);
+            }
         }
 
         return view('product.explore', compact('products', 'page_title'));

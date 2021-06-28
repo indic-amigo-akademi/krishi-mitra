@@ -37,14 +37,18 @@ class AdminController extends Controller
     public function register_view()
     {
         if (Auth::user()->is_admin || Auth::user()->is_seller) {
-            return redirect()->route('home')->with(
-                'alert',
-                Notiflix::make([
-                    'code' => 'info',
-                    'subtitle' =>
-                    'You are already registered as ' . Auth::user()->role . "!",
-                ])
-            );
+            return redirect()
+                ->route('home')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'info',
+                        'subtitle' =>
+                            'You are already registered as ' .
+                            Auth::user()->role .
+                            '!',
+                    ])
+                );
         }
         $approval = Approval::all()
             ->where('user_id', '=', Auth::id())
@@ -59,7 +63,7 @@ class AdminController extends Controller
                         'type' => 'Report',
                         'title' => 'Waiting!',
                         'subtitle' =>
-                        'Already signed for ' .
+                            'Already signed for ' .
                             str_replace('_', ' ', $approval->type) .
                             '!',
                     ])
@@ -93,7 +97,7 @@ class AdminController extends Controller
                         'type' => 'Report',
                         'title' => 'Waiting!',
                         'subtitle' =>
-                        'Your registration as an admin is in progress!',
+                            'Your registration as an admin is in progress!',
                     ])
                 );
         }
@@ -168,7 +172,7 @@ class AdminController extends Controller
                     'code' => 'success',
                     'title' => 'Approved!',
                     'subtitle' =>
-                    'The admin have been de-registered as a customer!',
+                        'The admin have been de-registered as a customer!',
                 ])
             );
     }
@@ -201,7 +205,7 @@ class AdminController extends Controller
                     'code' => 'success',
                     'title' => 'Approved!',
                     'subtitle' =>
-                    'The customer have been registered as a seller!',
+                        'The customer have been registered as a seller!',
                 ])
             );
         } elseif ($approval == 'decline') {
@@ -225,7 +229,7 @@ class AdminController extends Controller
                         'code' => 'success',
                         'title' => 'Denied!',
                         'subtitle' =>
-                        'The customer have been declined as a seller!',
+                            'The customer have been declined as a seller!',
                     ])
                 );
         }

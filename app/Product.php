@@ -111,6 +111,6 @@ class Product extends Model
 
     public function getDiscountedPriceAttribute()
     {
-        return $this->price * $this->discount;
+        return $this->price * (1 - $this->discount);
     }
 }

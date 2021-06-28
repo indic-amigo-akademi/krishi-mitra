@@ -39,6 +39,8 @@
                         value=1>
                 </div>
                 <p class="uk-text-large uk-margin-remove">_</p>
+                <div class="uk-margin-top uk-margin-small-bottom"><span class="uk-text-bold">Seller: </span><span
+                        class="uk-text-small">{!! $seller->name !!}</span></div>
                 <div class="uk-margin-top uk-text-bold">Description</div>
                 <div class="uk-margin-small-bottom">{!! $product->desc !!}</div>
 

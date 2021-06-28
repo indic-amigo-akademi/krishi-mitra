@@ -119,8 +119,9 @@ class ProductController extends Controller
 
     public function show_one($slug)
     {
-        $prod = Product::where(['slug' => $slug])->first();
-        return view('product')->with('product', $prod);
+        $product = Product::where(['slug' => $slug])->first();
+        $seller = Seller::where(['id' => $product->seller_id])->first();
+        return view('product', compact('product', 'seller'));
     }
 
     /**

@@ -60,8 +60,18 @@ class SellerController extends Controller
 
     public function index()
     {
-        $user = Seller::where('user_id', Auth::id())->first();
-        return view('seller.dashboard', compact('user'));
+        if (Auth::user()->role == 'customer') {
+            abort(403);
+        }
+
+        if (Auth::user()->is_seller) {
+            $usr = Seller::where('user_id', Auth::id())->get()[0];
+            $email = User::find(Auth::id())->email;
+            $phone = User::find(Auth::id())->phone;
+            Log::info('PP' . $usr . $email);
+            $data = ['usr' => $usr, 'email' => $email, 'phone' => $phone];
+            return view('seller.dashboard')->with($data);
+        }
     }
 
     protected function create_seller(Request $req)
@@ -129,11 +139,14 @@ class SellerController extends Controller
 
     public function product_show(Request $req, $slug)
     {
-        if (!Auth::user()->is_seller) {
+        if (!Auth::user()->role == 'customer') {
             abort(403);
         }
-        $prod = Product::where(['slug' => $slug])->first();
-        return view('seller.product.show')->with('product', $prod);
+
+        if (Auth::user()->is_seller) {
+            $prod = Product::where(['slug' => $slug])->first();
+            return view('seller.product.show')->with('product', $prod);
+        }
     }
 
     public function product_orders()
@@ -170,12 +183,15 @@ class SellerController extends Controller
 
     public function product_display()
     {
-        if (!Auth::user()->is_seller) {
+        if (!Auth::user()->role == 'customer') {
             abort(403);
         }
-        $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
-        $products = Product::where('seller_id', $sid)->get();
-        // Log::info('Nimish' . $products . $sid);
-        return view('seller.product.list')->with('products', $products);
+
+        if (Auth::user()->is_seller) {
+            $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
+            $products = Product::where('seller_id', $sid)->get();
+            Log::info('Nimish' . $products . $sid);
+            return view('seller.product.list')->with('products', $products);
+        }
     }
 }

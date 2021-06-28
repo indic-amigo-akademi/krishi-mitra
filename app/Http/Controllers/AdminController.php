@@ -60,17 +60,18 @@ class AdminController extends Controller
 
     public function register(Request $req)
     {
-        $x = User::all()
+        $user = User::all()
             ->where('email', '=', $req->input('email'))
             ->first();
 
         if (
-            isset($x) &&
-            $x &&
-            Hash::check($req->input('password'), $x->password)
+            isset($user) &&
+            $user &&
+            Hash::check($req->input('password'), $user->password) &&
+            Auth::id() == $user->id
         ) {
             Approval::create([
-                'user_id' => $x->id,
+                'user_id' => $user->id,
                 'type' => 'admin_approval',
             ]);
             return redirect()

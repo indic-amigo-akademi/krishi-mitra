@@ -87,22 +87,22 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         if ($request['buy_type'] == 'buyNow') {
-            log::info('request is' . $request);
-            log::info('request product id is' . $request['prod_id']);
+            // log::info('request is' . $request);
+            // log::info('request product id is' . $request['prod_id']);
             $products = Product::where('id', $request['prod_id'])->get();
-            Log::info('ProDucts are');
-            log::info($products);
+            // Log::info('ProDucts are');
+            // log::info($products);
             $current_date_time = Carbon::now()->timestamp;
             $name = User::find(Auth::id())->id;
             $oid = strval($current_date_time) . strval($name);
             $oid_padded = str_pad($oid, 11 - strlen($oid), '0', STR_PAD_LEFT);
-            log::info('PROPERTY EXISTS' . $request['card'] . 'OID IS ' . $oid);
+            // log::info('PROPERTY EXISTS' . $request['card'] . 'OID IS ' . $oid);
             if ($request['card'] != '') {
                 $type = 'card';
             } else {
                 $type = 'cod';
             }
-            log::info('typeis' . $type);
+            // log::info('typeis' . $type);
             foreach ($products as $p) {
                 Order::create([
                     'user_id' => Auth::id(),
@@ -116,7 +116,7 @@ class OrderController extends Controller
                     'type' => $type,
                 ]);
             }
-            log::info('ORDER PROCESSED SUCCESSFULLY');
+            // log::info('ORDER PROCESSED SUCCESSFULLY');
             return redirect()
                 ->route('orders')
                 ->with(
@@ -128,47 +128,47 @@ class OrderController extends Controller
                         'subtitle' => 'Order is successfully placed!',
                     ])
                 );
-            log::info('request is' . $request);
-            log::info('request product id is' . $request['prod_id']);
-            $products = Product::where('id', $request['prod_id'])->get();
-            Log::info('ProDucts are');
-            log::info($products);
-            $current_date_time = Carbon::now()->timestamp;
-            $name = User::find(Auth::id())->id;
-            $oid = strval($current_date_time) . strval($name);
-            $oid_padded = str_pad($oid, 11 - strlen($oid), '0', STR_PAD_LEFT);
-            log::info('PROPERTY EXISTS' . $request['card'] . 'OID IS ' . $oid);
-            if ($request['card'] != '') {
-                $type = 'card';
-            } else {
-                $type = 'cod';
-            }
-            log::info('typeis' . $type);
-            foreach ($products as $p) {
-                Order::create([
-                    'user_id' => Auth::id(),
-                    'product_id' => $p->id,
-                    'order_id' => $oid_padded,
-                    'address_id' => $request['address_radio'],
-                    'qty' => 1,
-                    'price' => $p->price,
-                    'discount' => $p->discount,
-                    'status' => 'Processed',
-                    'type' => $type,
-                ]);
-            }
-            log::info('ORDER PROCESSED SUCCESSFULLY');
-            return redirect()
-                ->route('orders')
-                ->with(
-                    'alert',
-                    Notiflix::make([
-                        'code' => 'success',
-                        'title' => 'Yippee!',
-                        'type' => 'Notify',
-                        'subtitle' => 'Order is successfully placed!',
-                    ])
-                );
+            // log::info('request is' . $request);
+            // log::info('request product id is' . $request['prod_id']);
+            // $products = Product::where('id', $request['prod_id'])->get();
+            // Log::info('ProDucts are');
+            // log::info($products);
+            // $current_date_time = Carbon::now()->timestamp;
+            // $name = User::find(Auth::id())->id;
+            // $oid = strval($current_date_time) . strval($name);
+            // $oid_padded = str_pad($oid, 11 - strlen($oid), '0', STR_PAD_LEFT);
+            // log::info('PROPERTY EXISTS' . $request['card'] . 'OID IS ' . $oid);
+            // if ($request['card'] != '') {
+            //     $type = 'card';
+            // } else {
+            //     $type = 'cod';
+            // }
+            // log::info('typeis' . $type);
+            // foreach ($products as $p) {
+            //     Order::create([
+            //         'user_id' => Auth::id(),
+            //         'product_id' => $p->id,
+            //         'order_id' => $oid_padded,
+            //         'address_id' => $request['address_radio'],
+            //         'qty' => 1,
+            //         'price' => $p->price,
+            //         'discount' => $p->discount,
+            //         'status' => 'Processed',
+            //         'type' => $type,
+            //     ]);
+            // }
+            // log::info('ORDER PROCESSED SUCCESSFULLY');
+            // return redirect()
+            //     ->route('orders')
+            //     ->with(
+            //         'alert',
+            //         Notiflix::make([
+            //             'code' => 'success',
+            //             'title' => 'Yippee!',
+            //             'type' => 'Notify',
+            //             'subtitle' => 'Order is successfully placed!',
+            //         ])
+            //     );
         } else {
             log::info('request is' . $request);
             $products = Cart::where('user_id', Auth::id())->get();
@@ -182,7 +182,7 @@ class OrderController extends Controller
             } else {
                 $type = 'cod';
             }
-            log::info('typeis' . $type);
+            // log::info('typeis' . $type);
             foreach ($products as $p) {
                 Order::create([
                     'user_id' => Auth::id(),
@@ -197,7 +197,7 @@ class OrderController extends Controller
                 ]);
                 Cart::find($p->id)->delete();
             }
-            log::info('ORDER PROCESSED SUCCESSFULLY');
+            // log::info('ORDER PROCESSED SUCCESSFULLY');
             return redirect()
                 ->route('orders')
                 ->with(
@@ -222,9 +222,9 @@ class OrderController extends Controller
     {
         /*$ord = Cart::select('order_id')::where('user_id', Auth::id())->get();*/
         $orders = Order::where('user_id', '=', Auth::id())
-            ->orderBy('order_id')
-            ->orderBy('created_at')
-            ->paginate(6);
+            ->orderBy('order_id', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(8);
         return view('profile.orders', compact('orders'));
     }
 

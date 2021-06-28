@@ -64,10 +64,9 @@ Route::get('/seller', 'SellerController@index')->name('seller.index');
 Route::get('/seller/products', 'SellerController@product_display')->name(
     'seller.product.browse'
 );
-Route::get(
-    '/seller/products/browse/orders',
-    'SellerController@product_ordered'
-)->name('seller.product.browse.orders');
+Route::get('/seller/orders', 'SellerController@product_ordered')->name(
+    'seller.order.browse'
+);
 Route::get('/seller/product/create', 'ProductController@create')->name(
     'seller.product.create'
 );

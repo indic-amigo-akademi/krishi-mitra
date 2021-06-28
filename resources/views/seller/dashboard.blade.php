@@ -14,7 +14,7 @@
                     <li><a href="{{ route('seller.product.browse') }}">Browse products</a></li>
                 </ul>
                 <ul class="uk-list links">
-                    <li><a href="{{ route('seller.product.browse.orders') }}">Browse ordered products</a></li>
+                    <li><a href="{{ route('seller.order.browse') }}">Browse ordered products</a></li>
                 </ul>
             </div>
             <div class="uk-card-footer"></div>

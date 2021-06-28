@@ -26,16 +26,32 @@ class SellerController extends Controller
 
     public function index()
     {
-        $usr = Seller::where('user_id', Auth::id())->get()[0];
-        $email = User::find(Auth::id())->email;
-        $phone = User::find(Auth::id())->phone;
-        Log::info('PP' . $usr . $email);
-        $data = ['usr' => $usr, 'email' => $email, 'phone' => $phone];
-        return view('seller.dashboard')->with($data);
+        $user = Seller::where('user_id', Auth::id())->first();
+        return view('seller.dashboard', compact('user'));
     }
 
     protected function create_seller(Request $req)
     {
+        $approval = Approval::all()
+            ->where('user_id', '=', Auth::id())
+            ->first();
+        if (isset($approval) && $approval) {
+            return redirect()
+                ->route('home')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'info',
+                        'type' => 'Report',
+                        'title' => 'Waiting!',
+                        'subtitle' =>
+                            'Already signed for ' .
+                            str_replace('_', ' ', $approval->type) .
+                            '!',
+                    ])
+                );
+        }
+
         $validator = Validator::make($req->all(), [
             'name' => 'required|string|max:255',
 
@@ -45,7 +61,8 @@ class SellerController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/seller/register')
+            return redirect()
+                ->route('seller.register')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -62,15 +79,18 @@ class SellerController extends Controller
             'type' => 'seller_approval',
         ]);
 
-        return redirect('/home')->with(
-            'alert',
-            Notiflix::make([
-                'code' => 'success',
-                'title' => 'Yippee!',
-                'type' => 'Report',
-                'subtitle' => 'Your registration as a seller is in progress!',
-            ])
-        );
+        return redirect()
+            ->route('home')
+            ->with(
+                'alert',
+                Notiflix::make([
+                    'code' => 'success',
+                    'title' => 'Yippee!',
+                    'type' => 'Report',
+                    'subtitle' =>
+                        'Your registration as a seller is in progress!',
+                ])
+            );
     }
 
     public function product_show(Request $req, $slug)
@@ -100,7 +120,7 @@ class SellerController extends Controller
             // ->having('products.seller_id', $x->id)
             ->get()
             ->toArray();
-        log::info('The orders for this seller are');
+        // log::info('The orders for this seller are');
         //var_dump($products[0]);
         return view('seller.orders')->with('products', $products);
     }
@@ -112,7 +132,7 @@ class SellerController extends Controller
         }
         $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
         $products = Product::where('seller_id', $sid)->get();
-        Log::info('Nimish' . $products . $sid);
+        // Log::info('Nimish' . $products . $sid);
         return view('seller.product.list')->with('products', $products);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Approval;
 use App\Helpers\Notiflix;
+use App\Order;
 use App\Product;
 use App\Seller;
 use App\User;
@@ -21,17 +22,20 @@ class SellerController extends Controller
     }
     public function seller_form()
     {
-        return view('seller.form');
-    }
-
-    public function index()
-    {
-        $user = Seller::where('user_id', Auth::id())->first();
-        return view('seller.dashboard', compact('user'));
-    }
-
-    protected function create_seller(Request $req)
-    {
+        if (Auth::user()->is_admin || Auth::user()->is_seller) {
+            return redirect()
+                ->route('home')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'info',
+                        'subtitle' =>
+                            'You are already registered as ' .
+                            Auth::user()->role .
+                            '!',
+                    ])
+                );
+        }
         $approval = Approval::all()
             ->where('user_id', '=', Auth::id())
             ->first();
@@ -51,6 +55,36 @@ class SellerController extends Controller
                     ])
                 );
         }
+        return view('seller.form');
+    }
+
+    public function index()
+    {
+        $user = Seller::where('user_id', Auth::id())->first();
+        return view('seller.dashboard', compact('user'));
+    }
+
+    protected function create_seller(Request $req)
+    {
+        // $approval = Approval::all()
+        //     ->where('user_id', '=', Auth::id())
+        //     ->first();
+        // if (isset($approval) && $approval) {
+        //     return redirect()
+        //         ->route('home')
+        //         ->with(
+        //             'alert',
+        //             Notiflix::make([
+        //                 'code' => 'info',
+        //                 'type' => 'Report',
+        //                 'title' => 'Waiting!',
+        //                 'subtitle' =>
+        //                 'Already signed for ' .
+        //                     str_replace('_', ' ', $approval->type) .
+        //                     '!',
+        //             ])
+        //         );
+        // }
 
         $validator = Validator::make($req->all(), [
             'name' => 'required|string|max:255',
@@ -102,27 +136,36 @@ class SellerController extends Controller
         return view('seller.product.show')->with('product', $prod);
     }
 
-    public function product_ordered()
+    public function product_orders()
     {
         if (!Auth::user()->is_seller) {
             abort(403);
         }
-        $x = Seller::where('user_id', Auth::user()->id)->get()[0];
-        $products = DB::table('orders')
-            ->select(
-                DB::raw(
-                    'product_id as id,sum(qty) as qty,max(name)as name,sum(orders.price) as price'
-                )
-            )
-            ->join('products', 'products.id', '=', 'orders.product_id')
-            ->where('products.seller_id', $x->id)
-            ->groupBy('product_id')
-            // ->having('products.seller_id', $x->id)
-            ->get()
+        $seller = Auth::user()->seller;
+        $product_ids = Product::where('seller_id', $seller->id)
+            ->pluck('id')
             ->toArray();
-        // log::info('The orders for this seller are');
-        //var_dump($products[0]);
-        return view('seller.orders')->with('products', $products);
+        $orders = Order::whereIn('product_id', $product_ids)
+            ->orderBy('order_id', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(8);
+
+        return view('seller.orders')->with('orders', $orders);
+    }
+
+    public function show_one_order($id)
+    {
+        $seller = Auth::user()->seller;
+        $product_ids = Product::where('seller_id', $seller->id)
+            ->pluck('id')
+            ->toArray();
+        $orders = $orders = Order::whereIn('product_id', $product_ids)
+            ->where('order_id', $id)
+            ->get();
+        if (count($orders) > 0) {
+            return view('profile.order', compact('orders'));
+        }
+        abort(404);
     }
 
     public function product_display()

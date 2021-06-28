@@ -36,6 +36,20 @@ class AdminController extends Controller
 
     public function register_view()
     {
+        if (Auth::user()->is_admin || Auth::user()->is_seller) {
+            return redirect()
+                ->route('home')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'info',
+                        'subtitle' =>
+                            'You are already registered as ' .
+                            Auth::user()->role .
+                            '!',
+                    ])
+                );
+        }
         $approval = Approval::all()
             ->where('user_id', '=', Auth::id())
             ->first();

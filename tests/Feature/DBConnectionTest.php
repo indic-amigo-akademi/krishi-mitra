@@ -19,7 +19,6 @@ class DBConnectionTest extends TestCase
 
         $this->assertNotNull(DB::Connection('mysql'));
         $db_name = DB::connection()->getDatabaseName();
-        $this->assertEquals('krishi',$db_name);
+        $this->assertEquals('krishi', $db_name);
     }
 }
-

@@ -1,6 +1,7 @@
+namespace Tests\Feature;
 <?php
 
-namespace Tests\Feature;
+
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,7 +17,7 @@ class RouteTest extends TestCase
     {
         $response = $this->get('/register');
 
-        $response->assertStatus(404);
+        $response->assertStatus(200);
     }
     public function testLoginPage()
     {
@@ -41,5 +42,7 @@ class RouteTest extends TestCase
         $response = $this->get('/confirmpassword');
 
         $response->assertStatus(404);
+
     }
+
 }

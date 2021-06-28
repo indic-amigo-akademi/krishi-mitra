@@ -4,6 +4,7 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Product;
+use App\Seller;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase
@@ -75,4 +76,5 @@ class ProductTest extends TestCase
         $expect = 'KGS';
         $this->assertEquals($expect, $output);
     }
+    
 }

@@ -6,7 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Product;
 use PHPUnit\Framework\TestCase;
 
-class Testproduct extends TestCase
+
+class  ProductTest extends TestCase
 {
     /**
      * A basic unit test example.

@@ -52,6 +52,25 @@ class Testproduct extends TestCase
         $expect1 = $expect->price * $expect->discount;
         $this->assertEquals($expect1, $output);
     }
+   public function testgetcategory()
+   {
+       $model=new Product();
+       $model::$categories[$model->type]='Vegetable';
+       $output=$model->getCategoryAttribute($model);
+       $expect=new Product();
+      // $expect::$categories[$model->type]='Vegetable';
+       $expect='Vegetable';
+       $this->assertEquals($expect, $output);
+   }
+   public function testgetproductunit()
+   {
+    $model=new Product();
+    $model::$units[$model->unit]='KGS';
+    $output=$model->getProductUnitAttribute($model);
+    $expect=new Product();
    
+    $expect='KGS';
+    $this->assertEquals($expect, $output);
+   }
 
 }

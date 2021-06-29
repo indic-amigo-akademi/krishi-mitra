@@ -90,8 +90,8 @@ class AppController extends Controller
                 $page_title = sprintf('Seller "%s"', $seller->trade_name);
             }
         }
-
-        return view('product.explore', compact('products', 'page_title'));
+        $sellers = Seller::all();
+        return view('product.explore', compact('products', 'page_title','sellers'));
     }
 
     public function about()

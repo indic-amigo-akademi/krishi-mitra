@@ -41,6 +41,9 @@
                                     <br>
                                     <span class="uk-text-emphasis"> Ordered On:
                                     </span><span>{{ $o->created_at }}</span>
+                                    <br>
+                                    <span class="uk-text-emphasis">Order Status : </span>
+                                    <span>{{ $o->status }}</span>
                                 </div>
                             </div>
                         </div>

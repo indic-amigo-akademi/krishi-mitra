@@ -245,7 +245,43 @@ class OrderController extends Controller
         }
         abort(404);
     }
-
+    public function cancel_delete(Request $req)
+    {
+        $ostatus = $req->input('input');
+        $oid = $req->input('id');
+        $order = Order::all()->where('id',"=",$oid)->first();
+        if($ostatus=="Cancel")
+        {
+            $order->status = 'Cancelled';
+            $order->save();
+            return redirect()
+                ->route('orders.show',$order->order_id)
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Yippee!',
+                        'type' => 'Notify',
+                        'subtitle' => 'Order is successfully Cancellerd!',
+                    ])
+                );
+        }
+        elseif($ostatus=="Delete")
+        {
+            Order::find($oid)->delete();
+            return redirect()
+                ->route('orders')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Yippee!',
+                        'type' => 'Notify',
+                        'subtitle' => 'Order is successfully Deleted!',
+                    ])
+                );
+        }    
+    }
     /**
      * Update the specified resource in storage.
      *

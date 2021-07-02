@@ -80,7 +80,10 @@ class AppController extends Controller
             $products = Product::where('active', 1)
                 ->where('type', $category)
                 ->paginate(12);
-            $page_title = sprintf('Category "%s"', $category);
+            $page_title = sprintf(
+                'Category "%s"',
+                Product::$categories[$category]
+            );
         } elseif (isset($seller)) {
             $seller = Seller::where('id', $seller)->first();
             if (isset($seller)) {
@@ -91,7 +94,29 @@ class AppController extends Controller
             }
         }
 
+        if ($req->ajax()) {
+            $data = '';
+            foreach ($products as $product) {
+                $data .= view('components.productBox', compact('product'));
+            }
+            return json_encode([
+                'success' => true,
+                'data' => $data,
+                'next_url' => $products
+                    ->appends(request()->input())
+                    ->nextPageUrl(),
+            ]);
+        }
+
         return view('product.explore', compact('products', 'page_title'));
+    }
+
+    public function productBox(Request $req, $id)
+    {
+        $product = Product::where('active', 1)
+            ->where('id', $id)
+            ->first();
+        return view('components.productBox', compact('product'));
     }
 
     public function about()

@@ -80,28 +80,22 @@ class GetRoutesTest extends TestCase
         ]);
 
         $this->testSellerSingleGetRoute(route("home"));
-        $this->testSellerSingleGetRoute(route("product.browse"));
+        $this->testSellerSingleGetRoute(route("explore"));
         $this->testSellerSingleGetRoute(route("customer.index"));
-        $this->testSellerSingleGetRoute(route("search.item"));
+        // $this->testSellerSingleGetRoute(route("search.item"));
         $this->testSellerSingleGetRoute(route("about"));
         $this->testSellerSingleGetRoute(route("contact"));
         $this->testSellerSingleGetRoute(route("checkout"));
         $this->testSellerSingleGetRoute(route("orders"));
-        $status = [
-            "seller" => 200,
-            "admin" => 200,
-            "customer" => 200
-        ];
         $this->testSellerSingleGetRoute(route("OrderProcessed"), $status, [
             "guest" => "/login",
-            "customer" => '/home',
-            "seller" => '/home',
-            "admin" => '/home',
-            "sysadmin" => '/home'
+            "customer" => '/orders',
+            "seller" => '/orders',
+            "admin" => '/orders',
+            "sysadmin" => '/orders'
         ]);
         // $this->testSellerSingleGetRoute(route("orders.show", 16240389968));
         $this->testSellerSingleGetRoute(route("address"));
         $this->testSellerSingleGetRoute(route("address.add.view"));
-        // $this->testSellerSingleGetRoute(route("address.edit.view"));
     }
 }

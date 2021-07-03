@@ -139,9 +139,9 @@ Route::get('/address/add', 'AddressController@add_address_view')->name(
 Route::post('/address/add', 'AddressController@add_address')->name(
     'address.add'
 );
-Route::get('/address/edit', 'AddressController@edit_address_view')->name(
-    'address.edit.view'
-);
+// Route::get('/address/edit', 'AddressController@edit_address_view')->name(
+//     'address.edit.view'
+// );
 Route::post('/address/edit', 'AddressController@edit_address')->name(
     'address.edit'
 );

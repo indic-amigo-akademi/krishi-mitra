@@ -25,7 +25,7 @@ class CartGetRoutesTest extends TestCase
 
     protected function testSellerSingleGetRoute(
         $url,
-        $status = ["customer" => 200, "seller" => 200, "admin" => 302],
+        $status = ["customer" => 200, "seller" => 200, "admin" => 200, "sysadmin" => 200],
         $redirectUri = ["guest" => '/login', "admin" => '/admin/product/browse', "sysadmin" => '/admin/product/browse']
     ) {
         $response = $this->get($url);
@@ -47,10 +47,14 @@ class CartGetRoutesTest extends TestCase
         $response = $this->actingAs($this->admin)->get($url);
         if ($response->status() == 302)
             $response->assertRedirect($redirectUri["admin"]);
+        else
+            $response->assertStatus($status["admin"]);
 
         $response = $this->actingAs($this->sysadmin)->get($url);
         if ($response->status() == 302)
             $response->assertRedirect($redirectUri["sysadmin"]);
+        else
+            $response->assertStatus($status["sysadmin"]);
 
         Auth::logout();
     }

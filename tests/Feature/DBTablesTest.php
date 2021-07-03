@@ -16,7 +16,7 @@ class DBTablesTest extends TestCase
      */
     public function testExample()
     {
-        $tables = array(
+        $tables = [
             0 => 'addresses',
             1 => 'approvals',
             2 => 'carts',
@@ -28,9 +28,12 @@ class DBTablesTest extends TestCase
             8 => 'password_resets',
             9 => 'products',
             10 => 'sellers',
-            11 => 'users'
+            11 => 'users',
+        ];
+        $tb = array_map(
+            'reset',
+            DB::connection('mysql')->select('SHOW TABLES')
         );
-        $tb = array_map('reset', DB::connection('mysql')->select('SHOW TABLES'));
         $this->assertEquals($tables, $tb);
     }
 }

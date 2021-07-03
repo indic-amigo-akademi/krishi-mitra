@@ -7,6 +7,7 @@ use App\User;
 use App\Product;
 use App\Cart;
 use App\Address;
+use App\Helpers\Notiflix;
 use Carbon\Carbon;
 use App\Order;
 use Illuminate\Support\Facades\Auth;
@@ -30,31 +31,24 @@ class OrderController extends Controller
     }
     public function checkout(Request $req)
     {
-        log::info('Req 1' . $req);
-        $cart_products = Cart::where('user_id', Auth::id())->get();
-        $buy = 'cart';
-        $prod = 100;
+        $prod = 0;
+        if ($req['type'] == 'buyNow') {
+            $prod = $req['id'];
+            $buy_now_prod = Product::find($prod);
+            $data = [
+                'prod_id' => $prod,
+                'buy' => 'buyNow',
+                'buy_product' => $buy_now_prod,
+            ];
+        } else {
+            $cart_products = Cart::where('user_id', Auth::id())->get();
+            $data = [
+                'prod_id' => $prod,
+                'buy' => $req['type'],
+                'cart_products' => $cart_products,
+            ];
+        }
 
-        $data = [
-            'buy' => $buy,
-            'prod_id' => $prod,
-            'cart_products' => $cart_products,
-        ];
-
-        return view('profile.checkout')->with($data);
-    }
-    public function index1($id)
-    {
-        $buy = 'Buy_now';
-        $prod = $id;
-        $buy_now_prod = Product::find($id);
-        log::info('Buy now prod');
-        log::info($buy_now_prod);
-        $data = [
-            'buy' => $buy,
-            'prod_id' => $prod,
-            'buy_product' => $buy_now_prod,
-        ];
         return view('profile.checkout')->with($data);
     }
 
@@ -68,7 +62,7 @@ class OrderController extends Controller
         LOG::info($req->input());
         LOG::info('BUY Type is' . $req['buy_type']);
         $buy_now_id = 100;
-        if ($req['buy_type'] == 'Buy_now') {
+        if ($req['buy_type'] == 'buyNow') {
             $buy_now_id = $req['prod_id'];
         }
         $data = [
@@ -82,42 +76,6 @@ class OrderController extends Controller
             log::info('Going to fetch card details');
             return view('CardDetails')->with($data);
         }
-
-        /* if ($req['buy_type'] == 'Buy_now') {
-            return $this->buy_now($req['prod_id']);
-            //return redirect('/checkout/processed/buynow/' . $req['prod_id']);
-        } else {
-            if ($req['payment'] == 'cash') {
-                return $this->store($req);
-            } else {
-                return view('CardDetails');
-            }
-        }*/
-    }
-    /*protected function buy_now(Request $req)
-    {
-        $id = $req['prod_id'];
-        $type = '';
-        if ($req['payment'] == 'cash') {
-            $type = 'cash';
-        } else {
-            return view('CardDetails');
-        }
-        $p = Product::find($id);
-        log::info('Product id is' . $p);
-        $oid = rand(1, 999999999);
-        Order::create([
-            'user_id' => Auth::id(),
-            'product_id' => $p->id,
-            'order_id' => $oid,
-            'qty' => 1,
-            'price' => $p->price * (1 - $p->discount),
-            'discount' => $p->discount,
-            'status' => 'Processed',
-            'type' => 'cod',
-        ]);
-        log::info('ORDER PROCESSED SUCCESSFULLY FOR BUY NOW');
-        return redirect(route('home'));
     }
 
     /**
@@ -128,7 +86,90 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request['buy_type'] == 'cart') {
+        if ($request['buy_type'] == 'buyNow') {
+            // log::info('request is' . $request);
+            // log::info('request product id is' . $request['prod_id']);
+            $products = Product::where('id', $request['prod_id'])->get();
+            // Log::info('ProDucts are');
+            // log::info($products);
+            $current_date_time = Carbon::now()->timestamp;
+            $name = User::find(Auth::id())->id;
+            $oid = strval($current_date_time) . strval($name);
+            $oid_padded = str_pad($oid, 11 - strlen($oid), '0', STR_PAD_LEFT);
+            // log::info('PROPERTY EXISTS' . $request['card'] . 'OID IS ' . $oid);
+            if ($request['card'] != '') {
+                $type = 'card';
+            } else {
+                $type = 'cod';
+            }
+            // log::info('typeis' . $type);
+            foreach ($products as $p) {
+                Order::create([
+                    'user_id' => Auth::id(),
+                    'product_id' => $p->id,
+                    'order_id' => $oid_padded,
+                    'address_id' => $request['address_radio'],
+                    'qty' => 1,
+                    'price' => $p->price,
+                    'discount' => $p->discount,
+                    'status' => 'Processed',
+                    'type' => $type,
+                ]);
+            }
+            // log::info('ORDER PROCESSED SUCCESSFULLY');
+            return redirect()
+                ->route('orders')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Yippee!',
+                        'type' => 'Notify',
+                        'subtitle' => 'Order is successfully placed!',
+                    ])
+                );
+            // log::info('request is' . $request);
+            // log::info('request product id is' . $request['prod_id']);
+            // $products = Product::where('id', $request['prod_id'])->get();
+            // Log::info('ProDucts are');
+            // log::info($products);
+            // $current_date_time = Carbon::now()->timestamp;
+            // $name = User::find(Auth::id())->id;
+            // $oid = strval($current_date_time) . strval($name);
+            // $oid_padded = str_pad($oid, 11 - strlen($oid), '0', STR_PAD_LEFT);
+            // log::info('PROPERTY EXISTS' . $request['card'] . 'OID IS ' . $oid);
+            // if ($request['card'] != '') {
+            //     $type = 'card';
+            // } else {
+            //     $type = 'cod';
+            // }
+            // log::info('typeis' . $type);
+            // foreach ($products as $p) {
+            //     Order::create([
+            //         'user_id' => Auth::id(),
+            //         'product_id' => $p->id,
+            //         'order_id' => $oid_padded,
+            //         'address_id' => $request['address_radio'],
+            //         'qty' => 1,
+            //         'price' => $p->price,
+            //         'discount' => $p->discount,
+            //         'status' => 'Processed',
+            //         'type' => $type,
+            //     ]);
+            // }
+            // log::info('ORDER PROCESSED SUCCESSFULLY');
+            // return redirect()
+            //     ->route('orders')
+            //     ->with(
+            //         'alert',
+            //         Notiflix::make([
+            //             'code' => 'success',
+            //             'title' => 'Yippee!',
+            //             'type' => 'Notify',
+            //             'subtitle' => 'Order is successfully placed!',
+            //         ])
+            //     );
+        } else {
             log::info('request is' . $request);
             $products = Cart::where('user_id', Auth::id())->get();
             $current_date_time = Carbon::now()->timestamp;
@@ -141,7 +182,7 @@ class OrderController extends Controller
             } else {
                 $type = 'cod';
             }
-            log::info('typeis' . $type);
+            // log::info('typeis' . $type);
             foreach ($products as $p) {
                 Order::create([
                     'user_id' => Auth::id(),
@@ -149,47 +190,25 @@ class OrderController extends Controller
                     'order_id' => $oid_padded,
                     'address_id' => $request['address_radio'],
                     'qty' => $p->qty,
-                    'price' => $p->qty * $p->price * (1 - $p->discount),
+                    'price' => $p->price,
                     'discount' => $p->discount,
                     'status' => 'Processed',
                     'type' => $type,
                 ]);
                 Cart::find($p->id)->delete();
             }
-            log::info('ORDER PROCESSED SUCCESSFULLY');
-            return redirect(route('home'));
-        } else {
-            log::info('request is' . $request);
-            log::info('request product id is' . $request['prod_id']);
-            $products = Product::where('id', $request['prod_id'])->get();
-            Log::info('ProDucts are');
-            log::info($products);
-            $current_date_time = Carbon::now()->timestamp;
-            $name = User::find(Auth::id())->id;
-            $oid = strval($current_date_time) . strval($name);
-            $oid_padded = str_pad($oid, 11 - strlen($oid), '0', STR_PAD_LEFT);
-            log::info('PROPERTY EXISTS' . $request['card'] . 'OID IS ' . $oid);
-            if ($request['card'] != '') {
-                $type = 'card';
-            } else {
-                $type = 'cod';
-            }
-            log::info('typeis' . $type);
-            foreach ($products as $p) {
-                Order::create([
-                    'user_id' => Auth::id(),
-                    'product_id' => $p->id,
-                    'order_id' => $oid_padded,
-                    'address_id' => $request['address_radio'],
-                    'qty' => 1,
-                    'price' => $p->price * (1 - $p->discount),
-                    'discount' => $p->discount,
-                    'status' => 'Processed',
-                    'type' => $type,
-                ]);
-            }
-            log::info('ORDER PROCESSED SUCCESSFULLY');
-            return redirect(route('home'));
+            // log::info('ORDER PROCESSED SUCCESSFULLY');
+            return redirect()
+                ->route('orders')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Yippee!',
+                        'type' => 'Notify',
+                        'subtitle' => 'Order is successfully placed!',
+                    ])
+                );
         }
     }
 
@@ -202,17 +221,11 @@ class OrderController extends Controller
     public function showall()
     {
         /*$ord = Cart::select('order_id')::where('user_id', Auth::id())->get();*/
-        $ord = DB::table('orders')
-            ->where('user_id', '=', Auth::id())
-            ->select([
-                DB::raw('order_id'),
-                DB::raw("SUM(price) as 'tot'"),
-                DB::raw('max(created_at) as created_at'),
-            ])
-            ->groupBy('order_id')
-            ->orderBy('created_at')
-            ->get();
-        return view('profile.orders')->with('ord', $ord);
+        $orders = Order::where('user_id', '=', Auth::id())
+            ->orderBy('order_id', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(8);
+        return view('profile.orders', compact('orders'));
     }
 
     /**
@@ -232,7 +245,43 @@ class OrderController extends Controller
         }
         abort(404);
     }
-
+    public function cancel_delete(Request $req)
+    {
+        $ostatus = $req->input('input');
+        $oid = $req->input('id');
+        $order = Order::all()->where('id',"=",$oid)->first();
+        if($ostatus=="Cancel")
+        {
+            $order->status = 'Cancelled';
+            $order->save();
+            return redirect()
+                ->route('orders.show',$order->order_id)
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Yippee!',
+                        'type' => 'Notify',
+                        'subtitle' => 'Order is successfully Cancellerd!',
+                    ])
+                );
+        }
+        elseif($ostatus=="Delete")
+        {
+            Order::find($oid)->delete();
+            return redirect()
+                ->route('orders')
+                ->with(
+                    'alert',
+                    Notiflix::make([
+                        'code' => 'success',
+                        'title' => 'Yippee!',
+                        'type' => 'Notify',
+                        'subtitle' => 'Order is successfully Deleted!',
+                    ])
+                );
+        }    
+    }
     /**
      * Update the specified resource in storage.
      *

@@ -4,8 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-
+require("./bootstrap");
+// require('slick-carousel');
+window.Notiflix = require("notiflix");
 
 // window.Vue = require('vue');
 

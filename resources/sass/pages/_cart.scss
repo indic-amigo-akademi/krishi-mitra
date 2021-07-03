@@ -23,3 +23,23 @@
     color: $theme-color1;
     font-family: Arial, Helvetica, sans-serif;
 }
+// Order History //
+.order-color {
+    background-color: $theme-color4;
+}
+.order-card {
+    background-color: white;
+}
+.order-id {
+    color: #3b7402;
+}
+.order-id:hover {
+    opacity: 0.8;
+}
+.order-home {
+    background-color: $theme-color1;
+    color: $theme-color4;
+}
+.single_order {
+    border-right: 1px solid;
+}

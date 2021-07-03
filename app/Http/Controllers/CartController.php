@@ -63,7 +63,6 @@ class CartController extends Controller
             $cart_prod->qty = $cart_prod->qty + 1;
             $cart_prod->save();
         }
-        Log::info('Cart Item Added');
     }
 
     /**

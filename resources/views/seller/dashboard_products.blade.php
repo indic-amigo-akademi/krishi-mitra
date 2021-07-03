@@ -11,14 +11,14 @@
                 @foreach ($products as $prod)
                     <div
                         class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex
-                                                                                                                                                                                                                                         uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
+                                                                                                                                                                                                                                             uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
                         <a href="{{ route('seller.product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
                             <img src="{{ isset($prod->coverPhotos) ? asset('uploads/products/' . $prod->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                 uk-img />
                         </a>
                         <div class="uk-padding-small">
                             <div class="uk-margin-small-bottom">
-                                <span class="uk-text-bold">{{ $prod->type }}</span> |
+                                <span class="uk-text-bold">{{ $prod->category }}</span> |
                                 <span style="font-family: cursive">{{ $prod->name }}</span>
                             </div>
                             <div class="uk-margin-small-bottom uk-text-bold uk-text-small">

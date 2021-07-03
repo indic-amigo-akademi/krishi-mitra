@@ -24,7 +24,7 @@ class AdminAuthTest extends TestCase
 
     protected function testAdminSingleGetRoute(
         $url,
-        $status = ["guest" => 302, "customer" => 200, "seller" => 200],
+        $status = ["guest" => 302, "customer" => 200, "seller" => 403],
         $redirectUri = ["guest" => '/login']
     ) {
         $response = $this->get($url);
@@ -40,15 +40,15 @@ class AdminAuthTest extends TestCase
             $response->assertStatus($status["customer"]);
 
         $response = $this->actingAs($this->seller)->get($url);
-        if ($response->status() == 403)
-            $response->assertStatus(403);
+        if ($response->status() == 302)
+            $response->assertStatus(302);
         else
             $response->assertStatus($status["seller"]);
 
         $response = $this->actingAs($this->admin)->get($url);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
         $response = $this->actingAs($this->sysadmin)->get($url);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
 
         Auth::logout();
     }

@@ -30,12 +30,13 @@
                         <span class="uk-text-small uk-text-bold uk-text-danger uk-margin-right sdetail-offer">(You Save :
                             {{ $product->discount * 100 }}%)</span>
                     </div>
-                    <p class="uk-text-large uk-margin-remove">_</p>
+                    {{-- <p class="uk-text-large uk-margin-remove">_</p> --}}
+                    <hr />
                     <div class="uk-margin-small-top uk-margin-small-bottom">{!! $product->desc !!}</div>
                 </div>
 
                 <div class="uk-card-footer uk-width-1-1 uk-flex uk-flex-row uk-flex-center">
-                    <a href="/product_edit/{{ $product->id }}" type=" button"
+                    <a href="/seller/product/edit/{{ $product->id }}" type=" button"
                         class="uk-margin-right uk-link-heading uk-text-primary uk-text-bold">Edit</a>
 
                     <form action="{{ route('product.destroy', $product->id) }}" id="removeProduct" method="post">

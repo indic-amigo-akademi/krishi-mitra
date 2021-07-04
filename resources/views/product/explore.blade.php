@@ -34,6 +34,14 @@
                                                 </span>
                                                 per {{ $prod->unit }}
                                             </div>
+                                            @foreach ($sellers as $seller)
+                                            @if ($prod->seller_id == $seller->id)
+                                                <div class="uk-margin-top uk-margin-small-bottom"><span
+                                                        class="uk-text-bold">Seller: </span><span
+                                                        class="uk-text-small">{!! $seller->name !!}</span></div>
+                                            @endif
+
+                                            @endforeach
                                         </div>
                                     </div>
                                     <div class="uk-flex uk-flex-between uk-card-footer uk-padding-small">

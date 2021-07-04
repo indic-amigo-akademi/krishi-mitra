@@ -16,7 +16,7 @@ class ProductUpdateTest extends TestCase
      *
      * @return void
      */
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
     public function testCreateProduct()
     {

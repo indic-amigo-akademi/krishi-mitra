@@ -57,6 +57,7 @@ class AppController extends Controller
         $seller = $req['s'];
 
         $products = Product::where('active', 1)->paginate(12);
+        $sellers = Seller::all();
         $page_title = sprintf('Recently added');
         if (isset($query)) {
             $products = Product::where('active', 1)
@@ -90,8 +91,8 @@ class AppController extends Controller
                 $page_title = sprintf('Seller "%s"', $seller->trade_name);
             }
         }
-
-        return view('product.explore', compact('products', 'page_title'));
+        $sellers = Seller::all();
+        return view('product.explore', compact('products', 'page_title','sellers'));
     }
 
     public function about()

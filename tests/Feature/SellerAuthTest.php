@@ -25,7 +25,7 @@ class SellerAuthTest extends TestCase
 
     protected function testSellerSingleGetRoute(
         $url,
-        $status = ["guest" => 302, "customer" => 200, "seller" => 200],
+        $status = ["guest" => 302, "customer" => 200, "seller" => 200, 'admin' => 200, 'sysadmin' => 200],
         $redirectUri = ["guest" => '/login']
     ) {
         $response = $this->get($url);
@@ -47,9 +47,9 @@ class SellerAuthTest extends TestCase
             $response->assertStatus($status["seller"]);
 
         $response = $this->actingAs($this->admin)->get($url);
-        $response->assertStatus(200);
+        $response->assertStatus($status['admin']);
         $response = $this->actingAs($this->sysadmin)->get($url);
-        $response->assertStatus(200);
+        $response->assertStatus($status['sysadmin']);
 
         Auth::logout();
     }
@@ -58,6 +58,8 @@ class SellerAuthTest extends TestCase
     {
         $this->testSellerSingleGetRoute(route("seller.index"));
         $this->testSellerSingleGetRoute(route("seller.product.browse"));
+        $status = ["guest" => 302, "customer" => 200, "seller" => 200, 'admin' => 403, 'sysadmin' => 403];
+        $this->testSellerSingleGetRoute(route("seller.order.browse"), $status);
         $this->testSellerSingleGetRoute(route("seller.product.create"));
         $this->testSellerSingleGetRoute("/seller/product/edit/1");
         $this->testSellerSingleGetRoute("/seller/product/carrot");

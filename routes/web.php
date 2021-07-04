@@ -126,6 +126,7 @@ Route::get('/checkout/processed', 'OrderController@store')->name(
 
 Route::get('/orders', 'OrderController@showall')->name('orders');
 Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show');
+Route::post('/orders/{id}', 'OrderController@cancel_delete')->name('orders.show.cancel.delete');
 
 // Address Routes
 Route::get('/address', 'AddressController@address_view')->name('address');
@@ -138,9 +139,9 @@ Route::get('/address/add', 'AddressController@add_address_view')->name(
 Route::post('/address/add', 'AddressController@add_address')->name(
     'address.add'
 );
-Route::get('/address/edit', 'AddressController@edit_address_view')->name(
-    'address.edit.view'
-);
+// Route::get('/address/edit', 'AddressController@edit_address_view')->name(
+//     'address.edit.view'
+// );
 Route::post('/address/edit', 'AddressController@edit_address')->name(
     'address.edit'
 );

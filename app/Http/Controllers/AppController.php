@@ -14,8 +14,8 @@ class AppController extends Controller
     public function home()
     {
         $products = Product::all();
-
-        return view('home')->with('products', $products);
+        $sellers = Seller::all();
+        return view('home', compact('products', 'sellers'));
     }
 
     public function create_contact(Request $req)

@@ -23,13 +23,13 @@
                             economy who
                             buys
                             everything at retail, sells everything at wholesale, and pays the freight both ways."</p>
-                        <a class="uk-flex uk-flex-middle uk-flex-center"><i
+                        {{-- <a class="uk-flex uk-flex-middle uk-flex-center"><i
                                 class="uk-text-large uk-margin-right ri-message-3-line"></i>Post some Ideas to help the
-                            Farmers</a>
+                            Farmers</a> --}}
                     </div>
                     <div class="uk-text-large uk-text-bold uk-text-italic mySlides fade">
                         <i class="uk-text-large uk-margin-right ri-user-smile-fill"></i>
-                        Know More About Us
+                        <a href="{{ route('about') }}">Know More About Us</a>
                     </div>
                 </div>
                 <div

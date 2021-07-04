@@ -19,10 +19,16 @@
             <div class="uk-width-1-1 uk-width-1-3@m">
                 <div style="color: rgb(184, 184, 184)">POLICY</div>
                 <div class="uk-margin-small-top footer-content">
-                    <a class="text-theme-color5">Return Policy</a><br>
-                    <a class="text-theme-color5">Term of Use</a><br>
-                    <a class="text-theme-color5">Security</a><br>
-                    <a class="text-theme-color5">Privacy</a>
+                    <a class="text-theme-color5"
+                        href="https://www.amazon.in/gp/help/customer/display.html?nodeId=202111910">Return
+                        Policy</a><br>
+                    <a class="text-theme-color5"
+                        href="https://www.amazon.in/gp/help/customer/display.html?nodeId=200545940&ref_=footer_cou">Term
+                        of Use</a><br>
+                    <a class="text-theme-color5"
+                        href="https://www.amazon.in/gp/help/customer/display.html?nodeId=200534380&ref_=footer_privacy">Security</a><br>
+                    <a class="text-theme-color5"
+                        href="https://www.amazon.in/gp/help/customer/display.html?nodeId=200534380&ref_=footer_privacy">Privacy</a>
                 </div>
             </div>
         </div>

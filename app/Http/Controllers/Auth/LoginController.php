@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
 use App\Helpers\Notiflix;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -47,46 +46,33 @@ class LoginController extends Controller
     {
         switch ($user->role) {
             case 'admin':
-                return redirect('/admin')->with(
-                    'alert',
-                    Notiflix::make([
-                        'code' => 'success',
-                        'title' => 'Bonjour!',
-                        'subtitle' => 'You have been logged in as an admin!',
-                    ])
-                );
+                return redirect('/admin')->with('alert', [
+                    'code' => 'success',
+                    'title' => 'Success!',
+                    'subtitle' => 'You have been logged in as an admin!',
+                ]);
                 break;
             case 'sysadmin':
-                return redirect('/admin')->with(
-                    'alert',
-                    Notiflix::make([
-                        'code' => 'success',
-                        'title' => 'Bonjour!',
-                        'subtitle' =>
-                            'You have been logged in as an system admin!',
-                    ])
-                );
+                return redirect('/admin')->with('alert', [
+                    'code' => 'success',
+                    'title' => 'Success!',
+                    'subtitle' => 'You have been logged in as an system admin!',
+                ]);
                 break;
             case 'seller':
-                return redirect('/seller')->with(
-                    'alert',
-                    Notiflix::make([
-                        'code' => 'success',
-                        'title' => 'Bonjour!',
-                        'subtitle' => 'You have been logged in as an seller!',
-                    ])
-                );
+                return redirect('/seller')->with('alert', [
+                    'code' => 'success',
+                    'title' => 'Success!',
+                    'subtitle' => 'You have been logged in as an seller!',
+                ]);
                 break;
 
             default:
-                return redirect('home')->with(
-                    'alert',
-                    Notiflix::make([
-                        'code' => 'success',
-                        'title' => 'Bonjour!',
-                        'subtitle' => 'You have been logged in as an customer!',
-                    ])
-                );
+                return redirect('home')->with('alert', [
+                    'code' => 'success',
+                    'title' => 'Success!',
+                    'subtitle' => 'You have been logged in as an customer!',
+                ]);
                 break;
         }
     }
@@ -106,21 +92,9 @@ class LoginController extends Controller
         }
 
         if (Auth::attempt($credentials)) {
-            return redirect()
-                ->intended($this->redirectPath())
-                ->with(
-                    'alert',
-                    Notiflix::make([
-                        'code' => 'success',
-                        'title' => 'Bonjour!',
-                        'subtitle' =>
-                            'You have been logged in as an ' .
-                            Auth::user()->role .
-                            '!',
-                    ])
-                );
+            return redirect()->intended($this->redirectPath());
         }
-
+        
         return redirect()
             ->back()
             ->withInput()
@@ -172,20 +146,5 @@ class LoginController extends Controller
             'success' => false,
             'errors' => ['email' => 'Invalid credentials.'],
         ]);
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        return redirect()
-            ->route('welcome')
-            ->with(
-                'alert',
-                Notiflix::make([
-                    'code' => 'success',
-                    'title' => 'Adieu!',
-                    'subtitle' => 'You have been logged out!',
-                ])
-            );
     }
 }

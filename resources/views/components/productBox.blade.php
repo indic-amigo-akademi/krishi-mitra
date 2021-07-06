@@ -1,4 +1,4 @@
-<div class="uk-card uk-card-default uk-width-1-2 uk-width-1-3@s uk-width-1-4@l uk-flex-left product-box">
+<div class="uk-card uk-card-default product-box">
     <div class="uk-card-media-top">
         <a href="{{ route('product.view', $product->slug) }}" class="uk-flex uk-flex-center">
             <img src="{{ isset($product->coverPhotos) ? asset('uploads/products/' . $product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
@@ -7,13 +7,18 @@
     </div>
     <div class="uk-padding-remove">
         <div class="uk-card-body uk-padding-small">
-            <div class="uk-margin-small-bottom">
+            <div class="">
                 <a href="{{ route('product.view', $product->slug) }}">
                     <span style="font-family: cursive">{{ $product->name }}</span>
                 </a>
                 |
                 <a href="{{ route('explore') . '?c=' . $product->type }}">
                     <span class="uk-text-bold">{{ $product->category }}</span>
+                </a>
+            </div>
+            <div class="uk-margin-small-bottom">
+                <a href="{{ route('explore') . '?s=' . $product->seller->id }}">
+                    <span class="uk-text-bold">{{ $product->seller->trade_name }}</span>
                 </a>
             </div>
             <div class="uk-margin-small-bottom uk-text-bold uk-text-small">

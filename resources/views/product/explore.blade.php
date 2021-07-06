@@ -9,45 +9,9 @@
                     <div class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-left" style="max-width: 1200px;"
                         id="explore-results">
                         @foreach ($products as $product)
-                            {{-- <div
-                                class="uk-card uk-card-default uk-width-1-2 uk-width-1-3@s uk-width-1-4@l uk-flex-left product-box">
-                                <div class="uk-card-media-top">
-                                    <a href="{{ route('product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
-                                        <img src="{{ isset($prod->coverPhotos) ? asset('uploads/products/' . $prod->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
-                                            uk-img />
-                                    </a>
-                                </div>
-                                <div class="uk-padding-remove">
-                                    <div class="uk-card-body uk-padding-small">
-                                        <div class="uk-margin-small-bottom">
-                                            <a href="{{ route('product.view', $prod->slug) }}">
-                                                <span style="font-family: cursive">{{ $prod->name }}</span>
-                                            </a>
-                                            |
-                                            <a href="{{ route('explore') . '?c=' . $prod->type }}">
-                                                <span class="uk-text-bold">{{ $prod->category }}</span>
-                                            </a>
-                                        </div>
-                                        <div class="uk-margin-small-bottom uk-text-bold uk-text-small">
-                                            <span class="sprod-color">
-                                                ₹ {{ $prod->price }}
-                                            </span>
-                                            per {{ $prod->unit }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="uk-flex uk-flex-between uk-card-footer uk-padding-small">
-                                    <a href="#" onclick="addToCart('{{ $prod->id }}')" class="uk-text-primary">
-                                        <i class="ri-shopping-bag-line"></i>
-                                        <span class="icon-text">Add to Cart</span>
-                                    </a>
-                                    <a href="#" onclick="buyNow('{{ $prod->id }}')" class="uk-text-primary">
-                                        <i class="ri-shopping-cart-line"></i>
-                                        <span class="icon-text">Buy Now</span>
-                                    </a>
-                                </div>
-                            </div> --}}
-                            @include('components.productBox')
+                            <div class="uk-width-1-2 uk-width-1-3@s uk-width-1-4@l uk-flex-left">
+                                @include('components.productBox')
+                            </div>
                         @endforeach
                     </div>
                     @if ($products->appends(request()->input())->hasMorePages())

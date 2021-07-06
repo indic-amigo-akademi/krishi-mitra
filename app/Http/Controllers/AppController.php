@@ -13,9 +13,8 @@ class AppController extends Controller
 {
     public function home()
     {
-        $products = Product::all();
-        $sellers = Seller::all();
-        return view('home', compact('products', 'sellers'));
+        $products = Product::where('active', 1)->get();
+        return view('home', compact('products'));
     }
 
     public function create_contact(Request $req)

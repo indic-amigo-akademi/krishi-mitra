@@ -23,7 +23,24 @@ class OrderUnitTest extends TestCase
         $this->user = new User();
         $this ->product=new Product();
         $this->address=new Address();
+         $this->order=new Order();
     }
+    
+     public function testFillableAttributes()
+    {
+        $fillable = ['user_id',
+        'product_id',
+        'address_id',
+        'order_id',
+        'qty',
+        'price',
+        'discount',
+        'status',
+        'type',];
+
+        $this->assertEquals($this->order->getFillable(), $fillable);
+    }
+
     public function test_order_belongsto_user()
     {
      

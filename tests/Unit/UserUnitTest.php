@@ -21,11 +21,43 @@ class UserUnitTest extends TestCase
 
         $this->addresses = new Address();
         $this->seller=new Seller();
+         $this->user=new User();
         
 
         
     }
 
+    
+    public function testFillableAttributes()
+    {
+        $fillable = ['name',
+        'username',
+        'email',
+        'phone',
+        'password',
+        'role',
+        'active',
+    ];
+
+        $this->assertEquals($this->user->getFillable(), $fillable);
+    }
+
+    public function testHiddenAttributes()
+    {
+        $hidden = ['password', 'remember_token'];
+        $this->assertEquals($this->user->getHidden(),$hidden);
+    }
+    public function testCast()
+    {
+        $casts = [
+            'id'=>'int',
+            'email_verified_at' => 'datetime',
+            'is_sysadmin' => 'boolean',
+            'is_admin' => 'boolean',
+            'is_seller' => 'boolean',
+        ];
+        $this->assertEquals($this->user->getCasts(),$casts);
+    }
     public function testseller_hasone_userid()
     {
         $user = new User();

@@ -8,7 +8,7 @@ use App\Product;
 use App\Seller;
 use PHPUnit\Framework\TestCase;
 
-class ProductTest extends TestCase
+class ProductUnitTest extends TestCase
 {
     /**
      * A basic unit test example.
@@ -16,8 +16,8 @@ class ProductTest extends TestCase
      * @return void
      */
 
-    use DatabaseMigrations;
-    use DatabaseTransactions;
+    //use DatabaseMigrations;
+    //use DatabaseTransactions;
 
     private $product;
 

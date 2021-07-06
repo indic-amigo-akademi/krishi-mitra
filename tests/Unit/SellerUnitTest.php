@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-//use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tests\TestCase;
 use App\Seller;
 use App\User;
@@ -21,6 +21,14 @@ class SellerUnitTest extends TestCase
         parent::setUp();
 
         $this->user = new User();
+        $this->seller=new Seller();
+    }
+    
+     public function testFillableAttributes()
+    {
+        $fillable = ['name', 'user_id', 'gstin', 'aadhaar', 'trade_name'];
+
+        $this->assertEquals($this->seller->getFillable(), $fillable);
     }
     public function test_seller_belongsto_user()
     {

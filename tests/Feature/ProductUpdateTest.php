@@ -3,10 +3,15 @@
 namespace Tests\Feature;
 
 use App\User;
+use App\FileImage;
 use App\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProductUpdateTest extends TestCase
@@ -17,89 +22,77 @@ class ProductUpdateTest extends TestCase
      * @return void
      */
     // use RefreshDatabase;
+    use WithFaker;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->sysadmin = User::where("id", "=", 1)->first();
+        $this->admin = User::where("id", "=", 2)->first();
+        $this->seller = User::where("id", "=", 11)->first();
+        $this->customer = User::where("id", "=", 8)->first();
+        $this->setUpFaker();
+        // $this->faker->seed(1235);
+    }
 
     public function testCreateProduct()
     {
-        $response = $this->json('POST', route('user.login.validate'), [
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-        ]);
-        $data = [
-            'id' => 3,
-            'type' => 'Vegetable',
-            'seller_id' => 2,
-            'desc' => '<p>This is a potato<p>',
-            'price' => 15,
-            'name' => 'Aloo Jyoti',
+
+        $file = UploadedFile::fake()->image('R.jpg');
+        Log::info($file);
+        $product = [
+            'type' => 0,
+            'seller_id' => 3,
+            'desc' => '<p>This is a pineapple</p>',
+            'price' => 10,
+            'name' => 'Carrot',
             'unit' => 'KGS',
             'quantity' => '133',
-            'slug' => 'aloo_jyoti',
-            'discount' => 0.3,
+            'slug' => 'pineapple',
+            'discount' => 0.4,
+            'cover' => [0 => $file]
         ];
-        $response->json('POST', 'product.store', $data);
-        // Your assertions here
-        $response->assertStatus(200);
+
+        $response = $this->actingAs($this->seller)->post(route('product.store'), $product);
+
+        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
+
+        $this->assertEquals($lastProduct->name, $product['name']);
+        $response->assertStatus(302);
+        $response->assertRedirect(route(Auth::user()->role . '.product.browse'));
     }
 
     public function testupdateProduct()
-
     {
-
-        $response = $this->json('POST', route('user.login.validate'), [
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-        ]);
-
+        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
         $product = [
-            'id' => 3,
-            'type' => 'Vegetable',
-            'seller_id' => 2,
-            'desc' => '<p>This is a potato<p>',
-            'price' => 15,
-            'name' => 'Aloo Jyoti',
+            'type' => 0,
+            'seller_id' => 3,
+            'desc' => '<p>This is a pineapple fruit</p>',
+            'price' => 10,
+            'name' => 'Carrot',
             'unit' => 'KGS',
             'quantity' => '133',
-            'slug' => 'aloo_jyoti',
-            'discount' => 0.3,
+            'slug' => 'pineapple',
+            'discount' => 0.4
         ];
-        $update = ['name' => 'changed'];
-        $response->json('POST', '/products/update/3', [
-            $product['id'],
-            $product['type'],
-            $product['seller_id'],
-            $product['desc'],
-            $product['price'] => 15,
-            $update['name'],
-            $product['unit'],
-            $product['quantity'],
-            $product['slug'],
-            $product['discount']
-        ]);
-        $response->assertStatus(200);
+        $response = $this->actingAs($this->seller)->post(route('product.update', $lastProduct->id), $product);
+
+        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
+        $this->assertEquals($lastProduct->desc, $product['desc']);
+        $response->assertStatus(302);
+        $response->assertRedirect(route(Auth::user()->role . '.product.browse'));
     }
-    //$user = factory(\App\User::class)->create();
-    //$response = $this->actingAs($user, 'api')->json('POST', '/api/products',$data);
 
     public function testDeleteProduct()
     {
-        $response = $this->json('POST', route('user.login.validate'), [
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-        ]);
+        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
+        $id = $lastProduct->id;
+        $response = $this->actingAs($this->seller)->post(route('product.destroy', $lastProduct->id));
 
-        $product = [
-            'id' => 3,
-            'type' => 'Vegetable',
-            'seller_id' => 2,
-            'desc' => '<p>This is a potato<p>',
-            'price' => 15,
-            'name' => 'Aloo Jyoti',
-            'unit' => 'KGS',
-            'quantity' => '133',
-            'slug' => 'aloo_jyoti',
-            'discount' => 0.3,
-        ];
-        $response->json('POST', '/products/destroy/3', $product);
-        $response->assertStatus(200);
+        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
+        $this->assertNotEquals($lastProduct->id, $id);
+        $response->assertStatus(302);
+        $response->assertRedirect(route(Auth::user()->role . '.product.browse'));
     }
 }

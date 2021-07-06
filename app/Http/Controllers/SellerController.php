@@ -22,15 +22,14 @@ class SellerController extends Controller
     }
     public function seller_form()
     {
-        if (Auth::user()->is_admin || Auth::user()->is_seller) {
-            return redirect()
-                ->route('home')
+        if (Auth::user()->is_seller || Auth::user()->is_admin) {
+            return redirect()->back()
                 ->with(
                     'alert',
                     Notiflix::make([
                         'code' => 'info',
                         'subtitle' =>
-                            'You are already registered as ' .
+                        'You are already registered as ' .
                             Auth::user()->role .
                             '!',
                     ])
@@ -41,7 +40,7 @@ class SellerController extends Controller
             ->first();
         if (isset($approval) && $approval) {
             return redirect()
-                ->route('home')
+                ->back()
                 ->with(
                     'alert',
                     Notiflix::make([
@@ -49,7 +48,7 @@ class SellerController extends Controller
                         'type' => 'Report',
                         'title' => 'Waiting!',
                         'subtitle' =>
-                            'Already signed for ' .
+                        'Already signed for ' .
                             str_replace('_', ' ', $approval->type) .
                             '!',
                     ])
@@ -132,7 +131,7 @@ class SellerController extends Controller
                     'title' => 'Yippee!',
                     'type' => 'Report',
                     'subtitle' =>
-                        'Your registration as a seller is in progress!',
+                    'Your registration as a seller is in progress!',
                 ])
             );
     }

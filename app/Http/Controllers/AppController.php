@@ -56,6 +56,7 @@ class AppController extends Controller
         $seller = $req['s'];
 
         $products = Product::where('active', 1)->paginate(12);
+        $sellers = Seller::all();
         $page_title = sprintf('Recently added');
         if (isset($query)) {
             $products = Product::where('active', 1)

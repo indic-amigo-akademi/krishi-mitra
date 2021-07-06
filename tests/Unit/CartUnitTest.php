@@ -8,7 +8,7 @@ use App\Cart;
 use App\Product;
 use PHPUnit\Framework\TestCase;
 
-class CartunitTest extends TestCase
+class CartUnitTest extends TestCase
 {
     /**
      * A basic unit test example.

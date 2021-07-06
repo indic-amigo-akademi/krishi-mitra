@@ -7,9 +7,11 @@ use App\Address;
 use App\Helpers\Notiflix;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class AddressController extends Controller
 {
+    use WithoutMiddleware;
     public function __construct()
     {
         $this->middleware('auth');

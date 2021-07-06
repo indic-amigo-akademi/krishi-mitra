@@ -13,6 +13,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class ProductUpdateTest extends TestCase
 {
@@ -23,7 +24,7 @@ class ProductUpdateTest extends TestCase
      */
     // use RefreshDatabase;
     use WithFaker;
-
+    use WithoutMiddleware;
     public function setUp(): void
     {
         parent::setUp();

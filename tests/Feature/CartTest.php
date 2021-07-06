@@ -4,10 +4,15 @@ namespace Tests\Feature;
 
 use App\User;
 use App\Product;
-
+use Faker\Generator as Faker;
+use App\Cart;
+use App\Order;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class CartTest extends TestCase
 {
@@ -16,95 +21,62 @@ class CartTest extends TestCase
      *
      * @return void
      */
-
-
-    public function user_can_add_product_to_cart()
+    //use WithFaker;
+    use WithoutMiddleware;
+    public function setUp(): void
     {
-        $response = $this->json('POST', route('user.login.validate'), [
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-        ]);
-        $product = [
-            'user_id' => 1,
-            'product_id' => 2,
-            'quantity' => 'KGS',
-            'price' => 10,
-            'discount' => 0.3
-        ];
-    }
-    public function user_can_add_multiple_product_to_cart()
-    {
-        $response=$this->json('POST', route('user.login.validate'), [
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-        ]);
-        $product = [
-            'user_id' => 1,
-            'product_id' => 2,
-            'quantity' => 'KGS',
-            'price' => 10,
-            'discount' => 0.3
-        ];
-        $product1 = [
-            'user_id' => 1,
-            'product_id' => 3,
-            'quantity' => 'KGS',
-            'price' => 20,
-            'discount' => 0.6
-        ];
-        $response->post(route('cart.store'), $product);
-        $response->post(route('cart.store'), $product1);
-        $response->assertStatus(200);
-    }
-    public function cart_store()
-    {
-        $response = $this->json('POST', route('user.login.validate'), [
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-        ]);
-        $data = [
-            'user_id' => 1,
-            'product_id' => 2,
-            'qty' => 1,
-            'price' => 10,
-            'discount' => 0.3
-
-        ];
-
-        $response->post(route('cart.store'), $data);
-
-        // Your assertions here
-        $response->assertStatus(200);
-        
+        parent::setUp();
+        $this->sysadmin = User::where("id", "=", 1)->first();
+        $this->admin = User::where("id", "=", 2)->first();
+        $this->seller = User::where("id", "=", 11)->first();
+        $this->customer = User::where("id", "=", 8)->first();
+        //$this->setUpFaker();
+        // $this->faker->seed(1235);
+        //->withHeaders(['X-CSRF-TOKEN' => csrf_token()])
     }
 
-
-
-    public function test_it_fails_to_destroy_if_the_user_is_unauthorized()
+    public function test_cart_store()
     {
-        $this->json('DELETE', 'cart/destroy/1')
-            ->assertStatus(404);
+        $req = ['id' => 9];
+        $response = $this->actingAs($this->seller)->post(route('cart.store'), $req);
+        $lastProduct = Cart::all()->sortByDesc('updated_at')->first();
+        log::info('Last product' . $lastProduct);
+        $this->assertEquals($lastProduct->product_id, $req['id']);
     }
-
-
-
-    public function test_it_deletes_the_product_from_cart()
+    public function test_cart_incr()
+    {
+        $y = Cart::where('product_id', 9)->get()[0]->qty;
+        $id = Cart::where('product_id', 9)->get()[0]->id;
+        $req = ['id' => $id];
+        log::info('The value of y is' . $y);
+        $response = $this->actingAs($this->seller)->post(route('cart.increment'), $req);
+        $lastProduct = Cart::all()->sortByDesc('updated_at')->first();
+        log::info('Last product' . $lastProduct);
+        $this->assertEquals($lastProduct->id, $req['id']);
+        $this->assertEquals($lastProduct->qty, $y + 1);
+    }
+    public function test_cart_decr()
     {
 
-        $response = $this->json('POST', route('user.login.validate'), [
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-        ]);
-        $product = [
-            'user_id' => 1,
-            'product_id' => 2,
-            'qty' => 1,
-            'price' => 10,
-            'discount' => 0.3
-        ];
-        //$delete = $this->post(route('cart.destroy'), $product);
-        $response->json('POST', '/cart/destroy/3', $product);
-        // Your assertions here
-        $response->assertStatus(200);
+        $y = Cart::where('product_id', 9)->get()[0]->qty;
+        $id = Cart::where('product_id', 9)->get()[0]->id;
+        $req = ['id' => $id];
+        log::info('The value of y is' . $y);
+        $response = $this->actingAs($this->seller)->post(route('cart.decrement'), $req);
+        $lastProduct = Cart::all()->sortByDesc('updated_at')->first();
+        log::info('Last product' . $lastProduct);
+        $this->assertEquals($lastProduct->id, $req['id']);
+        $this->assertEquals($lastProduct->qty, $y - 1);
+    }
+    public function test_cart_destroy()
+    {
+
+        $y = Cart::where('product_id', 9)->get()[0]->qty;
+        $id = Cart::where('product_id', 9)->get()[0]->id;
+        $req = ['id' => $id];
+        log::info('The value of y is' . $y);
+        $response = $this->actingAs($this->seller)->post(route('cart.destroy'), $req);
+        $lastProduct = count(Cart::where('id', $id)->get());
+        $this->assertEquals($lastProduct, 0);
     }
 }

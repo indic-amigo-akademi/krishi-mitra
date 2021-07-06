@@ -4,6 +4,7 @@
     @foreach ($address as $addr)
         <form action="{{ route('address.edit') }}" method='post' enctype="multipart/form-data">
             @csrf
+            <input name="redirect_name" type="hidden" value="{{ url()->previous() }}" />
             <div
                 class="uk-width-1-1 uk-height-1-1 uk-padding-large uk-padding-remove-horizontal uk-flex uk-flex-around uk-flex-middle cproduct">
                 <div class="uk-card uk-card-default uk-card-body uk-padding-large uk-width-2-3@m">

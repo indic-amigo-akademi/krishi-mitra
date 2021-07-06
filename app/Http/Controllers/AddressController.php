@@ -39,7 +39,7 @@ class AddressController extends Controller
         } elseif ($address == 'Delete') {
             Address::find($aid)->delete();
             return redirect()
-                ->route('address')
+                ->back()
                 ->with(
                     'alert',
                     Notiflix::make([
@@ -59,6 +59,7 @@ class AddressController extends Controller
 
     public function add_address(Request $req)
     {
+        // Log::info($req);
         Address::create([
             'name' => $req['name'],
             'mobile' => $req['mobile'],
@@ -71,21 +72,23 @@ class AddressController extends Controller
             'type' => $req['type'],
             'user_id' => Auth::id(),
         ]);
-        return redirect($req['redirect_name'])->with(
-            'alert',
-            Notiflix::make([
-                'code' => 'success',
-                'title' => 'Yippee!',
-                'type' => 'Report',
-                'subtitle' => 'Your address was added!',
-            ])
-        );
+        return redirect($req['redirect_name'])
+            ->with(
+                'alert',
+                Notiflix::make([
+                    'code' => 'success',
+                    'title' => 'Yippee!',
+                    'type' => 'Report',
+                    'subtitle' => 'Your address was added!',
+                ])
+            );
     }
 
     public function edit_address(Request $req)
     {
-        Log::info($req);
+        Log::info($req->id);
         $addr = Address::find($req->id);
+        Log::info($addr);
         $addr->name = $req->name;
         $addr->mobile = $req->mobile;
         $addr->pincode = $req->pincode;
@@ -96,8 +99,7 @@ class AddressController extends Controller
         $addr->landmark = $req->landmark;
         $addr->type = $req->type;
         $addr->save();
-        return redirect()
-            ->route('address')
+        return redirect($req['redirect_name'])
             ->with(
                 'alert',
                 Notiflix::make([

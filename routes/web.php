@@ -119,7 +119,7 @@ Route::get('/checkout/processed/card', 'OrderController@storecard')->name(
 );*/
 // Route::get('/checkout', 'OrderController@index')->name('checkout');
 Route::post('/checkout/form', 'OrderController@create')->name('CheckoutForm');
-Route::get('/checkout/processed', 'OrderController@store')->name(
+Route::post('/checkout/processed', 'OrderController@store')->name(
     'OrderProcessed'
 );
 //Route::get('/checkout/processed/buynow/{id}', 'OrderController@buy_now');

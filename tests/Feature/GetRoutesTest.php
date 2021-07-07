@@ -87,13 +87,13 @@ class GetRoutesTest extends TestCase
         $this->testSellerSingleGetRoute(route("contact"));
         $this->testSellerSingleGetRoute(route("checkout"));
         $this->testSellerSingleGetRoute(route("orders"));
-        $this->testSellerSingleGetRoute(route("OrderProcessed"), $status, [
-            "guest" => "/login",
-            "customer" => '/orders',
-            "seller" => '/orders',
-            "admin" => '/orders',
-            "sysadmin" => '/orders'
-        ]);
+        // $this->testSellerSingleGetRoute(route("OrderProcessed"), $status, [
+        //     "guest" => "/login",
+        //     "customer" => '/orders',
+        //     "seller" => '/orders',
+        //     "admin" => '/orders',
+        //     "sysadmin" => '/orders'
+        // ]);
         // $this->testSellerSingleGetRoute(route("orders.show", 16240389968));
         $this->testSellerSingleGetRoute(route("address"));
         $this->testSellerSingleGetRoute(route("address.add.view"));

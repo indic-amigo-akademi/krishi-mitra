@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('OrderProcessed') }}">
+    <form action="{{ route('OrderProcessed') }}" method="POST">
+        @csrf
         <div class="form-group">
             <label for="card">Select Card Type:</label>
             <input type="text" class="form-control" id="card" name="card">

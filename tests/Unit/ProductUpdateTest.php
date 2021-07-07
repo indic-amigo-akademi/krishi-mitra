@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\User;
 use App\FileImage;
@@ -38,43 +38,48 @@ class ProductUpdateTest extends TestCase
 
     public function testCreateProduct()
     {
-
         $file = UploadedFile::fake()->image('R.jpg');
+        // $path = '/home/andre/Desktop/usc_trojan_tommy_trojan_statue.jpg';
+        // $file = new UploadedFile(
+        //     $path,
+        //     'usc_trojan_tommy_trojan_statue.jpg',
+        //     'image/jpeg',
+        //     null,
+        //     true
+        // );
         Log::info($file);
         $product = [
             'type' => 0,
             'seller_id' => 3,
             'desc' => '<p>This is a pineapple</p>',
             'price' => 10,
-            'name' => 'Carrot',
+            'name' => 'Pineapple',
             'unit' => 'KGS',
             'quantity' => '133',
-            'slug' => 'pineapple',
             'discount' => 0.4,
             'cover' => [0 => $file]
         ];
 
         $response = $this->actingAs($this->seller)->post(route('product.store'), $product);
-
         $lastProduct = Product::all()->sortByDesc('updated_at')->first();
 
         $this->assertEquals($lastProduct->name, $product['name']);
         $response->assertStatus(302);
         $response->assertRedirect(route(Auth::user()->role . '.product.browse'));
+        // $file->move('/home/andre/Desktop/', 'usc_trojan_tommy_trojan_statue' . time() . '.jpg');
     }
 
     public function testupdateProduct()
     {
         $lastProduct = Product::all()->sortByDesc('updated_at')->first();
         $product = [
-            'type' => 0,
+            'type' => 1,
             'seller_id' => 3,
             'desc' => '<p>This is a pineapple fruit</p>',
             'price' => 10,
-            'name' => 'Carrot',
+            'name' => 'Pineapple',
             'unit' => 'KGS',
             'quantity' => '133',
-            'slug' => 'pineapple',
             'discount' => 0.4
         ];
         $response = $this->actingAs($this->seller)->post(route('product.update', $lastProduct->id), $product);

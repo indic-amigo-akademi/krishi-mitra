@@ -48,6 +48,7 @@ class OrderTest extends TestCase
         log::info('The last product is' . $lastProduct);
         $this->assertEquals($lastProduct->address_id, $req['address_radio']);
         $this->assertEquals($lastProduct->qty, 1);
+        $this->assertEquals($lastProduct->type, 'cod');
         log::info('Time is' . Carbon::now()->toDateTimeString());
         $this->assertEqualsWithDelta($lastProduct->updated_at, Carbon::now()->toDateTimeString(), 2);
     }
@@ -62,10 +63,11 @@ class OrderTest extends TestCase
         log::info($req);
         $response = $this->actingAs($this->seller)->post(route('OrderProcessed'), $req);
         //$response->assertStatus(200);
-        $lastProduct = Order::where('product_id', 9)->orderBy('updated_at', 'desc')->first();
+        $lastProduct = Order::where(['product_id' => 9, 'type' => 'card'])->orderBy('updated_at', 'desc')->first();
         log::info('The last product is' . $lastProduct);
         $this->assertEquals($lastProduct->address_id, $req['address_radio']);
         $this->assertEquals($lastProduct->qty, 1);
+        $this->assertEquals($lastProduct->type, 'card');
         $this->assertEqualsWithDelta($lastProduct->updated_at, Carbon::now()->toDateTimeString(), 2);
     }
     public function test_order_cancel()

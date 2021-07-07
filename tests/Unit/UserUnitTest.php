@@ -89,8 +89,9 @@ class UserUnitTest extends TestCase
         $address1=new Address(['user_id' => $user->id]);
         $testArray = array($address,$address1);
         $expectedCount = 2;
-        $this->assertEquals($this->addresses->user_id,$user->id);
-        
+        //$this->assertEquals($this->addresses->user_id,$user->id);
+         $this->assertEquals($this->addresses->user_id,$address->user_id);
+        $this->assertEquals($this->addresses->user_id,$address1->user_id);
         $this->assertCount(
             $expectedCount,
             $testArray

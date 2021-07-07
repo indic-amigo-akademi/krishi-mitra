@@ -38,7 +38,7 @@ class OrderTest extends TestCase
     {
         $req = [
             'prod_id' => 9,
-            'address_radio' => 3,
+            'address_radio' => 1,
             'buy_type' => 'buyNow'
         ];
         log::info($req);
@@ -55,7 +55,7 @@ class OrderTest extends TestCase
     {
         $req = [
             'prod_id' => 9,
-            'address_radio' => 3,
+            'address_radio' => 1,
             'buy_type' => 'buyNow',
             'card' => 'card'
         ];

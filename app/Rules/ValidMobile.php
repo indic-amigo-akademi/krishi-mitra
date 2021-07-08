@@ -29,7 +29,7 @@ class ValidMobile implements Rule
     public function passes($attribute, $value)
     {
         //
-        return preg_match('[7-9][0-9]{9}',$value);
+        return preg_match('[0-9]{9}',$value);
     }
 
     /**

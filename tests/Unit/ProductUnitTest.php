@@ -9,7 +9,7 @@ use App\Seller;
 use App\FileImage;
 use App\User;
 use PHPUnit\Framework\TestCase;
-class ProductTest extends TestCase
+class ProductUnitTest extends TestCase
 {
     /**
      * A basic unit test example.

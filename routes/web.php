@@ -25,13 +25,6 @@ Route::get('/home', 'AppController@home')->name('home');
 // Profile routes
 Route::get('/profile/account', 'CustomerController@profile')->name('profile');
 
-Route::get('/seller/register', 'SellerController@seller_form')->name(
-    'seller.register'
-);
-Route::post('/seller/create', 'SellerController@create_seller')->name(
-    'seller.create'
-);
-
 Route::get('/explore', 'AppController@explore')->name('explore');
 Route::get('/profile', 'CustomerController@index')->name('customer.index');
 
@@ -60,6 +53,12 @@ Route::post('/admin/browse', 'AdminController@admin_browse')->name(
 );
 
 // Seller Routes
+Route::get('/seller/register', 'SellerController@seller_form')->name(
+    'seller.register'
+);
+Route::post('/seller/create', 'SellerController@create_seller')->name(
+    'seller.create'
+);
 Route::get('/seller', 'SellerController@index')->name('seller.index');
 Route::get('/seller/products', 'SellerController@product_display')->name(
     'seller.product.browse'
@@ -126,7 +125,9 @@ Route::post('/checkout/processed', 'OrderController@store')->name(
 
 Route::get('/orders', 'OrderController@showall')->name('orders');
 Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show');
-Route::post('/orders/{id}', 'OrderController@cancel_delete')->name('orders.show.cancel.delete');
+Route::post('/orders/{id}', 'OrderController@cancel_delete')->name(
+    'orders.show.cancel.delete'
+);
 
 // Address Routes
 Route::get('/address', 'AddressController@address_view')->name('address');

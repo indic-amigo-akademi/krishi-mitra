@@ -327,7 +327,7 @@ class ProductSeeder extends Seeder
             'ref_id' => $product12->id,
         ]);
 
-        for ($i = 0; $i < 0; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $product_name = $this->faker->bothify('Product**##');
             $product = Product::create([
                 'type' => array_rand(Product::$categories),

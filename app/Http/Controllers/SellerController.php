@@ -23,13 +23,14 @@ class SellerController extends Controller
     public function seller_form()
     {
         if (Auth::user()->is_seller || Auth::user()->is_admin) {
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->with(
                     'alert',
                     Notiflix::make([
                         'code' => 'info',
                         'subtitle' =>
-                        'You are already registered as ' .
+                            'You are already registered as ' .
                             Auth::user()->role .
                             '!',
                     ])
@@ -48,7 +49,7 @@ class SellerController extends Controller
                         'type' => 'Report',
                         'title' => 'Waiting!',
                         'subtitle' =>
-                        'Already signed for ' .
+                            'Already signed for ' .
                             str_replace('_', ' ', $approval->type) .
                             '!',
                     ])
@@ -131,7 +132,7 @@ class SellerController extends Controller
                     'title' => 'Yippee!',
                     'type' => 'Report',
                     'subtitle' =>
-                    'Your registration as a seller is in progress!',
+                        'Your registration as a seller is in progress!',
                 ])
             );
     }
@@ -162,7 +163,7 @@ class SellerController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(8);
 
-        return view('seller.orders')->with('orders', $orders);
+        return view('seller.order.list')->with('orders', $orders);
     }
 
     public function show_one_order($id)
@@ -175,7 +176,7 @@ class SellerController extends Controller
             ->where('order_id', $id)
             ->get();
         if (count($orders) > 0) {
-            return view('profile.order', compact('orders'));
+            return view('seller.order.show', compact('orders'));
         }
         abort(404);
     }

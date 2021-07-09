@@ -225,7 +225,7 @@ class OrderController extends Controller
             ->orderBy('order_id', 'desc')
             ->orderBy('created_at', 'desc')
             ->paginate(8);
-        return view('profile.orders', compact('orders'));
+        return view('profile.order.list', compact('orders'));
     }
 
     /**
@@ -241,7 +241,7 @@ class OrderController extends Controller
             'order_id' => $id,
         ])->get();
         if (count($orders) > 0) {
-            return view('profile.order', compact('orders'));
+            return view('profile.order.show', compact('orders'));
         }
         abort(404);
     }
@@ -249,13 +249,14 @@ class OrderController extends Controller
     {
         $ostatus = $req->input('input');
         $oid = $req->input('id');
-        $order = Order::all()->where('id',"=",$oid)->first();
-        if($ostatus=="Cancel")
-        {
+        $order = Order::all()
+            ->where('id', '=', $oid)
+            ->first();
+        if ($ostatus == 'Cancel') {
             $order->status = 'Cancelled';
             $order->save();
             return redirect()
-                ->route('orders.show',$order->order_id)
+                ->route('orders.show', $order->order_id)
                 ->with(
                     'alert',
                     Notiflix::make([
@@ -265,9 +266,7 @@ class OrderController extends Controller
                         'subtitle' => 'Order is successfully Cancellerd!',
                     ])
                 );
-        }
-        elseif($ostatus=="Delete")
-        {
+        } elseif ($ostatus == 'Delete') {
             Order::find($oid)->delete();
             return redirect()
                 ->route('orders')
@@ -280,7 +279,7 @@ class OrderController extends Controller
                         'subtitle' => 'Order is successfully Deleted!',
                     ])
                 );
-        }    
+        }
     }
     /**
      * Update the specified resource in storage.

@@ -63,7 +63,7 @@
                     </div>
                 @endif
                 <br>
-                <a class="uk-button order-home" href="{{ route('orders') }}">
+                <a class="uk-button order-home" href="{{ route('seller.order.browse') }}">
                     <span uk-icon="icon:  chevron-double-left"></span> Back To Orders
                 </a>
             </div>

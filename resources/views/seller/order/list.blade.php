@@ -4,7 +4,8 @@
     <section class="container orders-container">
         <div class="uk-padding uk-flex uk-flex-middle uk-flex-column">
             <div class="uk-width-1-1 uk-width-2-3@m">
-                <h1 class="uk-text-large uk-text-bold uk-text-uppercase text-theme-color1 uk-card-title">My Orders</h1>
+                <h1 class="uk-text-large uk-text-bold uk-text-uppercase text-theme-color1 uk-card-title">My Received Orders
+                </h1>
                 <hr />
 
                 @if (count($orders) > 0)

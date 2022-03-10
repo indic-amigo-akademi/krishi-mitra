@@ -15,7 +15,8 @@
         "laravel/framework": "^7.29",
         "laravel/tinker": "^2.5",
         "laravel/ui": "2.4",
-        "unisharp/laravel-ckeditor": "^4.7"
+        "mll-lab/laravel-graphql-playground": "^2.5",
+        "nuwave/lighthouse": "^5.27"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",

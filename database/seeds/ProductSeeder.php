@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\FileImage;
 use App\Product;
 use Illuminate\Database\Seeder;

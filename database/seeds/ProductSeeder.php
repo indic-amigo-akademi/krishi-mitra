@@ -1,7 +1,10 @@
 <?php
 
-use App\FileImage;
-use App\Product;
+namespace Database\Seeders;
+
+use App\Models\FileImage;
+use App\Models\Product;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -9,7 +12,7 @@ class ProductSeeder extends Seeder
 {
     public function __construct()
     {
-        $this->faker = Faker\Factory::create();
+        $this->faker = Factory::create();
         $this->faker->seed(1234);
     }
 

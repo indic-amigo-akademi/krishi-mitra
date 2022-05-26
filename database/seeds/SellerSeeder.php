@@ -1,7 +1,9 @@
 <?php
 
-use App\Seller;
-use App\User;
+namespace Database\Seeders;
+
+use App\Models\Seller;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 

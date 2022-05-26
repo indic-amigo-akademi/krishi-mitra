@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\User;
+use App\Models\User;
 use App\FileImage;
 use App\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use App\Approval;
-use App\User;
+use App\Models\User;
 class ApprovalUnitTest extends TestCase
 {
     /**

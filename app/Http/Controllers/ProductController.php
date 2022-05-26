@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\FileImage;
+use App\Models\FileImage;
+use App\Models\Product;
+use App\Models\Seller;
 use Illuminate\Http\Request;
-use App\Seller;
-use App\User;
-use App\Product;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Image;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {

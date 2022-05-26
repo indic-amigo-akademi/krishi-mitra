@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use App\User;
+use App\Models\User;
 use App\Seller;
 use App\Address;
 class UserUnitTest extends TestCase

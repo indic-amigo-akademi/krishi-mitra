@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Seller;
-use App\User;
-use App\Product;
-use App\Cart;
-use App\Address;
 use App\Helpers\Notiflix;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\User;
 use Carbon\Carbon;
-use App\Order;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use Image;
 
-use Illuminate\Http\Request;
+use Image;
 
 class OrderController extends Controller
 {

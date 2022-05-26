@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "indic-amigo-akademi/krishi-mitra",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": [
@@ -11,20 +11,20 @@
         "php": "^7.4|^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
-        "laravel/framework": "^7.30",
+        "guzzlehttp/guzzle": "^7.4.3",
+        "laravel/framework": "^8.83",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "2.4",
+        "laravel/ui": "3.4",
         "mll-lab/laravel-graphql-playground": "^2.5",
         "nuwave/lighthouse": "^5.27"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
-        "facade/ignition": "^2.0",
+        "facade/ignition": "^2.17",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",
-        "nunomaduro/collision": "^4.3",
-        "phpunit/phpunit": "^8.5.8|^9.3.3"
+        "nunomaduro/collision": "^5.11",
+        "phpunit/phpunit": "^9.3.3"
     },
     "config": {
         "optimize-autoloader": true,
@@ -38,12 +38,10 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
-        },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ]
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
     },
     "autoload-dev": {
         "psr-4": {

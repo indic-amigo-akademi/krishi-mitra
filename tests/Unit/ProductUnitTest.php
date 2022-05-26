@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Product;
 use App\Seller;
 use App\FileImage;
-use App\User;
+use App\Models\User;
 use PHPUnit\Framework\TestCase;
 class ProductUnitTest extends TestCase
 {

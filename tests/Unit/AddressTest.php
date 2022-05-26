@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Address;
-use App\User;
+use App\Models\User;
 use Faker\Generator as Faker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

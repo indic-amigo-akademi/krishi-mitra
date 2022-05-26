@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Address;
-use App\User;
+use App\Models\Address;
+use App\Models\User;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,7 +12,7 @@ class UserSeeder extends Seeder
 {
     public function __construct()
     {
-        $this->faker = Faker\Factory::create();
+        $this->faker = Factory::create();
         $this->faker->seed(1234);
     }
     /**

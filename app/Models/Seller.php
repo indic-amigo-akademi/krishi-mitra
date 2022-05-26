@@ -1,17 +1,17 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Approval extends Model
+class Seller extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'type'];
+    protected $fillable = ['name', 'user_id', 'gstin', 'aadhaar', 'trade_name'];
 
     public function user()
     {

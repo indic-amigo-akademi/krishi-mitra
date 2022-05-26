@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Approval;
 use App\Helpers\Notiflix;
-use App\Order;
-use App\Product;
-use App\Seller;
-use App\User;
-use Illuminate\Support\Facades\DB;
+use App\Models\Approval;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Seller;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;

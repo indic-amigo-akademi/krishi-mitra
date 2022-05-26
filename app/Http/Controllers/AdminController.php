@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\User;
-use App\Approval;
 use App\Helpers\Notiflix;
-use App\Seller;
-use App\Product;
+use App\Models\Approval;
+use App\Models\Product;
+use App\Models\Seller;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller
 {

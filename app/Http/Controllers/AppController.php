@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Contact;
 use App\Helpers\Notiflix;
-use App\Product;
-use App\Seller;
+use App\Models\Contact;
+use App\Models\Product;
+use App\Models\Seller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 

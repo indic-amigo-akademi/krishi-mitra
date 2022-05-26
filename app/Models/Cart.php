@@ -1,27 +1,17 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Cart extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'product_id',
-        'address_id',
-        'order_id',
-        'qty',
-        'price',
-        'discount',
-        'status',
-        'type',
-    ];
+    protected $fillable = ['user_id', 'product_id', 'qty', 'price', 'discount'];
 
     public function user()
     {
@@ -31,11 +21,6 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
-    }
-
-    public function address()
-    {
-        return $this->belongsTo(Address::class, 'address_id');
     }
 
     public function getDiscountedPriceAttribute()

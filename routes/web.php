@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,70 +29,46 @@ Route::get('/explore', 'AppController@explore')->name('explore');
 Route::get('/profile', 'CustomerController@index')->name('customer.index');
 
 // Admin Routes
-Route::get('/admin', 'AdminController@index')->name('admin.index');
-Route::get('/admin/register', 'AdminController@register_view')->name(
-    'admin.register.view'
-);
-Route::post('/admin/register', 'AdminController@register')->name(
-    'admin.register'
-);
-Route::get('/admin/approval', 'AdminController@approval_view')->name(
-    'admin.approval.view'
-);
-Route::post('/admin/approval', 'AdminController@approval')->name(
-    'admin.approval'
-);
-Route::get('/admin/product/browse', 'AdminController@browse')->name(
-    'admin.product.browse'
-);
-Route::get('/admin/browse', 'AdminController@admin_browse_view')->name(
-    'admin.browse.view'
-);
-Route::post('/admin/browse', 'AdminController@admin_browse')->name(
-    'admin.browse'
-);
+
+Route::prefix('admin')->name('admin.')->controller('AdminController')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('register', 'register_view')->name('register.view');
+    Route::post('register', 'register')->name('register');
+    Route::get('approval', 'approval_view')->name('approval.view');
+    Route::post('approval', 'approval')->name('approval');
+    Route::get('product/browse', 'browse')->name('product.browse');
+    Route::get('browse', 'admin_browse_view')->name('browse.view');
+    Route::post('browse', 'admin_browse')->name('browse');
+});
+
 
 // Seller Routes
-Route::get('/seller/register', 'SellerController@seller_form')->name(
-    'seller.register'
-);
-Route::post('/seller/create', 'SellerController@create_seller')->name(
-    'seller.create'
-);
-Route::get('/seller', 'SellerController@index')->name('seller.index');
-Route::get('/seller/products', 'SellerController@product_display')->name(
-    'seller.product.browse'
-);
-Route::get('/seller/orders', 'SellerController@product_orders')->name(
-    'seller.order.browse'
-);
-Route::get('/seller/order/{id}', 'SellerController@show_one_order')->name(
-    'seller.order.view'
-);
-Route::get('/seller/product/create', 'ProductController@create')->name(
+Route::prefix('seller')->name('seller.')->controller('SellerController')->group(function () {
+    Route::get('register', 'seller_form')->name('register');
+    Route::post('create', 'create_seller')->name('create');
+    Route::get('/', 'index')->name('index');
+    Route::get('products', 'product_display')->name('product.browse');
+    Route::get('orders', 'product_orders')->name('order.browse');
+    Route::get('order/{id}', 'show_one_order')->name('order.view');
+    Route::get('product/{slug}', 'product_show')->name('product.view');
+});
+
+Route::get('seller/product/create', 'ProductController@create')->name(
     'seller.product.create'
 );
-Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name(
+Route::get('seller/product/edit/{id}', 'ProductController@edit')->name(
     'seller.product.edit'
-);
-Route::get('/seller/product/{slug}', 'SellerController@product_show')->name(
-    'seller.product.view'
 );
 
 // Product routes
-Route::post('/product/store', 'ProductController@store')->name('product.store');
-Route::post('/product/update/{id}', 'ProductController@update')->name(
-    'product.update'
-);
-Route::post('/product/destroy/{id}', 'ProductController@destroy')->name(
-    'product.destroy'
-);
-Route::get('/product/inactivate/{id}', 'ProductController@inactivate')->name(
-    'product.inactivate'
-);
-Route::get('/product/activate/{id}', 'ProductController@activate')->name(
-    'product.activate'
-);
+Route::prefix('product')->name('product.')->controller('ProductController')->group(function () {
+    Route::post('add', 'store')->name('store');
+    Route::post('edit/{id}', 'update')->name('update');
+    Route::post('delete/{id}', 'destroy')->name('destroy');
+    Route::get('inactivate/{id}', 'inactivate')->name('inactivate');
+    Route::get('activate/{id}', 'activate')->name('activate');
+});
+
 // Route::get('/product/search', 'AppController@search')->name('search.item');
 
 // Default routes

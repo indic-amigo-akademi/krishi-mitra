@@ -52,56 +52,50 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         $rules = [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                'unique:users',
-            ],
-            'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'password' => [
-                'required',
-                'string',
-                // 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
-                'min:8',
-                'confirmed',
-            ],
-            'phone' => ['required', 'string', 'min:10'],
-        ];
-        $messages = [
             'name' => [
-                'required' => 'Name is required',
-                'string' => 'Name must be a valid string',
-                'max:255' => 'Name cannot be greater than 255',
+                'required', // test done
+                'string',
+                'max:255' // test done
             ],
             'email' => [
-                'required' => 'Email is required',
-                'string' => 'Email must be a valid string',
-                'email' => 'Email must be in proper email format',
-                'max:255' => 'Email cannot be greater than 255',
-                'unique:users' => 'Email already used',
+                'required', // test done
+                'email', // test done
+                'string',
+                'max:255', // test done
+                'unique:users', // test done
             ],
             'username' => [
-                'required' => 'Username is required',
-                'string' => 'Username must be a valid string',
-                'max:255' => 'Username cannot be greater than 255',
-                'unique:users' => 'Username already used',
+                'required', // test done
+                'string',
+                'max:255', // test done
+                'unique:users' // test done
             ],
             'password' => [
-                'required' => 'Password is required',
-                'string' => 'Password must be a valid string',
-                'min:8' => 'Password must have more than 8 characters',
-                'confirmed' => 'Password do not match',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/' =>
-                'Password must contain at least one uppercase letter, one lowercase letter and one number',
+                'required', // test done
+                'string',
+                'min:8', // test done
+                'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', // test done
+                'confirmed', // test done
             ],
             'phone' => [
-                'required' => 'Phone Number is required',
-                'string' => 'Phone Number must be a valid number',
-                'min:10' => 'Phone Number must have at least 10 digits',
+                'required', // test done
+                'string',
+                'min:10' // test done
             ],
+        ];
+        $messages = [
+            'required' => 'The :attribute field is required.',
+            'string' => 'The :attribute field must be a valid string.',
+            'max' => 'The :attribute cannot be greater than :max characters.',
+            'min' => 'The :attribute must be at least :min characters.',
+
+            'email.email' => 'The email must be a valid email address.',
+
+            'password.confirmed' => 'The password confirmation does not match.',
+            'password.regex' =>
+            'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+
+            'phone.min' => 'The :attribute must be at least 10 digits.',
         ];
         return Validator::make($data, $rules, $messages);
     }
@@ -139,7 +133,7 @@ class RegisterController extends Controller
 
         return new JsonResponse([
             'success' => true,
-            'message' => 'All fields are valid',
-        ]);
+            'message' => 'All fields are valid.',
+        ]); // test done
     }
 }

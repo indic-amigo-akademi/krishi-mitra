@@ -22,7 +22,7 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth']);
     }
 
     public function index()
@@ -31,7 +31,7 @@ class AdminController extends Controller
             abort(403);
         }
         return view('admin.dashboard');
-    }
+    } // test done
 
     public function register_view()
     {
@@ -69,7 +69,7 @@ class AdminController extends Controller
                 );
         }
         return view('admin.register');
-    }
+    } // test done
 
     public function register(Request $req)
     {
@@ -129,7 +129,8 @@ class AdminController extends Controller
             'admin.approval',
             compact('seller_approval', 'admin_approval')
         );
-    }
+    } // test done
+
     public function browse()
     {
         if (!Auth::user()->is_admin) {
@@ -140,7 +141,8 @@ class AdminController extends Controller
         Log::info($seller);
         $data = ['products' => $prod, 'seller' => $seller];
         return view('admin.products', $data);
-    }
+    } // test done
+    
     public function admin_browse_view()
     {
         if (!Auth::user()->is_sysadmin) {
@@ -148,7 +150,7 @@ class AdminController extends Controller
         }
         $admin = User::all()->where('role', '=', 'admin');
         return view('admin.browse.view')->with('admin', $admin);
-    }
+    } // test done
 
     public function admin_browse(Request $req)
     {
@@ -156,11 +158,11 @@ class AdminController extends Controller
             abort(403);
         }
         $unadmin = $req->input('input');
-        Log::info($unadmin);
+
         $admin = User::all()
             ->where('id', '=', $unadmin)
             ->first();
-        Log::info($admin);
+            
         $admin->role = 'customer';
         $admin->save();
         return redirect()

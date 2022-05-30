@@ -21,7 +21,9 @@ class CreateUsersTable extends Migration
             $table->bigInteger('phone');
             $table->string('password');
             $table->string('role');
+            // $table->enum('role', ['admin', 'seller', 'customer']);
             $table->boolean('active')->default(true);
+            $table->dateTime('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

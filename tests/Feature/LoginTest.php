@@ -3,105 +3,169 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-
+use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
-     * A basic feature test example.
-     *
+     * Test login without email or password.
+     * 
      * @return void
      */
-    public function testMustEnterEmailAndPassword()
+    public function testLoginWithoutEmailAndPassword()
     {
-        $this->json('POST', 'user.login.validate')  //if empty
-            ->assertStatus(404);
+        $this->json('POST', route('user.login.validate'))  //if empty
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'errors' => [
+                    'email' => ['The email field is required.'],
+                    'password' => ['The password field is required.'],
+                ],
+            ]);
     }
 
-    public function testlogin()
+    /**
+     * Test login without email.
+     * 
+     * @return void
+     */
+    public function testLoginWithoutEmail()
     {
+        $this->json('POST', route('user.login.validate'), ['password' => 'secret'])  //if email empty
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'errors' => [
+                    'email' => ['The email field is required.'],
+                ],
+            ]);
+    }
 
+    /**
+     * Test login without password.
+     * 
+     * @return void
+     */
+    public function testLoginWithoutPassword()
+    {
+        $this->json('POST', route('user.login.validate'), [
+            'email' => User::factory()->make()->email, //if password empty
+        ])
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'errors' => [
+                    'password' => ['The password field is required.'],
+                ],
+            ]);
+    }
+
+    /**
+     * Test login with valid email and password.
+     * 
+     * @return void
+     */
+    public function testLoginWithValidEmailAndPassword()
+    {
         //Create user
-        $data = [
-            'name' => 'Test',
-            'username' => 'Test123',
-            'phonenumber' => '1234567890',
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-            'password_confirmation' => 'secret1234',
-        ];
+        $user = User::factory()->create();
+
         //attempt login
         $response = $this->json('POST', route('user.login.validate'), [
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-        ]);
+            'email' => $user->email,
+            'password' => User::factory()->password_str,
+        ]); // if with valid email and password
+
         //Assert it was successful 
         $response->assertStatus(200);
+
+        // Assert that the response with json
+        $response->assertJson([
+            'success' => true,
+            'message' => 'All fields are valid.',
+        ]);
     }
 
-    //invalid credentials
-
-    public function testEmailDoesNotExist()
+    /**
+     * Test login with valid username and password.
+     * 
+     * @return void
+     */
+    public function testLoginWithValidUsernameAndPassword()
     {
         //Create user
-        $data = [
-            'name' => 'Test',
-            'username' => 'Test123',
-            'phonenumber' => '1234567890',
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-            'password_confirmation' => 'secret1234',
-        ];
+        $user = User::factory()->create();
+
+        //attempt login
         $response = $this->json('POST', route('user.login.validate'), [
-            'email' => 'test@123',
-            'password' => 'secret1234',
-        ]);
-        //Assert it was successful 
+            'email' => $user->username,
+            'password' => User::factory()->password_str,
+        ]); // if with valid username and password
+
+        //Assert it was successful
         $response->assertStatus(200);
+
+        // Assert that the response with json
+        $response->assertJson([
+            'success' => true,
+            'message' => 'All fields are valid.',
+        ]);
     }
 
-
-
-    public function testPasswordDoesNotExist()
+    /**
+     * Test login with invalid email.
+     * 
+     * @return void
+     */
+    public function testLoginWithInvalidEmail()
     {
+        //Create user
+        $user = User::factory()->create();
 
-        $data = [
-            'name' => 'Test',
-            'username' => 'Test123',
-            'phonenumber' => '1234567890',
-            'email' => 'test@gmail.com',
-            'password' => 'secret1234',
-            'password_confirmation' => 'secret1234',
-        ];
+        //attempt login
         $response = $this->json('POST', route('user.login.validate'), [
-            'email' => 'test@123',
-            'password' => 'abc1234',
-        ]);
-        //Assert it was successful 
+            'email' => User::factory()->make()->email,
+            'password' => User::factory()->password_str,
+        ]); // if with invalid email
 
+        //Assert it was successful 
         $response->assertStatus(200);
+
+        // Assert that the response with json
+        $response->assertJson([
+            'success' => false,
+            'errors' => ['email' => 'Invalid credentials.'],
+        ]);
     }
 
-
-
-
-    /*  public function deactivatedadminCannotLogin()
+    /**
+     * Test login with invalid password.
+     * 
+     * @return void
+     */
+    public function testLoginWithInvalidPassword()
     {
-        $user = user::factory()->create([
-            'email' => 'test@gmail',
-            'password' => Hash::make('abc123'),
-            'deactivated_at' => now()->subDays(1),
-        ]);
+        //Create user
+        $user = User::factory()->create();
 
-        $this->postJson('user.login.validate', [
-            'email' => 'test@gmail',
-            'password' => 'abc123',
-        ])->assertStatus(422)
-            ->assertJson([
-                'inactive' => 'Your account has been blocked. Please contact the administrators.',
-            ]);
-    }*/
+        //attempt login
+        $response = $this->json('POST', route('user.login.validate'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ]); // if with invalid password
+
+        //Assert it was successful 
+        $response->assertStatus(200);
+
+        // Assert that the response with json
+        $response->assertJson([
+            'success' => false,
+            'errors' => ['email' => 'Invalid credentials.'],
+        ]);
+    }
 }

@@ -143,26 +143,26 @@ class LoginController extends Controller
             return new JsonResponse([
                 'success' => false,
                 'errors' => $validator->getMessageBag(),
-            ]);
+            ]); // test done
         }
 
         if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL)) {
             $credentials = [
                 'email' => $request->input('email'),
                 'password' => $request->input('password'),
-            ];
+            ]; // test done
         } else {
             $credentials = [
                 'username' => $request->input('email'),
                 'password' => $request->input('password'),
-            ];
+            ]; // test done
         }
 
         if (Auth::attempt($credentials)) {
             return new JsonResponse([
                 'success' => true,
-                'message' => 'All fields are valid',
-            ]);
+                'message' => 'All fields are valid.',
+            ]); // test done
         }
 
         return new JsonResponse([

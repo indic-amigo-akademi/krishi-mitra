@@ -21,7 +21,7 @@ class AdminAuthTest extends TestCase
     }
 
     /**
-     * Test if the admin can access the admin route.
+     * Test if the user can access the admin route.
      *
      * @param [type] $url
      * @param array $status
@@ -31,7 +31,7 @@ class AdminAuthTest extends TestCase
      */
     protected function testAdminSingleGetRoute(
         $url,
-        $status = ["guest" => 302, "customer" => 200, "seller" => 200, "admin" => 200, "sysadmin" => 200],
+        $status = ["guest" => 302, "customer" => 403, "seller" => 403, "admin" => 200, "sysadmin" => 200],
         $redirectUri = ["guest" => '/login'],
         $fromUri = '/explore'
     ) {
@@ -71,14 +71,7 @@ class AdminAuthTest extends TestCase
      */
     public function testAdminRouteIndex()
     {
-        $status = [
-            "guest" => 302,
-            "customer" => 403,
-            "seller" => 403,
-            "admin" => 200,
-            "sysadmin" => 200
-        ];
-        $this->testAdminSingleGetRoute(route("admin.index"), $status);
+        $this->testAdminSingleGetRoute(route("admin.index"));
     }
 
     /**
@@ -109,14 +102,7 @@ class AdminAuthTest extends TestCase
      */
     public function testAdminRouteApprovalView()
     {
-        $status = [
-            "guest" => 302,
-            "customer" => 403,
-            "seller" => 403,
-            "admin" => 200,
-            "sysadmin" => 200
-        ];
-        $this->testAdminSingleGetRoute(route("admin.approval.view"), $status);
+        $this->testAdminSingleGetRoute(route("admin.approval.view"));
     }
 
     /**
@@ -126,14 +112,7 @@ class AdminAuthTest extends TestCase
      */
     public function testAdminRouteProductBrowse()
     {
-        $status = [
-            "guest" => 302,
-            "customer" => 403,
-            "seller" => 403,
-            "admin" => 200,
-            "sysadmin" => 200
-        ];
-        $this->testAdminSingleGetRoute(route("admin.product.browse"), $status);
+        $this->testAdminSingleGetRoute(route("admin.product.browse"));
     }
 
     /**

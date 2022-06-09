@@ -84,7 +84,7 @@ class UserSeeder extends Seeder
             'email' => 'mohandutta@gmail.com',
             'phone' => '8777046465',
             'password' => Hash::make('Mohan@1999'),
-            'role' => 'customer',
+            'role' => 'user',
         ]);
         $address1 = Address::create([
             'user_id' => $user2->id,
@@ -96,7 +96,7 @@ class UserSeeder extends Seeder
             'state' => $this->faker->state(),
             'pincode' => (int) $this->faker->postcode(),
             'landmark' => $this->faker->secondaryAddress(),
-            'type' => $this->faker->randomElement(['Home', 'Work']),
+            'type' => $this->faker->randomElement(['home', 'work']),
         ]);
         $address2 = Address::create([
             'user_id' => $user3->id,
@@ -108,7 +108,7 @@ class UserSeeder extends Seeder
             'state' => $this->faker->state(),
             'pincode' => (int) $this->faker->postcode(),
             'landmark' => $this->faker->secondaryAddress(),
-            'type' => $this->faker->randomElement(['Home', 'Work']),
+            'type' => $this->faker->randomElement(['home', 'work']),
         ]);
     }
 }

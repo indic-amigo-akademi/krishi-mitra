@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\Approval;
+use App\Models\Approval;
+use App\Models\User;
+use Faker\Generator as Faker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
@@ -78,7 +78,7 @@ class AdminTest extends TestCase
             'aadhaar' => '333311114444',
             'trade_name' => 'UnitTestingSeller'
         ];
-        $response = $this->actingAs($this->customer)->post(route('seller.create'), $req);
+        $response = $this->actingAs($this->customer)->post(route('seller.register'), $req);
         $sellerApproval = Approval::all()->sortByDesc('updated_at')->first();
         $seller_data = ['input' => 'approve', 'id' => $sellerApproval->id];
         $response3 = $this->actingAs($this->admin)->post(route('admin.approval'), $seller_data);

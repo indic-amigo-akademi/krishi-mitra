@@ -12,7 +12,7 @@
                         </div>
                     @endforeach
                 </div>
-                <img src="{{ isset($product->coverPhotos) ? asset('uploads/products/' . $product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                <img src="{{ isset($product->coverPhotos) && count($product->coverPhotos) > 0 ? asset('uploads/products/' . $product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                     width="400px" height="400px" uk-img />
             </div>
             <div class="uk-width-1-2@m uk-padding-small">
@@ -54,5 +54,4 @@
             </div>
         </div>
     </div>
-
 @endsection

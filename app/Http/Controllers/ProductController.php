@@ -25,9 +25,9 @@ class ProductController extends Controller
 
     public function index()
     {
-        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
-            abort(403);
-        }
+        // if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+        //     abort(403);
+        // }
 
         $products = Product::all();
         return view('seller.product.list')->with('products', $products);
@@ -40,9 +40,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
-            abort(403);
-        }
+        // if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+        //     abort(403);
+        // }
         return view('seller.product.create');
     }
 

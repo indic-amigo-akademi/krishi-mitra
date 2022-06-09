@@ -2,19 +2,19 @@
 
 namespace Tests\Unit;
 
+use App\Models\Approval;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\User;
-use App\Product;
-use Faker\Generator as Faker;
-use App\Cart;
-use App\Approval;
 use Carbon\Carbon;
-use App\Order;
+use Faker\Generator as Faker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
 class SellerCreateTest extends TestCase
 {
@@ -44,7 +44,7 @@ class SellerCreateTest extends TestCase
             'trade_name' => 'UnitTestingSeller'
         ];
         log::info($req);
-        $response = $this->actingAs($this->customer)->post(route('seller.create'), $req);
+        $response = $this->actingAs($this->customer)->post(route('seller.register'), $req);
 
         $lastApproval = Approval::all()->sortByDesc('updated_at')->first();
         log::info('Last product' . $lastApproval);

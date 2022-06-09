@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
+use App\Cart;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Cart;
-use App\Product;
-use App\Models\User;
 use PHPUnit\Framework\TestCase;
 
 class CartUnitTest extends TestCase

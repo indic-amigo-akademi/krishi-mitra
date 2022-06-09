@@ -11,7 +11,7 @@
                     <div class="uk-inline uk-width-4-5">
                         <a class="uk-form-icon ri-pencil-fill" href="#"></a>
                         <select name="type" id="type" class="uk-input uk-select">
-                            @foreach (App\Product::$categories as $index => $category)
+                            @foreach (App\Models\Product::$categories as $index => $category)
                                 <option value="{{ $index }}" @if ($product->category == $index) selected @endif>
                                     {{ $category }}</option>
                             @endforeach
@@ -32,12 +32,12 @@
                             <a class="uk-form-icon ri-pencil-fill" href="#"></a>
                             <select class="uk-input uk-select" name="unit" id="unit">
                                 <optgroup label="Mostly Used">
-                                    @foreach (array_slice(App\Product::$units, 0, 4) as $abbrev => $unit)
+                                    @foreach (array_slice(App\Models\Product::$units, 0, 4) as $abbrev => $unit)
                                         <option value="{{ $abbrev }}" @if ($product->unit == $abbrev) selected @endif>
                                             {{ $unit }}</option>
                                     @endforeach
                                 </optgroup>
-                                @foreach (array_slice(App\Product::$units, 4) as $abbrev => $unit)
+                                @foreach (array_slice(App\Models\Product::$units, 4) as $abbrev => $unit)
                                     <option value="{{ $abbrev }}" @if ($product->unit == $abbrev) selected @endif>
                                         {{ $unit }}</option>
                                 @endforeach

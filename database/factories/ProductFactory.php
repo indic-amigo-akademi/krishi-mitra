@@ -15,7 +15,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'type' => $this->faker->numberBetween(0, collect(Product::$categories)->count() - 1),
+            'type' => $this->faker->numberBetween(0, count(Product::$categories) - 1),
             'seller_id' => $this->faker->randomNumber(5),
             'desc' => sprintf('<p>%s</p>', $this->faker->paragraph(3)),
             'price' => $this->faker->numberBetween(5, 50),

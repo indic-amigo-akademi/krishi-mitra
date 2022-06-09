@@ -86,29 +86,11 @@ class UserSeeder extends Seeder
             'password' => Hash::make('Mohan@1999'),
             'role' => 'user',
         ]);
-        $address1 = Address::create([
+        Address::factory()->create([
             'user_id' => $user2->id,
-            'name' => $this->faker->name(),
-            'mobile' => (int) $this->faker->regexify('[1-9]{1}[0-9]{9}'),
-            'address1' => $this->faker->buildingNumber(),
-            'address2' => $this->faker->streetName(),
-            'city' => $this->faker->city(),
-            'state' => $this->faker->state(),
-            'pincode' => (int) $this->faker->postcode(),
-            'landmark' => $this->faker->secondaryAddress(),
-            'type' => $this->faker->randomElement(['home', 'work']),
         ]);
-        $address2 = Address::create([
+        Address::factory()->create([
             'user_id' => $user3->id,
-            'name' => $this->faker->name(),
-            'mobile' => (int) $this->faker->regexify('[1-9]{1}[0-9]{9}'),
-            'address1' => $this->faker->buildingNumber(),
-            'address2' => $this->faker->streetName(),
-            'city' => $this->faker->city(),
-            'state' => $this->faker->state(),
-            'pincode' => (int) $this->faker->postcode(),
-            'landmark' => $this->faker->secondaryAddress(),
-            'type' => $this->faker->randomElement(['home', 'work']),
         ]);
     }
 }

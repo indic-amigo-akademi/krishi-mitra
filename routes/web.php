@@ -29,38 +29,41 @@ Route::get('/explore', 'AppController@explore')->name('explore');
 Route::get('/profile', 'CustomerController@index')->name('customer.index');
 
 // Admin Routes
+Route::prefix('admin')->name('admin.')
+    ->controller('AdminController')->middleware('admin')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('approval', 'approval_view')->name('approval.view');
+        Route::get('product/browse', 'product_browse')->name('product.browse');
+        Route::get('browse', 'admin_browse_view')->name('browse.view');
 
-Route::prefix('admin')->name('admin.')->controller('AdminController')->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::get('register', 'register_view')->name('register.view');
-    Route::get('approval', 'approval_view')->name('approval.view');
-    Route::get('product/browse', 'product_browse')->name('product.browse');
-    Route::get('browse', 'admin_browse_view')->name('browse.view');
+        Route::post('register', 'register')->name('register');
+        Route::post('approval', 'approval')->name('approval');
+        Route::post('browse', 'admin_browse')->name('browse');
+    });
     
-    Route::post('register', 'register')->name('register');
-    Route::post('approval', 'approval')->name('approval');
-    Route::post('browse', 'admin_browse')->name('browse');
-});
+Route::get('admin/register', 'AdminController@register_view')->name('admin.register.view');
 
 
 // Seller Routes
-Route::prefix('seller')->name('seller.')->controller('SellerController')->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::get('products', 'product_browse')->name('product.browse');
-    Route::get('register', 'seller_form')->name('register.view');
-    Route::get('orders', 'product_orders')->name('order.browse');
-    Route::get('order/{id}', 'show_one_order')->name('order.view');
-    Route::get('product/{slug}', 'product_show')->name('product.view');
-    
-    Route::post('register', 'create_seller')->name('register');
-});
+Route::prefix('seller')->name('seller.')
+    ->controller('ProductController')->middleware('seller')->group(function () {
+        Route::get('product/create', 'create')->name('product.create');
+        Route::get('product/edit/{id}', 'edit')->name('product.edit');
+    });
 
-Route::get('seller/product/create', 'ProductController@create')->name(
-    'seller.product.create'
-);
-Route::get('seller/product/edit/{id}', 'ProductController@edit')->name(
-    'seller.product.edit'
-);
+Route::prefix('seller')->name('seller.')->controller('SellerController')
+    ->middleware('seller')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('orders', 'product_orders')->name('order.browse');
+        Route::get('order/{id}', 'show_order')->name('order.view');
+        Route::get('products', 'product_browse')->name('product.browse');
+        Route::get('product/{slug}', 'product_show')->name('product.view');
+
+        Route::post('register', 'create_seller')->name('register');
+    });
+
+Route::get('seller/register', 'SellerController@seller_form')->name('seller.register.view');
+
 
 // Product routes
 Route::prefix('product')->name('product.')->controller('ProductController')->group(function () {

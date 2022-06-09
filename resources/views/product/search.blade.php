@@ -1,33 +1,32 @@
 @extends('layouts.app')
 @section('content')
     <section class="uk-height-1-1 uk-padding-small sprod">
-        <div
-            class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal">
+        <div class="uk-height-1-1 uk-flex uk-flex-wrap uk-flex-around uk-padding-remove-bottom uk-padding-remove-horizontal">
             @if (count($products) > 0)
-                @foreach ($products as $prod)
-                    @if ($prod->active == 1)
+                @foreach ($products as $product)
+                    @if ($product->active == 1)
                         <div
                             class="uk-card uk-card-default uk-card-body uk-width-1-5@m uk-flex uk-flex-column uk-flex-between uk-margin-large-bottom uk-margin-right uk-margin-left">
-                            <a href="{{ route('product.view', $prod->slug) }}" class="uk-flex uk-flex-center">
-                                <img src="{{ isset($prod->coverPhotos) ? asset('uploads/products/' . $prod->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                            <a href="{{ route('product.view', $product->slug) }}" class="uk-flex uk-flex-center">
+                                <img src="{{ isset($product->coverPhotos) && count($product->coverPhotos) > 0 ? asset('uploads/products/' . $product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                     uk-img />
                             </a>
                             <div class="uk-padding-small">
                                 <div class="uk-margin-small-bottom">
-                                    <span class="uk-text-bold">{{ $prod->category }}</span> |
-                                    <span style="font-family: cursive">{{ $prod->name }}</span>
+                                    <span class="uk-text-bold">{{ $product->category }}</span> |
+                                    <span style="font-family: cursive">{{ $product->name }}</span>
                                 </div>
                                 <div class="uk-margin-small-bottom uk-text-bold uk-text-small">
                                     <span class="sprod-color">
-                                        ₹ {{ $prod->price }}
+                                        ₹ {{ $product->price }}
                                     </span>
-                                    per {{ $prod->unit }}
+                                    per {{ $product->unit }}
                                 </div>
-                                {{-- <div>{!! $prod->desc !!}</div> --}}
+                                {{-- <div>{!! $product->desc !!}</div> --}}
                             </div>
                             <div
                                 class="uk-flex uk-flex-between uk-card-footer uk-padding-remove-bottom uk-padding-remove-horizontal">
-                                <a href="#" onclick="addToCart('{{ $prod->id }}')" type=" button"
+                                <a href="#" onclick="addToCart('{{ $product->id }}')" type=" button"
                                     class="uk-text-primary">Add
                                     to
                                     Cart</a>

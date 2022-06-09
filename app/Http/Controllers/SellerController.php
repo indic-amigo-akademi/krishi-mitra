@@ -60,41 +60,11 @@ class SellerController extends Controller
 
     public function index()
     {
-        if (!Auth::user()->is_seller) {
-            abort(403);
-        }
-
-        // $data = [
-        //     'usr' => Auth::user()->seller, 
-        //     'email' => Auth::user()->email, 
-        //     'phone' => Auth::user()->phone
-        // ];
-
         return view('seller.dashboard');
     } // test done
 
     protected function create_seller(Request $req)
     {
-        // $approval = Approval::all()
-        //     ->where('user_id', '=', Auth::id())
-        //     ->first();
-        // if (isset($approval) && $approval) {
-        //     return redirect()
-        //         ->route('home')
-        //         ->with(
-        //             'alert',
-        //             Notiflix::make([
-        //                 'code' => 'info',
-        //                 'type' => 'Report',
-        //                 'title' => 'Waiting!',
-        //                 'subtitle' =>
-        //                 'Already signed for ' .
-        //                     str_replace('_', ' ', $approval->type) .
-        //                     '!',
-        //             ])
-        //         );
-        // }
-
         $validator = Validator::make($req->all(), [
             'name' => 'required|string|max:255',
             // 'gstin' => 'string|size:15',
@@ -135,23 +105,17 @@ class SellerController extends Controller
             );
     }
 
-    public function product_show(Request $req, $slug)
+    public function product_show($slug)
     {
-        if (!Auth::user()->role == 'customer') {
-            abort(403);
+        $product = Product::where(['slug' => $slug])->first();
+        if (!$product) {
+            abort(404);
         }
-
-        if (Auth::user()->is_seller) {
-            $prod = Product::where(['slug' => $slug])->first();
-            return view('seller.product.show')->with('product', $prod);
-        }
-    }
+        return view('seller.product.show', compact('product'));
+    } // test done
 
     public function product_orders()
     {
-        if (!Auth::user()->is_seller) {
-            abort(403);
-        }
         $product_ids = Auth::user()->seller->products
             ->pluck('id')->toArray();
         $orders = Order::whereIn('product_id', $product_ids)
@@ -162,7 +126,7 @@ class SellerController extends Controller
         return view('seller.order.list')->with('orders', $orders);
     } // test done
 
-    public function show_one_order($id)
+    public function show_order($id)
     {
         $seller = Auth::user()->seller;
         $product_ids = Product::where('seller_id', $seller->id)
@@ -175,14 +139,10 @@ class SellerController extends Controller
             return view('seller.order.show', compact('orders'));
         }
         abort(404);
-    }
+    } // test done
 
     public function product_browse()
     {
-        if (!Auth::user()->is_seller) {
-            abort(403);
-        }
-
         return view('seller.product.list')->with('products', Auth::user()->seller->products);
     } // test done
 }

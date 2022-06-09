@@ -27,9 +27,6 @@ class AdminController extends Controller
 
     public function index()
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }
         return view('admin.dashboard');
     } // test done
 
@@ -116,9 +113,6 @@ class AdminController extends Controller
 
     public function approval_view()
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }
         $seller_approval = Approval::all()->where(
             'type',
             '=',
@@ -133,9 +127,6 @@ class AdminController extends Controller
 
     public function product_browse()
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }
         $prod = Product::all();
         $seller = Seller::all();
         Log::info($seller);
@@ -180,9 +171,6 @@ class AdminController extends Controller
 
     public function approval(Request $req)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }
         $approval = $req->input('input');
         $sid = $req->input('id');
         if ($approval == 'approve') {

@@ -2,18 +2,18 @@
 
 namespace Tests\Unit;
 
+use App\Models\FileImage;
+use App\Models\Product;
 use App\Models\User;
-use App\FileImage;
-use App\Product;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class ProductUpdateTest extends TestCase
 {

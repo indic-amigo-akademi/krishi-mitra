@@ -11,6 +11,11 @@ class AdminAuthTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Setup for the Admin Auth Test
+     *
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -31,10 +36,16 @@ class AdminAuthTest extends TestCase
      */
     protected function testAdminSingleGetRoute(
         $url,
-        $status = ["guest" => 302, "customer" => 403, "seller" => 403, "admin" => 200, "sysadmin" => 200],
+        $status = [],
         $redirectUri = ["guest" => '/login'],
         $fromUri = '/explore'
     ) {
+        $default_status = ["guest" => 302, "customer" => 403, "seller" => 403, "admin" => 200, "sysadmin" => 200];
+        foreach ($status as $user_role => $status_code) {
+            $default_status[$user_role] = $status_code;
+        }
+        $status = $default_status;
+
         $response = $this->from($fromUri)->get($url);
         if ($response->status() == 302)
             $response->assertRedirect($redirectUri["guest"]);
@@ -65,7 +76,7 @@ class AdminAuthTest extends TestCase
     }
 
     /**
-     * Test if the admin can access the admin index route.
+     * Test if the user can access the admin index route.
      *
      * @return void
      */
@@ -75,7 +86,7 @@ class AdminAuthTest extends TestCase
     }
 
     /**
-     * Test if the admin can access the admin register view route.
+     * Test if the user can access the admin register view route.
      *
      * @return void
      */
@@ -96,7 +107,7 @@ class AdminAuthTest extends TestCase
     }
 
     /**
-     * Test if the admin can access the admin approval view route.
+     * Test if the user can access the admin approval view route.
      *
      * @return void
      */
@@ -106,7 +117,7 @@ class AdminAuthTest extends TestCase
     }
 
     /**
-     * Test if the admin can access the admin product browse route.
+     * Test if the user can access the admin product browse route.
      *
      * @return void
      */
@@ -116,18 +127,16 @@ class AdminAuthTest extends TestCase
     }
 
     /**
-     * Test if the admin can access the admin browse admin route.
+     * Test if the user can access the admin browse admin route.
      *
      * @return void
      */
     public function testAdminRouteBrowseAdminView()
     {
         $status = [
-            "guest" => 302,
             "customer" => 403,
             "seller" => 403,
-            "admin" => 403,
-            "sysadmin" => 200
+            "admin" => 403
         ];
         $this->testAdminSingleGetRoute(route("admin.browse.view"), $status);
     }

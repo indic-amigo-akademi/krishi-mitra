@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
-use App\Order;
+use App\Models\Address;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\User;
-use App\Product;
-use App\Address;
+use PHPUnit\Framework\TestCase;
 class OrderUnitTest extends TestCase
 {
     /**

@@ -2,18 +2,18 @@
 
 namespace Tests\Unit;
 
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\User;
-use App\Product;
-use Faker\Generator as Faker;
-use App\Cart;
 use Carbon\Carbon;
-use App\Order;
+use Faker\Generator as Faker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
 class OrderTest extends TestCase
 {

@@ -14,10 +14,10 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('address_id');
+            $table->id()->comment('Unique ID of the order');
+            $table->unsignedBigInteger('user_id')->comment('User ID of the user who placed the order');
+            $table->unsignedBigInteger('product_id')->comment('Product ID of the product in the order');
+            $table->unsignedBigInteger('address_id')->comment('Address ID of the address where the order is placed');
             $table
                 ->foreign('user_id')
                 ->references('id')
@@ -30,13 +30,14 @@ class CreateOrdersTable extends Migration
                 ->foreign('address_id')
                 ->references('id')
                 ->on('addresses');
-            $table->unsignedBigInteger('order_id');
-            $table->integer('qty');
-            $table->double('price');
-            $table->double('discount');
-            $table->string('status');
-            $table->string('type');
+            $table->unsignedBigInteger('order_id')->comment('Order ID of the order');
+            $table->integer('qty')->comment('Quantity of the product in the order');
+            $table->double('price')->comment('Price of the product in the order');
+            $table->double('discount')->comment('Discount of the product in the order');
+            $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled'])->comment('Status of the order');
+            $table->string('type')->comment('Category of the product in the order');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

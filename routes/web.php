@@ -34,7 +34,7 @@ Route::prefix('admin')->name('admin.')->controller('AdminController')->group(fun
     Route::get('/', 'index')->name('index');
     Route::get('register', 'register_view')->name('register.view');
     Route::get('approval', 'approval_view')->name('approval.view');
-    Route::get('product/browse', 'browse')->name('product.browse');
+    Route::get('product/browse', 'product_browse')->name('product.browse');
     Route::get('browse', 'admin_browse_view')->name('browse.view');
     
     Route::post('register', 'register')->name('register');
@@ -45,14 +45,14 @@ Route::prefix('admin')->name('admin.')->controller('AdminController')->group(fun
 
 // Seller Routes
 Route::prefix('seller')->name('seller.')->controller('SellerController')->group(function () {
-    Route::get('register', 'seller_form')->name('register');
     Route::get('/', 'index')->name('index');
-    Route::get('products', 'product_display')->name('product.browse');
+    Route::get('products', 'product_browse')->name('product.browse');
+    Route::get('register', 'seller_form')->name('register.view');
     Route::get('orders', 'product_orders')->name('order.browse');
     Route::get('order/{id}', 'show_one_order')->name('order.view');
     Route::get('product/{slug}', 'product_show')->name('product.view');
     
-    Route::post('create', 'create_seller')->name('create');
+    Route::post('register', 'create_seller')->name('register');
 });
 
 Route::get('seller/product/create', 'ProductController@create')->name(

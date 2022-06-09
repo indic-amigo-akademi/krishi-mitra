@@ -131,7 +131,7 @@ class AdminController extends Controller
         );
     } // test done
 
-    public function browse()
+    public function product_browse()
     {
         if (!Auth::user()->is_admin) {
             abort(403);

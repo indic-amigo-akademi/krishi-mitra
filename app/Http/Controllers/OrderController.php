@@ -109,7 +109,7 @@ class OrderController extends Controller
                     'qty' => 1,
                     'price' => $p->price,
                     'discount' => $p->discount,
-                    'status' => 'Processed',
+                    'status' => 'processing',
                     'type' => $type,
                 ]);
             }
@@ -189,7 +189,7 @@ class OrderController extends Controller
                     'qty' => $p->qty,
                     'price' => $p->price,
                     'discount' => $p->discount,
-                    'status' => 'Processed',
+                    'status' => 'processing',
                     'type' => $type,
                 ]);
                 Cart::find($p->id)->delete();
@@ -250,7 +250,7 @@ class OrderController extends Controller
             ->where('id', '=', $oid)
             ->first();
         if ($ostatus == 'Cancel') {
-            $order->status = 'Cancelled';
+            $order->status = 'cancelled';
             $order->save();
             return redirect()
                 ->route('orders.show', $order->order_id)

@@ -85,7 +85,7 @@
         @elseif(Auth::check() && Auth::user()->is_admin)
             <li class="uk-navbar-item"><a href="{{ route('admin.index') }}">Admin Dashboard</a></li>
         @else
-            <li class="uk-navbar-item"><a href="{{ route('seller.register') }}">Sell on Krishi-Mitra</a></li>
+            <li class="uk-navbar-item"><a href="{{ route('seller.register.view') }}">Sell on Krishi-Mitra</a></li>
         @endif
 
     </ul>

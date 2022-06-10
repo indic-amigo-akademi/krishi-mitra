@@ -198,9 +198,16 @@ class ProductController extends Controller
     {
         $product = Product::where('id', $id);
 
-        if (!isset($product)) {
+        // if (Auth::user()->is_seller)
+        //     $product->where('seller_id', Auth::user()->seller->id);
+        // else
+        //     abort(404);
+
+        if (!isset($product) || $product->count() == 0) 
             abort(404);
-        }
+
+        // if ($product->first()->active == 0)
+        //     abort(405);
 
         $product->update(['active' => 0]);
 
@@ -219,9 +226,16 @@ class ProductController extends Controller
     {
         $product = Product::where('id', $id);
 
-        if (!isset($product) || $product->count() == 0) {
+        // if (Auth::user()->is_seller)
+        //     $product->where('seller_id', Auth::user()->seller->id);
+        // else
+        //     abort(404);
+
+        if (!isset($product) || $product->count() == 0)
             abort(404);
-        }
+
+        // if ($product->first()->active == 1)
+        //     abort(405);
 
         $product->update(['active' => 1]);
 

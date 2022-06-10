@@ -19,7 +19,7 @@ class RoleAuthenticate
     {
         $roles = array_slice(func_get_args(), 2);
         // var_dump("Hello Role: ", $roles);
-        if (Auth::check() && (!in_array(Auth::user()->role, $roles)))
+        if (Auth::check() && Auth::user()->active != 0 && (!in_array(Auth::user()->role, $roles)))
             abort(403);
         return $next($request);
     }

@@ -65,7 +65,7 @@
                         @foreach ($cart_products as $cart_product)
                             <div class="uk-card-header uk-padding uk-flex uk-flex-row">
                                 <div class="uk-width-1-3 uk-flex-middle uk-flex uk-flex-column">
-                                    <img src="{{ isset($cart_product->product->coverPhotos) ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                                    <img src="{{ isset($cart_product->product->coverPhotos) && count($cart_product->product->coverPhotos) > 0 ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                         width="200rem" uk-img class="uk-margin-auto" />
                                     <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
                                         <button type="button" class="uk-button-default uk-margin-left uk-margin-right cart-quan"

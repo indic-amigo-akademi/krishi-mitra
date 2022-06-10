@@ -8,5 +8,5 @@
   - [x] LoginTest
   - [x] RegisterTest
   - [x] CartGetRoutesTest
-  - [ ] ProductGetRoutesTest
-  - [ ] GetRoutesTest
+  - [x] ProductGetRoutesTest
+  - [x] GetRoutesTest

@@ -12,7 +12,7 @@ class CustomerController extends Controller
     public function index()
     {
         return view('profile.dashboard');
-    }
+    }  // test done
 
     public function profile()
     {

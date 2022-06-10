@@ -8,31 +8,31 @@
                 <hr>
 
                 @if (count($orders) > 0)
-                    @foreach ($orders as $o)
+                    @foreach ($orders as $order)
                         <div class="uk-padding-small uk-flex uk-flex-row uk-flex-between uk-flex-wrap order-card">
                             <div>
                                 {{-- <div class="uk-text-emphasis uk-text-bold uk-margin-top uk-margin-bottom">ORDER DETAILS</div> --}}
                                 <div class="uk-flex uk-flex-row uk-flex-middle uk-flex-around  uk-flex-wrap">
-                                    <img src="{{ isset($o->product->coverPhotos) ? asset('uploads/products/' . $o->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                                    <img src="{{ isset($order->product->coverPhotos) && count($order->product->coverPhotos) > 0 ? asset('uploads/products/' . $order->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                         width="100rem" uk-img class="uk-margin-right" />
                                     <div class="">
                                         <div class="uk-text-bold uk-text-emphasis">
-                                            {{ $o->product->name }}
+                                            {{ $order->product->name }}
                                             ,
-                                            {{ $o->product->category }} - 1 {{ $o->product->unit }}
+                                            {{ $order->product->category }} - 1 {{ $order->product->unit }}
                                         </div>
                                         <div class="uk-text-emphasis uk-margin-small-bottom">
-                                            {{ $o->product->seller->trade_name }}
+                                            {{ $order->product->seller->trade_name }}
                                         </div>
                                         <div class="uk-text-bold uk-margin-small-bottom sdetail-price">
-                                            ₹{{ sprintf('%.2f', $o->total_discounted_price) }}
+                                            ₹{{ sprintf('%.2f', $order->total_discounted_price) }}
                                             <span
                                                 class="uk-text-muted uk-text-strikethrough uk-text-small uk-margin-small-left">
-                                                ₹ {{ sprintf('%.2f', $o->total_price) }}
+                                                ₹ {{ sprintf('%.2f', $order->total_price) }}
                                             </span>
                                         </div>
                                         <div class="uk-text-small uk-margin-bottom">
-                                            Quantity : {{ $o->qty }}
+                                            Quantity : {{ $order->qty }}
                                         </div>
                                     </div>
                                 </div>
@@ -42,29 +42,29 @@
                                 {{-- <div class="uk-text-bold uk-text-emphasis  uk-margin-top uk-margin-bottom">ADDRESS DETAILS
                         </div> --}}
                                 <div>
-                                    <span class="uk-text-bold">{{ $o->address->name }}</span>
+                                    <span class="uk-text-bold">{{ $order->address->name }}</span>
                                     <br>
-                                    <span class="uk-text-emphasis">Phone : {{ $o->address->mobile }}</span>
+                                    <span class="uk-text-emphasis">Phone : {{ $order->address->mobile }}</span>
                                     <br>
-                                    <span>{{ $o->address->full_address }}</span>
+                                    <span>{{ $order->address->full_address }}</span>
                                     <br>
                                     <span class="uk-text-emphasis">Ordered on : </span>
-                                    {{ $o->created_at }}
+                                    {{ $order->created_at }}
                                     <br>
-                                    <span class="uk-text-emphasis">Order Status : {{ $o->status }}</span>
+                                    <span class="uk-text-emphasis">Order Status : {{ $order->status }}</span>
                                 </div>
                                 
                             </div>
-                            <form action="{{ route('orders.show.cancel.delete',$o->order_id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('orders.show.cancel.delete',$order->order_id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                <input type="hidden" id="id" name="id" value ="{{ $o->id }}">
-                                @if($o->status=="Processed")
-                                    <button id='{{ $o->id }}c' type="submit" name="input" value="Cancel"
+                                <input type="hidden" id="id" name="id" value ="{{ $order->id }}">
+                                @if($order->status=="Processed")
+                                    <button id='{{ $order->id }}c' type="submit" name="input" value="Cancel"
                                         class="uk-align-right uk-button uk-button-link uk-text-danger  uk-text-bold">
                                         <i class="ri-close-line"></i> Cancel Order
                                     </button>                     
                                 @else
-                                    <button id='{{ $o->id }}c' type="submit" name="input" value="Delete"
+                                    <button id='{{ $order->id }}c' type="submit" name="input" value="Delete"
                                         class="uk-align-right uk-button uk-button-link uk-text-danger  uk-text-bold">
                                         <i class="ri-close-line"></i> Delete Order
                                     </button>    

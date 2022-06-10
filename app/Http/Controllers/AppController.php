@@ -15,7 +15,7 @@ class AppController extends Controller
     {
         $products = Product::where('active', 1)->get();
         return view('home', compact('products'));
-    }
+    } // test done
 
     public function create_contact(Request $req)
     {
@@ -109,7 +109,7 @@ class AppController extends Controller
         }
 
         return view('product.explore', compact('products', 'page_title'));
-    }
+    } // test done
 
     public function productBox(Request $req, $id)
     {
@@ -122,9 +122,10 @@ class AppController extends Controller
     public function about()
     {
         return view('app.about');
-    }
+    }// test done
+
     public function contact()
     {
         return view('app.contact');
-    }
+    }// test done
 }

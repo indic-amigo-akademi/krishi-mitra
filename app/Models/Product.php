@@ -23,6 +23,7 @@ class Product extends Model
         'quantity',
         'slug',
         'discount',
+        'active',
     ];
 
     public static $units = [

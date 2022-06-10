@@ -113,7 +113,7 @@
             }
             Notiflix.Confirm.show('Are u sure!', 'Do you want to remove this item from the cart?', 'Yes', 'No',
                 function() {
-                    fetch('/cart/delete', {
+                    fetch(route('cart.delete'), {
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

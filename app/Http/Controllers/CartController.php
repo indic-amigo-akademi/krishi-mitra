@@ -25,7 +25,7 @@ class CartController extends Controller
         $cart_products = Cart::where('user_id', Auth::id())->get();
         $addresses = Address::where('user_id', Auth::id())->get();
         return view('profile.cart', compact('cart_products', 'addresses'));
-    }
+    } // test done
 
     /**
      * Store a newly created resource in storage.

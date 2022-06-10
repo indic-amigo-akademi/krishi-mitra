@@ -4,4 +4,9 @@
 - [ ] Feature Tests
   - [x] DBTest
   - [x] AdminAuthTest
-  - [ ] SellerAuthTest
+  - [x] SellerAuthTest
+  - [x] LoginTest
+  - [x] RegisterTest
+  - [x] CartGetRoutesTest
+  - [ ] ProductGetRoutesTest
+  - [ ] GetRoutesTest

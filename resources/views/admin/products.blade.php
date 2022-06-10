@@ -31,7 +31,7 @@
                         </div>
                         <div>
                             @if ($product->active == 1)
-                                <a href="{{ route('product.inactivate', $product->id) }}" type=" button"
+                                <a href="{{ route('product.deactivate', $product->id) }}" type=" button"
                                     class="uk-text-warning">Inactivate</a>
                             @else
                                 <a href="{{ route('product.activate', $product->id) }}" type=" button"

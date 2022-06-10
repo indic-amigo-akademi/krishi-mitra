@@ -30,7 +30,7 @@ Route::get('/profile', 'CustomerController@index')->name('customer.index');
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')
-    ->controller('AdminController')->middleware('admin')->group(function () {
+    ->controller('AdminController')->middleware('role_auth:admin,sysadmin')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('approval', 'approval_view')->name('approval.view');
         Route::get('product/browse', 'product_browse')->name('product.browse');
@@ -40,19 +40,19 @@ Route::prefix('admin')->name('admin.')
         Route::post('approval', 'approval')->name('approval');
         Route::post('browse', 'admin_browse')->name('browse');
     });
-    
+
 Route::get('admin/register', 'AdminController@register_view')->name('admin.register.view');
 
 
 // Seller Routes
 Route::prefix('seller')->name('seller.')
-    ->controller('ProductController')->middleware('seller')->group(function () {
+    ->controller('ProductController')->middleware('role_auth:seller')->group(function () {
         Route::get('product/create', 'create')->name('product.create');
         Route::get('product/edit/{id}', 'edit')->name('product.edit');
     });
 
-Route::prefix('seller')->name('seller.')->controller('SellerController')
-    ->middleware('seller')->group(function () {
+Route::prefix('seller')->name('seller.')
+    ->controller('SellerController')->middleware('role_auth:seller')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('orders', 'product_orders')->name('order.browse');
         Route::get('order/{id}', 'show_order')->name('order.view');
@@ -66,13 +66,15 @@ Route::get('seller/register', 'SellerController@seller_form')->name('seller.regi
 
 
 // Product routes
-Route::prefix('product')->name('product.')->controller('ProductController')->group(function () {
-    Route::post('add', 'store')->name('store');
-    Route::post('edit/{id}', 'update')->name('update');
-    Route::post('delete/{id}', 'destroy')->name('destroy');
-    Route::get('inactivate/{id}', 'inactivate')->name('inactivate');
-    Route::get('activate/{id}', 'activate')->name('activate');
-});
+Route::prefix('product')->name('product.')
+    ->controller('ProductController')->middleware('role_auth:seller,admin,sysadmin')->group(function () {
+        Route::get('deactivate/{id}', 'deactivate')->name('deactivate');
+        Route::get('activate/{id}', 'activate')->name('activate');
+
+        Route::post('add', 'store')->name('store');
+        Route::post('edit/{id}', 'update')->name('update');
+        Route::post('delete/{id}', 'destroy')->name('destroy');
+    });
 
 // Route::get('/product/search', 'AppController@search')->name('search.item');
 
@@ -82,11 +84,14 @@ Route::get('/contact', 'AppController@contact')->name('contact');
 Route::post('/contact', 'AppController@create_contact')->name('contact.create');
 
 // Cart Routes
+Route::prefix('cart')->name('cart.')
+    ->controller('CartController')->group(function () {
+        Route::post('store', 'store')->name('store');
+        Route::post('incr', 'incr')->name('increment');
+        Route::post('decr', 'decr')->name('decrement');
+        Route::post('delete', 'destroy')->name('delete');
+    });
 Route::get('/cart', 'CartController@index')->name('cart');
-Route::post('/cart/store', 'CartController@store')->name('cart.store');
-Route::post('/cart/incr', 'CartController@incr')->name('cart.increment');
-Route::post('/cart/decr', 'CartController@decr')->name('cart.decrement');
-Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');
 
 // Checkout Routes
 Route::get('/checkout', 'OrderController@checkout')->name('checkout');

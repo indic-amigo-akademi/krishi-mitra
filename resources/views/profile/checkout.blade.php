@@ -244,7 +244,7 @@
             // console.log('ID IS');
             // console.log(x);
 
-            fetch('/cart/delete', {
+            fetch(route('cart.delete'), {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

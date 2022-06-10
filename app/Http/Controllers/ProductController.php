@@ -31,7 +31,7 @@ class ProductController extends Controller
 
         $products = Product::all();
         return view('seller.product.list')->with('products', $products);
-    }
+    } // test done
 
     /**
      * Show the form for creating a new resource.
@@ -187,28 +187,46 @@ class ProductController extends Controller
 
         return redirect(route(Auth::user()->role . '.product.browse'));
     }
-    public function inactivate($id)
+
+    /**
+     * Deactivate the product.
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function deactivate($id)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
+        $product = Product::where('id', $id);
+
+        if (!isset($product)) {
+            abort(404);
         }
 
-        DB::table('products')
-            ->where('id', $id)
-            ->update(['active' => 0]);
+        $product->update(['active' => 0]);
 
-        return redirect('/admin/product/browse');
+        return redirect(route(
+            (Auth::user()->is_admin ? 'admin' : 'seller') . '.product.browse'
+        ));
     }
+
+    /**
+     * Activate the product.
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function activate($id)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
+        $product = Product::where('id', $id);
+
+        if (!isset($product) || $product->count() == 0) {
+            abort(404);
         }
 
-        DB::table('products')
-            ->where('id', $id)
-            ->update(['active' => 1]);
+        $product->update(['active' => 1]);
 
-        return redirect('/admin/product/browse');
+        return redirect(route(
+            (Auth::user()->is_admin ? 'admin' : 'seller') . '.product.browse'
+        ));
     }
 }

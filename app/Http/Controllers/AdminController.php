@@ -82,7 +82,7 @@ class AdminController extends Controller
         ) {
             Approval::create([
                 'user_id' => $user->id,
-                'type' => 'admin_approval',
+                'type' => 'admin',
             ]);
             return redirect()
                 ->route('home')
@@ -113,12 +113,8 @@ class AdminController extends Controller
 
     public function approval_view()
     {
-        $seller_approval = Approval::all()->where(
-            'type',
-            '=',
-            'seller_approval'
-        );
-        $admin_approval = Approval::all()->where('type', '=', 'admin_approval');
+        $seller_approval = Approval::all()->where('type', '=', 'seller');
+        $admin_approval = Approval::all()->where('type', '=', 'admin');
         return view(
             'admin.approval',
             compact('seller_approval', 'admin_approval')
@@ -133,7 +129,7 @@ class AdminController extends Controller
         $data = ['products' => $prod, 'seller' => $seller];
         return view('admin.products', $data);
     } // test done
-    
+
     public function admin_browse_view()
     {
         if (!Auth::user()->is_sysadmin) {
@@ -153,7 +149,7 @@ class AdminController extends Controller
         $admin = User::all()
             ->where('id', '=', $unadmin)
             ->first();
-            
+
         $admin->role = 'customer';
         $admin->save();
         return redirect()
@@ -181,9 +177,9 @@ class AdminController extends Controller
             $z = User::all()
                 ->where('id', '=', $y->user_id)
                 ->first();
-            if ($y->type == 'seller_approval') {
+            if ($y->type == 'seller') {
                 $z->role = 'seller';
-            } elseif ($y->type == 'admin_approval') {
+            } elseif ($y->type == 'admin') {
                 $z->role = 'admin';
             }
             $z->save();
@@ -201,7 +197,7 @@ class AdminController extends Controller
             $y = Approval::all()
                 ->where('id', '=', $sid)
                 ->first();
-            if ($y->type == 'seller_approval') {
+            if ($y->type == 'seller') {
                 $w = Seller::all()
                     ->where('user_id', '=', $y->user_id)
                     ->first();

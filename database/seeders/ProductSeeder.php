@@ -332,16 +332,9 @@ class ProductSeeder extends Seeder
 
         for ($i = 0; $i < 50; $i++) {
             $product_name = $this->faker->bothify('Product**##');
-            $product = Product::create([
-                'type' => array_rand(Product::$categories),
-                'seller_id' => random_int(1, 3),
-                'desc' => sprintf('<p>%s</p>', $this->faker->paragraph(3)),
-                'price' => random_int(5, 50),
+            $product = Product::factory()->create([
                 'name' => $product_name,
-                'unit' => array_rand(Product::$units),
-                'quantity' => random_int(50, 500),
-                'slug' => Str::slug($product_name),
-                'discount' => $this->faker->randomFloat(2, 0, 1),
+                'seller_id' => random_int(1, 3),
             ]);
 
             $image = $this->download_url('https://picsum.photos/250');

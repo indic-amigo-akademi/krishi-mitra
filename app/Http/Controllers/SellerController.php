@@ -19,6 +19,7 @@ class SellerController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function seller_form()
     {
         if (Auth::user()->is_seller || Auth::user()->is_admin) {
@@ -29,7 +30,7 @@ class SellerController extends Controller
                     Notiflix::make([
                         'code' => 'info',
                         'subtitle' =>
-                            'You are already registered as ' .
+                        'You are already registered as ' .
                             Auth::user()->role .
                             '!',
                     ])
@@ -48,56 +49,24 @@ class SellerController extends Controller
                         'type' => 'Report',
                         'title' => 'Waiting!',
                         'subtitle' =>
-                            'Already signed for ' .
+                        'Already signed for ' .
                             str_replace('_', ' ', $approval->type) .
                             '!',
                     ])
                 );
         }
         return view('seller.form');
-    }
+    } // test done
 
     public function index()
     {
-        if (Auth::user()->role == 'customer') {
-            abort(403);
-        }
-
-        if (Auth::user()->is_seller) {
-            $usr = Seller::where('user_id', Auth::id())->get()[0];
-            $email = User::find(Auth::id())->email;
-            $phone = User::find(Auth::id())->phone;
-            Log::info('PP' . $usr . $email);
-            $data = ['usr' => $usr, 'email' => $email, 'phone' => $phone];
-            return view('seller.dashboard')->with($data);
-        }
-    }
+        return view('seller.dashboard');
+    } // test done
 
     protected function create_seller(Request $req)
     {
-        // $approval = Approval::all()
-        //     ->where('user_id', '=', Auth::id())
-        //     ->first();
-        // if (isset($approval) && $approval) {
-        //     return redirect()
-        //         ->route('home')
-        //         ->with(
-        //             'alert',
-        //             Notiflix::make([
-        //                 'code' => 'info',
-        //                 'type' => 'Report',
-        //                 'title' => 'Waiting!',
-        //                 'subtitle' =>
-        //                 'Already signed for ' .
-        //                     str_replace('_', ' ', $approval->type) .
-        //                     '!',
-        //             ])
-        //         );
-        // }
-
         $validator = Validator::make($req->all(), [
             'name' => 'required|string|max:255',
-
             // 'gstin' => 'string|size:15',
             'aadhaar' => 'required|string|size:12',
             'trade_name' => 'required|string|max:255',
@@ -105,7 +74,7 @@ class SellerController extends Controller
 
         if ($validator->fails()) {
             return redirect()
-                ->route('seller.register')
+                ->route('seller.register.view')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -131,41 +100,33 @@ class SellerController extends Controller
                     'title' => 'Yippee!',
                     'type' => 'Report',
                     'subtitle' =>
-                        'Your registration as a seller is in progress!',
+                    'Your registration as a seller is in progress!',
                 ])
             );
     }
 
-    public function product_show(Request $req, $slug)
+    public function product_show($slug)
     {
-        if (!Auth::user()->role == 'customer') {
-            abort(403);
+        $product = Product::where(['slug' => $slug])->first();
+        if (!$product) {
+            abort(404);
         }
-
-        if (Auth::user()->is_seller) {
-            $prod = Product::where(['slug' => $slug])->first();
-            return view('seller.product.show')->with('product', $prod);
-        }
-    }
+        return view('seller.product.show', compact('product'));
+    } // test done
 
     public function product_orders()
     {
-        if (!Auth::user()->is_seller) {
-            abort(403);
-        }
-        $seller = Auth::user()->seller;
-        $product_ids = Product::where('seller_id', $seller->id)
-            ->pluck('id')
-            ->toArray();
+        $product_ids = Auth::user()->seller->products
+            ->pluck('id')->toArray();
         $orders = Order::whereIn('product_id', $product_ids)
             ->orderBy('order_id', 'desc')
             ->orderBy('created_at', 'desc')
             ->paginate(8);
 
         return view('seller.order.list')->with('orders', $orders);
-    }
+    } // test done
 
-    public function show_one_order($id)
+    public function show_order($id)
     {
         $seller = Auth::user()->seller;
         $product_ids = Product::where('seller_id', $seller->id)
@@ -178,19 +139,10 @@ class SellerController extends Controller
             return view('seller.order.show', compact('orders'));
         }
         abort(404);
-    }
+    } // test done
 
-    public function product_display()
+    public function product_browse()
     {
-        if (!Auth::user()->role == 'customer') {
-            abort(403);
-        }
-
-        if (Auth::user()->is_seller) {
-            $sid = Seller::where('user_id', Auth::id())->get()[0]->id;
-            $products = Product::where('seller_id', $sid)->get();
-            Log::info('Nimish' . $products . $sid);
-            return view('seller.product.list')->with('products', $products);
-        }
-    }
+        return view('seller.product.list')->with('products', Auth::user()->seller->products);
+    } // test done
 }

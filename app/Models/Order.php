@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +24,23 @@ class Order extends Model
         'discount',
         'status',
         'type',
+    ];
+
+    public static $categories = [
+        'Vegetables',
+        'Fruits',
+        'Cereals',
+        'Pulses',
+        'Nuts',
+        'Oils',
+        'Fibre Crops',
+        'Beverages',
+        'Spices',
+        'Sugar and starch',
+        'Manure',
+        // 'Farming Utilites',
+        // 'Seeds',
+        // 'Fertilizers',
     ];
 
     public function user()
@@ -46,6 +66,11 @@ class Order extends Model
     public function getTotalPriceAttribute()
     {
         return $this->price * $this->qty;
+    }
+
+    public function getCategoryAttribute()
+    {
+        return $this::$categories[$this->type];
     }
 
     public function getTotalDiscountedPriceAttribute()

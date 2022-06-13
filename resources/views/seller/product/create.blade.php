@@ -20,7 +20,7 @@
                         <i class="uk-form-icon ri-pencil-fill"></i>
                         {{-- <input class="uk-input" type="text" id="type" name="type"> --}}
                         <select name="type" id="type" class="uk-input uk-select">
-                            @foreach (App\Product::$categories as $index => $category)
+                            @foreach (App\Models\Product::$categories as $index => $category)
                                 <option value="{{ $index }}">{{ $category }}</option>
                             @endforeach
                         </select>
@@ -33,11 +33,11 @@
                             <i class="uk-form-icon ri-pencil-fill"></i>
                             <select class="uk-input uk-select" name="unit" id="unit">
                                 <optgroup label="Mostly Used">
-                                    @foreach (array_slice(App\Product::$units, 0, 4) as $abbrev => $unit)
+                                    @foreach (array_slice(App\Models\Product::$units, 0, 4) as $abbrev => $unit)
                                         <option value="{{ $abbrev }}">{{ $unit }}</option>
                                     @endforeach
                                 </optgroup>
-                                @foreach (array_slice(App\Product::$units, 4) as $abbrev => $unit)
+                                @foreach (array_slice(App\Models\Product::$units, 4) as $abbrev => $unit)
                                     <option value="{{ $abbrev }}">{{ $unit }}</option>
                                 @endforeach
                             </select>

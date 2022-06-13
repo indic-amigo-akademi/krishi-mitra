@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +23,7 @@ class Product extends Model
         'quantity',
         'slug',
         'discount',
+        'active',
     ];
 
     public static $units = [
@@ -113,4 +116,5 @@ class Product extends Model
     {
         return $this->price * (1 - $this->discount);
     }
+
 }

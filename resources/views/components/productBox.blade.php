@@ -1,7 +1,7 @@
 <div class="uk-card uk-card-default product-box">
     <div class="uk-card-media-top">
         <a href="{{ route('product.view', $product->slug) }}" class="uk-flex uk-flex-center">
-            <img src="{{ isset($product->coverPhotos) ? asset('uploads/products/' . $product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+            <img src="{{ isset($product->coverPhotos) && count($product->coverPhotos) > 0 ? asset('uploads/products/' . $product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                 uk-img />
         </a>
     </div>

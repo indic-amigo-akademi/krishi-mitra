@@ -89,10 +89,10 @@ class OrderController extends Controller
             $products = Product::where('id', $request['prod_id'])->get();
             // Log::info('ProDucts are');
             // log::info($products);
-            $current_date_time = Carbon::now()->timestamp;
-            $name = User::find(Auth::id())->id;
-            $oid = strval($current_date_time) . strval($name);
-            $oid_padded = str_pad($oid, 11 - strlen($oid), '0', STR_PAD_LEFT);
+            $user_id = User::find(Auth::id())->id;
+            // $oid = strval($current_date_time) . strval($name);
+            // $oid_padded = str_pad($oid, 11 - strlen($oid), '0', STR_PAD_LEFT);
+            $order_id = strval(Carbon::now()->timestamp) . str_pad(strval($user_id), 5, '0', STR_PAD_LEFT);
             // log::info('PROPERTY EXISTS' . $request['card'] . 'OID IS ' . $oid);
             if ($request['card'] != '') {
                 $type = 'card';
@@ -104,12 +104,12 @@ class OrderController extends Controller
                 Order::create([
                     'user_id' => Auth::id(),
                     'product_id' => $p->id,
-                    'order_id' => $oid_padded,
+                    'order_id' => $order_id,
                     'address_id' => $request['address_radio'],
                     'qty' => 1,
                     'price' => $p->price,
                     'discount' => $p->discount,
-                    'status' => 'Processed',
+                    'status' => 'processing',
                     'type' => $type,
                 ]);
             }
@@ -189,7 +189,7 @@ class OrderController extends Controller
                     'qty' => $p->qty,
                     'price' => $p->price,
                     'discount' => $p->discount,
-                    'status' => 'Processed',
+                    'status' => 'processing',
                     'type' => $type,
                 ]);
                 Cart::find($p->id)->delete();
@@ -250,7 +250,7 @@ class OrderController extends Controller
             ->where('id', '=', $oid)
             ->first();
         if ($ostatus == 'Cancel') {
-            $order->status = 'Cancelled';
+            $order->status = 'cancelled';
             $order->save();
             return redirect()
                 ->route('orders.show', $order->order_id)

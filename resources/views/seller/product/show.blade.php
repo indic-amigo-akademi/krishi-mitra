@@ -4,7 +4,7 @@
         <div class="uk-card uk-card-default">
             <div class="uk-card-body uk-flex uk-flex-row uk-flex-middle uk-flex-wrap">
                 <div class="uk-padding-small uk-flex uk-flex-center">
-                    <img src="{{ isset($product->coverPhotos) ? asset('uploads/products/' . $product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                    <img src="{{ isset($product->coverPhotos) && count($product->coverPhotos) > 0 ? asset('uploads/products/' . $product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                         width="400px" height="400px" uk-img />
                 </div>
                 <div class="uk-padding-small">
@@ -48,5 +48,4 @@
             </div>
         </div>
     </div>
-
 @endsection

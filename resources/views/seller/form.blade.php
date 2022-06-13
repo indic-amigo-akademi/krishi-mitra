@@ -3,7 +3,7 @@
 @section('content')
     <div class="uk-width-1-1 uk-height-1-1 uk-background-cover uk-background-norepeat"
         style="background-image:url({{ asset('images/background/img3.jpg') }})">
-        <form action="{{ route('seller.create') }}" method="POST">
+        <form action="{{ route('seller.register') }}" method="POST">
             @csrf
             <div class="uk-padding-large uk-text-large uk-text-bold seller-reg">For Selling on Krishi-Mitra, You
                 need to

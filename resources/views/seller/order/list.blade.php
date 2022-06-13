@@ -9,27 +9,27 @@
                 <hr />
 
                 @if (count($orders) > 0)
-                    @foreach ($orders as $o)
+                    @foreach ($orders as $order)
                         <div class="uk-padding-small uk-margin-bottom order-card">
                             <div class="uk-flex uk-flex-row uk-flex-between uk-flex-wrap">
 
                                 <div class="uk-flex uk-flex-row uk-flex-middle uk-flex-around  uk-flex-wrap">
-                                    <img src="{{ isset($o->product->coverPhotos) ? asset('uploads/products/' . $o->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                                    <img src="{{ isset($order->product->coverPhotos) && count($order->product->coverPhotos) > 0 ? asset('uploads/products/' . $order->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                         width="100rem" uk-img class="uk-margin-right" />
                                     <div class="uk-margin-left">
                                         <div class="uk-text-bold uk-text-emphasis uk-margin-small-bottom">
-                                            {{ $o->product->name }}
+                                            {{ $order->product->name }}
                                             ,
-                                            {{ $o->product->category }} - 1 {{ $o->product->unit }}
+                                            {{ $order->product->category }} - 1 {{ $order->product->unit }}
                                         </div>
                                         <div class="uk-text-emphasis uk-margin-small-bottom">
-                                            {{ $o->product->seller->trade_name }}
+                                            {{ $order->product->seller->trade_name }}
                                         </div>
                                         <div class="uk-text-bold uk-margin-small-bottom sdetail-price">
-                                            ₹ {{ sprintf('%.2f', $o->total_discounted_price) }}
+                                            ₹ {{ sprintf('%.2f', $order->total_discounted_price) }}
                                             <span
                                                 class="uk-text-muted uk-text-strikethrough uk-text-small uk-margin-small-left">
-                                                ₹ {{ sprintf('%.2f', $o->total_price) }}
+                                                ₹ {{ sprintf('%.2f', $order->total_price) }}
                                             </span>
                                         </div>
                                     </div>
@@ -38,13 +38,13 @@
                                 <div class="uk-margin-left">
                                     <span class="uk-text-emphasis uk-text-bold"> Order ID: </span>
                                     <a class="uk-text-bold"
-                                        href="{{ route('seller.order.view', $o->order_id) }}">{{ $o->order_id }}</a>
+                                        href="{{ route('seller.order.view', $order->order_id) }}">{{ $order->order_id }}</a>
                                     <br>
                                     <span class="uk-text-emphasis"> Ordered On:
-                                    </span><span>{{ $o->created_at }}</span>
+                                    </span><span>{{ $order->created_at }}</span>
                                     <br>
                                     <span class="uk-text-emphasis">Order Status : </span>
-                                    <span>{{ $o->status }}</span>
+                                    <span>{{ $order->status }}</span>
                                 </div>
                             </div>
                         </div>

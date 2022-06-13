@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,95 +20,80 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'AppController@home')->name('home');
+Route::get('/home', 'AppController@home')->name('home'); // test done
 
 // Profile routes
-Route::get('/profile/account', 'CustomerController@profile')->name('profile');
-
-Route::get('/explore', 'AppController@explore')->name('explore');
-Route::get('/profile', 'CustomerController@index')->name('customer.index');
+Route::get('/profile/account', 'CustomerController@profile')->name('profile'); // test done
+Route::get('/profile', 'CustomerController@index')->name('customer.index'); // test done
+Route::get('/explore', 'AppController@explore')->name('explore'); // review
 
 // Admin Routes
-Route::get('/admin', 'AdminController@index')->name('admin.index');
-Route::get('/admin/register', 'AdminController@register_view')->name(
-    'admin.register.view'
-);
-Route::post('/admin/register', 'AdminController@register')->name(
-    'admin.register'
-);
-Route::get('/admin/approval', 'AdminController@approval_view')->name(
-    'admin.approval.view'
-);
-Route::post('/admin/approval', 'AdminController@approval')->name(
-    'admin.approval'
-);
-Route::get('/admin/product/browse', 'AdminController@browse')->name(
-    'admin.product.browse'
-);
-Route::get('/admin/browse', 'AdminController@admin_browse_view')->name(
-    'admin.browse.view'
-);
-Route::post('/admin/browse', 'AdminController@admin_browse')->name(
-    'admin.browse'
-);
+Route::prefix('admin')->name('admin.')
+    ->controller('AdminController')->middleware('role_auth:admin,sysadmin')->group(function () {
+        Route::get('/', 'index')->name('index'); // test done
+        Route::get('approval', 'approval_view')->name('approval.view'); // test done
+        Route::get('product/browse', 'product_browse')->name('product.browse'); // test done
+        Route::get('browse', 'admin_browse_view')->name('browse.view'); // test done
+
+        Route::post('register', 'register')->name('register');
+        Route::post('approval', 'approval')->name('approval');
+        Route::post('browse', 'admin_browse')->name('browse');
+    });
+
+Route::get('admin/register', 'AdminController@register_view')->name('admin.register.view'); // test done
+
 
 // Seller Routes
-Route::get('/seller/register', 'SellerController@seller_form')->name(
-    'seller.register'
-);
-Route::post('/seller/create', 'SellerController@create_seller')->name(
-    'seller.create'
-);
-Route::get('/seller', 'SellerController@index')->name('seller.index');
-Route::get('/seller/products', 'SellerController@product_display')->name(
-    'seller.product.browse'
-);
-Route::get('/seller/orders', 'SellerController@product_orders')->name(
-    'seller.order.browse'
-);
-Route::get('/seller/order/{id}', 'SellerController@show_one_order')->name(
-    'seller.order.view'
-);
-Route::get('/seller/product/create', 'ProductController@create')->name(
-    'seller.product.create'
-);
-Route::get('/seller/product/edit/{id}', 'ProductController@edit')->name(
-    'seller.product.edit'
-);
-Route::get('/seller/product/{slug}', 'SellerController@product_show')->name(
-    'seller.product.view'
-);
+Route::prefix('seller')->name('seller.')
+    ->controller('ProductController')->middleware('role_auth:seller')->group(function () {
+        Route::get('product/create', 'create')->name('product.create');
+        Route::get('product/edit/{id}', 'edit')->name('product.edit');
+    });
+
+Route::prefix('seller')->name('seller.')
+    ->controller('SellerController')->middleware('role_auth:seller')->group(function () {
+        Route::get('/', 'index')->name('index'); // test done
+        Route::get('orders', 'product_orders')->name('order.browse'); // test done
+        Route::get('order/{id}', 'show_order')->name('order.view'); // test done
+        Route::get('products', 'product_browse')->name('product.browse'); // test done
+        Route::get('product/{slug}', 'product_show')->name('product.view'); // test done
+
+        Route::post('register', 'create_seller')->name('register');
+    });
+
+Route::get('seller/register', 'SellerController@seller_form')->name('seller.register.view'); // test done
+
 
 // Product routes
-Route::post('/product/store', 'ProductController@store')->name('product.store');
-Route::post('/product/update/{id}', 'ProductController@update')->name(
-    'product.update'
-);
-Route::post('/product/destroy/{id}', 'ProductController@destroy')->name(
-    'product.destroy'
-);
-Route::get('/product/inactivate/{id}', 'ProductController@inactivate')->name(
-    'product.inactivate'
-);
-Route::get('/product/activate/{id}', 'ProductController@activate')->name(
-    'product.activate'
-);
+Route::prefix('product')->name('product.')
+    ->controller('ProductController')->middleware('role_auth:seller,admin,sysadmin')->group(function () {
+        Route::get('deactivate/{id}', 'deactivate')->name('deactivate'); // review
+        Route::get('activate/{id}', 'activate')->name('activate'); // review
+
+        Route::post('add', 'store')->name('store');
+        Route::post('edit/{id}', 'update')->name('update');
+        Route::post('delete/{id}', 'destroy')->name('destroy');
+    });
+
 // Route::get('/product/search', 'AppController@search')->name('search.item');
 
 // Default routes
-Route::get('/about', 'AppController@about')->name('about');
-Route::get('/contact', 'AppController@contact')->name('contact');
+Route::get('/about', 'AppController@about')->name('about'); // test done
+Route::get('/contact', 'AppController@contact')->name('contact'); // test done
 Route::post('/contact', 'AppController@create_contact')->name('contact.create');
 
 // Cart Routes
-Route::get('/cart', 'CartController@index')->name('cart');
-Route::post('/cart/store', 'CartController@store')->name('cart.store');
-Route::post('/cart/incr', 'CartController@incr')->name('cart.increment');
-Route::post('/cart/decr', 'CartController@decr')->name('cart.decrement');
-Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');
+Route::prefix('cart')->name('cart.')
+    ->controller('CartController')->group(function () {
+        Route::post('store', 'store')->name('store');
+        Route::post('incr', 'incr')->name('increment');
+        Route::post('decr', 'decr')->name('decrement');
+        Route::post('delete', 'destroy')->name('delete');
+    });
+Route::get('/cart', 'CartController@index')->name('cart'); // test done
 
 // Checkout Routes
-Route::get('/checkout', 'OrderController@checkout')->name('checkout');
+Route::get('/checkout', 'OrderController@checkout')->name('checkout'); // test done
 //Route::get('/checkout/form', 'OrderController@create')->name('checkout.add');
 /*Route::get('/checkout/processed/cod', 'OrderController@storecod')->name(
     'OrderProcessed.cod'
@@ -123,20 +108,20 @@ Route::post('/checkout/processed', 'OrderController@store')->name(
 );
 //Route::get('/checkout/processed/buynow/{id}', 'OrderController@buy_now');
 
-Route::get('/orders', 'OrderController@showall')->name('orders');
-Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show');
+Route::get('/orders', 'OrderController@showall')->name('orders'); // test done
+Route::get('/orders/{id}', 'OrderController@showone')->name('orders.show'); // test done
 Route::post('/orders/{id}', 'OrderController@cancel_delete')->name(
     'orders.show.cancel.delete'
 );
 
 // Address Routes
-Route::get('/address', 'AddressController@address_view')->name('address');
+Route::get('/address', 'AddressController@address_view')->name('address'); // test done
 Route::post('/address', 'AddressController@address_edit_delete')->name(
     'address.edit.delete'
 );
 Route::get('/address/add', 'AddressController@add_address_view')->name(
     'address.add.view'
-);
+); // test done
 Route::post('/address/add', 'AddressController@add_address')->name(
     'address.add'
 );
@@ -150,4 +135,4 @@ Route::post('/address/edit', 'AddressController@edit_address')->name(
 //product page
 Route::get('/product/{slug}', 'ProductController@show_one')->name(
     'product.view'
-);
+); // test done

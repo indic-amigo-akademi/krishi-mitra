@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Models\FileImage;
+use App\Models\Product;
+use App\Models\Seller;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Product;
-use App\Seller;
-use App\FileImage;
-use App\Models\User;
 use PHPUnit\Framework\TestCase;
 class ProductUnitTest extends TestCase
 {

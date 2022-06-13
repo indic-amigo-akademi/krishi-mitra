@@ -25,13 +25,13 @@ class ProductController extends Controller
 
     public function index()
     {
-        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
-            abort(403);
-        }
+        // if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+        //     abort(403);
+        // }
 
         $products = Product::all();
         return view('seller.product.list')->with('products', $products);
-    }
+    } // test done
 
     /**
      * Show the form for creating a new resource.
@@ -40,9 +40,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
-            abort(403);
-        }
+        // if (!(Auth::user()->is_seller || Auth::user()->is_admin)) {
+        //     abort(403);
+        // }
         return view('seller.product.create');
     }
 
@@ -187,28 +187,60 @@ class ProductController extends Controller
 
         return redirect(route(Auth::user()->role . '.product.browse'));
     }
-    public function inactivate($id)
+
+    /**
+     * Deactivate the product.
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function deactivate($id)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }
+        $product = Product::where('id', $id);
 
-        DB::table('products')
-            ->where('id', $id)
-            ->update(['active' => 0]);
+        // if (Auth::user()->is_seller)
+        //     $product->where('seller_id', Auth::user()->seller->id);
+        // else
+        //     abort(404);
 
-        return redirect('/admin/product/browse');
+        if (!isset($product) || $product->count() == 0) 
+            abort(404);
+
+        // if ($product->first()->active == 0)
+        //     abort(405);
+
+        $product->update(['active' => 0]);
+
+        return redirect(route(
+            (Auth::user()->is_admin ? 'admin' : 'seller') . '.product.browse'
+        ));
     }
+
+    /**
+     * Activate the product.
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function activate($id)
     {
-        if (!Auth::user()->is_admin) {
-            abort(403);
-        }
+        $product = Product::where('id', $id);
 
-        DB::table('products')
-            ->where('id', $id)
-            ->update(['active' => 1]);
+        // if (Auth::user()->is_seller)
+        //     $product->where('seller_id', Auth::user()->seller->id);
+        // else
+        //     abort(404);
 
-        return redirect('/admin/product/browse');
+        if (!isset($product) || $product->count() == 0)
+            abort(404);
+
+        // if ($product->first()->active == 1)
+        //     abort(405);
+
+        $product->update(['active' => 1]);
+
+        return redirect(route(
+            (Auth::user()->is_admin ? 'admin' : 'seller') . '.product.browse'
+        ));
     }
 }

@@ -11,7 +11,7 @@
                         <div
                             class="uk-card uk-card-default uk-padding-small uk-margin-bottom uk-margin-right uk-flex uk-flex-row uk-flex-wrap">
                             <div class="uk-width-1-1 uk-width-1-3@m uk-flex uk-flex-column">
-                                <img src="{{ isset($cart_product->product->coverPhotos) ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
+                                <img src="{{ isset($cart_product->product->coverPhotos) && count($cart_product->product->coverPhotos) > 0 ? asset('uploads/products/' . $cart_product->product->coverPhotos[0]->name) : asset('images/icons/no_preview.png') }}"
                                     width="200rem" uk-img class="uk-margin-auto" />
                                 <div class="uk-margin-top uk-flex uk-flex-row uk-flex-center">
                                     <button class="uk-button-default uk-margin-left uk-margin-right cart-quan"
@@ -113,7 +113,7 @@
             }
             Notiflix.Confirm.show('Are u sure!', 'Do you want to remove this item from the cart?', 'Yes', 'No',
                 function() {
-                    fetch('/cart/delete', {
+                    fetch(route('cart.delete'), {
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

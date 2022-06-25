@@ -28,7 +28,7 @@ class CreateAddressesTable extends Migration
             $table->string('state');
             $table->integer('pincode');
             $table->string('landmark');
-            $table->string('type');
+            $table->enum('type', ['home', 'work']);
             $table->timestamps();
         });
     }

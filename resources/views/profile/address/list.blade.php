@@ -26,11 +26,11 @@
                                     </div>
 
                                     <div class="uk-flex uk-flex-right@m uk-flex-between">
-                                        <button id='{{ $addr->id }}e' type="submit" name="input" value="Edit"
+                                        <button id='{{ $addr->id }}e' type="submit" name="type" value="edit"
                                             class="uk-align-right uk-button uk-button-link uk-text-primary uk-text-bold">
                                             <i class="ri-check-line"></i> Edit
                                         </button>
-                                        <button id='{{ $addr->id }}d' type="submit" name="input" value="Delete"
+                                        <button id='{{ $addr->id }}d' type="submit" name="type" value="delete"
                                             class="uk-align-right uk-button uk-button-link uk-text-danger  uk-text-bold">
                                             <i class="ri-close-line"></i> Delete
                                         </button>

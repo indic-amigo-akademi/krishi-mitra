@@ -105,15 +105,19 @@ class AddressController extends Controller
      */
     public function update_delete(Request $req)
     {
-        $address = $req->input('input');
-        $aid = $req->input('id');
-        Log::Info($address);
-        Log::info($aid);
-        if ($address == 'Edit') {
-            $addr = Address::all()->where('id', '=', $aid);
-            return view('profile.address.edit')->with('address', $addr);
-        } elseif ($address == 'Delete') {
-            Address::find($aid)->delete();
+        $type = $req->input('type');
+        Log::info($type);
+
+        $address = Address::find($req->id);
+        if (!$address) {
+            abort(404);
+        }
+
+        if ($type == 'edit') {
+            var_dump($address->id);
+            return view('profile.address.edit', compact('address'));
+        } elseif ($type == 'delete') {
+            $address->delete();
             return redirect()
                 ->back()
                 ->with(
@@ -125,6 +129,8 @@ class AddressController extends Controller
                         'subtitle' => 'Your address was deleted!',
                     ])
                 );
+        } else {
+            abort(405);
         }
     }
 
@@ -205,6 +211,11 @@ class AddressController extends Controller
         Log::info($req->id);
         $addr = Address::find($req->id);
         Log::info($addr);
+
+        if (!$addr) {
+            abort(404);
+        }
+
         $addr->name = $req->name;
         $addr->mobile = $req->mobile;
         $addr->pincode = $req->pincode;

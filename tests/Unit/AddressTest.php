@@ -44,7 +44,7 @@ class AddressTest extends TestCase
         $redirectUri = route('login');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->post(route('address.add'), [
+        $this->from($redirectUri)->post(route('address.add'), [
             'name' => $new_address->name,
             'mobile' => $new_address->mobile,
             'address1' => $new_address->address1,
@@ -70,7 +70,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'mobile' => $new_address->mobile,
             'address1' => $new_address->address1,
@@ -107,7 +107,7 @@ class AddressTest extends TestCase
         $redirectUri = route('home');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'mobile' => $new_address->mobile,
             'address1' => $new_address->address1,
@@ -145,7 +145,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'mobile' => $new_address->mobile,
             'address1' => $new_address->address1,
@@ -182,7 +182,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'mobile' => $new_address->mobile,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -210,7 +210,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => str_repeat('a', 256),
             'mobile' => $new_address->mobile,
             'address1' => $new_address->address1,
@@ -239,7 +239,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -267,7 +267,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'mobile' => (int)str_repeat('9', 11),
             'address1' => $new_address->address1,
@@ -296,7 +296,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'mobile' => (int)str_repeat('9', 8),
             'address1' => $new_address->address1,
@@ -326,7 +326,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address2' => $new_address->address2,
             'city' => $new_address->city,
@@ -354,7 +354,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => str_repeat('a', 256),
             'address2' => $new_address->address2,
@@ -383,7 +383,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'city' => $new_address->city,
@@ -412,7 +412,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => str_repeat('a', 256),
@@ -441,7 +441,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -470,7 +470,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -499,7 +499,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -528,7 +528,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -557,7 +557,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -585,7 +585,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -614,7 +614,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -642,7 +642,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -672,7 +672,7 @@ class AddressTest extends TestCase
         $new_address = Address::factory()->make();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -699,7 +699,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $new_address = Address::factory()->make();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.add'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.add'), [
             'name' => $new_address->name,
             'address1' => $new_address->address1,
             'address2' => $new_address->address2,
@@ -730,7 +730,7 @@ class AddressTest extends TestCase
         $city = $this->faker->city;
         $state = $this->faker->state;
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'mobile' => $updated_address->mobile,
@@ -772,7 +772,7 @@ class AddressTest extends TestCase
         $city = $this->faker->city;
         $state = $this->faker->state;
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'mobile' => $updated_address->mobile,
@@ -814,7 +814,7 @@ class AddressTest extends TestCase
         $city = $this->faker->city;
         $state = $this->faker->state;
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'mobile' => $updated_address->mobile,
             'address1' => $updated_address->address1,
@@ -842,7 +842,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $updated_address = $this->createAddressSetUp();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => str_repeat('a', 256),
             'mobile' => $updated_address->mobile,
@@ -872,7 +872,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $updated_address = $this->createAddressSetUp();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -901,7 +901,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $updated_address = $this->createAddressSetUp();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'mobile' => (int)str_repeat('9', 11),
@@ -931,7 +931,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $updated_address = $this->createAddressSetUp();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'mobile' => (int)str_repeat('9', 8),
@@ -962,7 +962,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address2' => $updated_address->address2,
@@ -991,7 +991,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => str_repeat('a', 256),
@@ -1021,7 +1021,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1051,7 +1051,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1081,7 +1081,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1111,7 +1111,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1141,7 +1141,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1171,7 +1171,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1201,7 +1201,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1230,7 +1230,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1260,7 +1260,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1289,7 +1289,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1320,7 +1320,7 @@ class AddressTest extends TestCase
         $updated_address = $this->createAddressSetUp();
 
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1348,7 +1348,7 @@ class AddressTest extends TestCase
         $redirectUri = route('address');
         $updated_address = $this->createAddressSetUp();
 
-        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit'), [
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
             'id' => $updated_address->id,
             'name' => $updated_address->name,
             'address1' => $updated_address->address1,
@@ -1367,19 +1367,99 @@ class AddressTest extends TestCase
         $this->assertEquals($errors->first('type'), 'The selected type is invalid.');
     }
 
-    // public function test_delete_address()
-    // {
-    //     $lastAddress = Address::all()->sortByDesc('updated_at')->first();
-    //     $id = $lastAddress->id;
+    /**
+     * Test if the user can edit the address with invalid id.
+     *
+     * @return void
+     */
+    public function testEditAddressPostRouteWithInvalidId()
+    {
+        $redirectUri = route('address');
+        $updated_address = $this->createAddressSetUp();
 
-    //     $param = ['input' => 'Delete', 'id' => $id];
-    //     $response = $this->actingAs($this->customer)->from(route('address'))->post(route('address.edit.delete'), $param);
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit'), [
+            'id' => 42,
+            'name' => $updated_address->name,
+            'address1' => $updated_address->address1,
+            'address2' => $updated_address->address2,
+            'city' => $updated_address->city,
+            'state' => $updated_address->state,
+            'pincode' => $updated_address->pincode,
+            'mobile' => (int)str_repeat('7', 10),
+            'landmark' => $updated_address->landmark,
+            'type' => $updated_address->type,
+            'redirect' => $redirectUri
+        ])
+            ->assertStatus(404);
+    }
 
-    //     $lastAddress = Address::all()->sortByDesc('updated_at')->first();
+    /**
+     * Test if the user can update and delete the address with invalid id.
+     *
+     * @return void
+     */
+    public function testUpdateDeleteAddressPostWithInvalidId()
+    {
+        $redirectUri = route('address');
+        // $updated_address = $this->createAddressSetUp();
 
-    //     $this->assertNotEquals($lastAddress->id, $id);
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit.delete'), [
+            'id' => 42,
+            'type' => 'delete'
+        ])
+            ->assertStatus(404);
+    }
 
-    //     $response->assertStatus(302);
-    //     $response->assertRedirect(route('address'));
-    // }
+    /**
+     * Test if the user can update and delete the address with invalid type.
+     *
+     * @return void
+     */
+    public function testUpdateDeleteAddressPostWithInvalidType()
+    {
+        $updated_address = $this->createAddressSetUp();
+
+        $this->from(route('address'))->actingAs($this->customer)->post(route('address.edit.delete'), [
+            'id' => $updated_address->id,
+            'type' => 'not valid'
+        ])
+            ->assertStatus(405);
+    }
+
+    /**
+     * Test if the user can update and delete the address with valid delete data.
+     *
+     * @return void
+     */
+    public function testUpdateDeleteAddressPostWithValidDeleteData()
+    {
+        $redirectUri = route('address');
+        $updated_address = $this->createAddressSetUp();
+
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit.delete'), [
+            'id' => $updated_address->id,
+            'type' => 'delete'
+        ])
+            ->assertStatus(302)->assertRedirect($redirectUri)
+            ->assertSessionHasNoErrors();
+    }
+
+    /**
+     * Test if the user can update and delete the address with valid delete data.
+     *
+     * @return void
+     */
+    public function testUpdateDeleteAddressPostWithValidUpdateData()
+    {
+        $redirectUri = route('address');
+        $updated_address = $this->createAddressSetUp();
+
+        $this->from($redirectUri)->actingAs($this->customer)->post(route('address.edit.delete'), [
+            'id' => $updated_address->id,
+            'type' => 'edit'
+        ])
+            ->assertStatus(200)
+            ->assertSessionHasNoErrors()
+            ->assertViewHas('address', $updated_address);
+    }
 }

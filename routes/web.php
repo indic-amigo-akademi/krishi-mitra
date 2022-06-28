@@ -127,7 +127,7 @@ Route::prefix('address')->name('address.')
         ); // test done
         Route::post('', 'update_delete')->name(
             'edit.delete'
-        );
+        ); // test done
         Route::post('edit', 'edit')->name(
             'edit'
         ); // test done

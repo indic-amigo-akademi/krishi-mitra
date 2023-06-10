@@ -6,6 +6,7 @@
         </include>
         <report>
             <html outputDirectory="docs/coverage" lowUpperBound="50" highLowerBound="90"/>
+            <clover outputFile="clover.xml" />
         </report>
     </coverage>
     <testsuites>

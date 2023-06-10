@@ -6,13 +6,13 @@ use App\Models\Address;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Log;
-
 use Tests\TestCase;
 
 class AddressTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
+    private $sysadmin, $admin, $seller, $customer;
+
     /**
      * A basic feature test example.
      *

@@ -5,16 +5,13 @@ namespace Tests\Unit;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class AddressUnitTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+    private $address, $customer;
+    
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,8 +21,6 @@ class AddressUnitTest extends TestCase
             'user_id' => $this->customer->id
         ]);
     }
-
-
 
     public function testFillableAttributes()
     {
@@ -42,7 +37,6 @@ class AddressUnitTest extends TestCase
             'type',
         ];
 
-        var_dump($this->address->getFillable());
         $this->assertEquals($this->address->getFillable(), $fillable);
     }
 

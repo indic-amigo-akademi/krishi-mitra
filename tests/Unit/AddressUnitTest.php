@@ -45,7 +45,7 @@ class AddressUnitTest extends TestCase
         $address = Address::factory()->make([
             'user_id' => $this->customer->id
         ]);
-        $this->assertEquals($address->user_id, $this->customer->id);
+        $this->assertEquals($address->user->id, $this->customer->id);
     }
 
     public function testGetAddressAttribute()

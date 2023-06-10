@@ -25,8 +25,6 @@ class ApprovalUnitTest extends TestCase
         $this->approval = Approval::factory()->make();
     }
 
-
-
     public function testFillableAttributes()
     {
         $fillable = ['user_id', 'type'];

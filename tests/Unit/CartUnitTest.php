@@ -2,15 +2,18 @@
 
 namespace Tests\Unit;
 
-use App\Cart;
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CartUnitTest extends TestCase
 {
+    use RefreshDatabase;
+
+    private $cart, $user, $product;
+
     /**
      * A basic unit test example.
      *
@@ -20,77 +23,49 @@ class CartUnitTest extends TestCase
     {
         parent::setUp();
 
-        $this->cart = new Cart();
-       $this->user=new User();
-       $this->product=new Product();
-        
+        $this->user = User::factory()->seller()->make();
+        $this->product = Product::factory()->make();
+        $this->cart = Cart::factory()->make(['user_id' => $this->user->id, 'product_id' => $this->product->id]);
     }
-
-
 
     public function testFillableAttributes()
     {
-        $fillable = [ 'user_id', 'product_id', 'qty', 'price', 'discount'];
+        $fillable = ['user_id', 'product_id', 'qty', 'price', 'discount'];
 
         $this->assertEquals($this->cart->getFillable(), $fillable);
     }
 
-    public function test_cart_belongsto_user()
+    public function testCartBelongstoUser()
     {
-        $cart=new Cart();
-        $this->assertEquals($cart->user_id, $this->user->id);
-    }
-    public function test_product_belongsto_user()
-    {
-        $cart=new Cart();
-        $this->assertEquals($cart->product_id, $this->product->id);
+        $this->assertEquals($this->cart->user_id, $this->user->id);
     }
 
-    public function testgettotalprice()
+    public function testProductBelongstoUser()
     {
-        $model = new Cart();
-        $model->price = 10;
-
-        $model->qty = 2;
-        $output = $model->getTotalPriceAttribute($model);
-        $expect = new Cart();
-        $expect->price = 10;
-
-        $expect->qty = 2;
-        $expect1 = $expect->price * $expect->qty;
-        $this->assertEquals($expect1, $output);
-    }
-    public function testgetDiscountedPriceAttribute()
-    {
-        $model = new Cart();
-        $model->price = 10; 
-        $model->discount = 0.3;
-        $output = $model->getDiscountedPriceAttribute($model);
-        $expect = new Cart();
-        $expect->price = 10;
-
-        $expect->discount = 0.3;
-        $expect1 = $expect->price * (1 - $expect->discount);
-        $this->assertEquals($expect1, $output);
+        $this->assertEquals($this->cart->product_id, $this->product->id);
     }
 
-    public function testgetTotalDiscountedPriceAttribute()
+    public function testGetTotalPrice()
     {
-        //$this->price * (1 - $this->discount) * $this->qty
-        $model = new Cart();
-        $model->price = 10;
-        $model->discount = 0.3;
-        $model->qty = 2;
-        $output = $model->getTotalDiscountedPriceAttribute($model);
-        $expect = new Cart();
-        $expect->price = 10;
-
-        $expect->discount = 0.3;
-        $expect->qty = 2;
-        $expect1 = $expect->price * (1 - $expect->discount) * $expect->qty;
-        $this->assertEquals($expect1, $output);
+        $this->assertEquals(
+            $this->cart->totalPrice,
+            $this->cart->price * $this->cart->qty
+        );
     }
-   
 
-   
+    public function testGetDiscountedPriceAttribute()
+    {
+        $this->assertEquals(
+            $this->cart->discountedPrice,
+            $this->cart->price * (1 - $this->cart->discount)
+        );
+    }
+
+    public function testGetTotalDiscountedPriceAttribute()
+    {
+        $this->assertEquals(
+            $this->cart->totalDiscountedPrice,
+            $this->cart->price * (1 - $this->cart->discount) * $this->cart->qty
+        );
+    }
 }

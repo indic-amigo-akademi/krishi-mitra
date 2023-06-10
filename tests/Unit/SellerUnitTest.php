@@ -2,39 +2,40 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
-
-use App\Seller;
+use App\Models\Product;
+use App\Models\Seller;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SellerUnitTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    private $user;
+    use RefreshDatabase;
+
+    private $user, $seller, $product;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user = new User();
-        $this->seller=new Seller();
+        $this->user = User::factory()->create();
+        $this->seller = Seller::factory()->create(['user_id' => $this->user->id]);
+        $this->product = Product::factory()->create(['seller_id' => $this->seller->id]);
     }
-    
-     public function testFillableAttributes()
+
+    public function testFillableAttributes()
     {
         $fillable = ['name', 'user_id', 'gstin', 'aadhaar', 'trade_name'];
-
         $this->assertEquals($this->seller->getFillable(), $fillable);
     }
-    public function test_seller_belongsto_user()
+    
+    public function testSellerBelongsToUser()
     {
-     
-        $seller=new Seller();
-        $this->assertEquals($seller->user_id, $this->user->id);
-       
+        $this->assertEquals($this->seller->user->id, $this->user->id);
+    }
+    
+    public function testSellerBelongsToProducts()
+    {
+        $this->assertEquals($this->seller->products[0]->id, $this->product->id);
     }
 }

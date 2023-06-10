@@ -8,12 +8,12 @@ use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
 use Tests\TestCase;
 
 class SellerAuthTest extends TestCase
 {
     use RefreshDatabase;
+    private $sysadmin, $admin, $seller, $customer, $seller_orders;
 
     public function setUp(): void
     {

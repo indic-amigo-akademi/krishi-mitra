@@ -8,12 +8,12 @@ use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
 use Tests\TestCase;
 
 class CartGetRoutesTest extends TestCase
 {
     use RefreshDatabase;
+    private $sysadmin, $admin, $seller, $customer;
 
     /**
      * A basic feature test example.

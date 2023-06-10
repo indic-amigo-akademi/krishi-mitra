@@ -9,13 +9,12 @@ use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
-
 use Tests\TestCase;
 
 class GetRoutesTest extends TestCase
 {
     use RefreshDatabase;
+    private $sysadmin, $admin, $seller, $customer;
 
     /**
      * Setup the test environment.

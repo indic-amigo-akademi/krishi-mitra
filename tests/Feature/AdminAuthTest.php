@@ -10,6 +10,7 @@ use Tests\TestCase;
 class AdminAuthTest extends TestCase
 {
     use RefreshDatabase;
+    private $sysadmin, $admin, $seller, $customer;
 
     /**
      * Setup for the Admin Auth Test

@@ -114,7 +114,7 @@ class AddressController extends Controller
         }
 
         if ($type == 'edit') {
-            var_dump($address->id);
+            // var_dump($address->id);
             return view('profile.address.edit', compact('address'));
         } elseif ($type == 'delete') {
             $address->delete();

@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -12,20 +13,18 @@ class CartUnitTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $cart, $user, $product;
+    private $cart, $user, $sellerUser, $seller, $product;
 
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user = User::factory()->seller()->make();
-        $this->product = Product::factory()->make();
-        $this->cart = Cart::factory()->make(['user_id' => $this->user->id, 'product_id' => $this->product->id]);
+        $this->user = User::factory()->create();
+        $this->sellerUser = User::factory()->seller()->create();
+        $this->seller = Seller::factory()->create(['user_id' => $this->sellerUser->id]);
+        $this->product = Product::factory()->create(['seller_id' => $this->seller->id]);
+        $this->cart = Cart::factory()->create(['user_id' => $this->user->id, 'product_id' => $this->product->id]);
     }
 
     public function testFillableAttributes()
@@ -37,12 +36,12 @@ class CartUnitTest extends TestCase
 
     public function testCartBelongstoUser()
     {
-        $this->assertEquals($this->cart->user_id, $this->user->id);
+        $this->assertEquals($this->cart->user->id, $this->user->id);
     }
 
     public function testProductBelongstoUser()
     {
-        $this->assertEquals($this->cart->product_id, $this->product->id);
+        $this->assertEquals($this->cart->product->id, $this->product->id);
     }
 
     public function testGetTotalPrice()

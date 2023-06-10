@@ -12,11 +12,7 @@ class ApprovalUnitTest extends TestCase
     use RefreshDatabase;
     private $user, $approval;
 
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+   
     protected function setUp(): void
     {
         parent::setUp();

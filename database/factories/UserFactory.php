@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->phoneNumber,
             'password' => Hash::make($this->password_str),
-            'role' => 'user',
+            'role' => $this->faker->randomElement(['user', 'admin', 'seller', 'sysadmin']),
             'active' => true,
             'remember_token' => Str::random(10),
         ];

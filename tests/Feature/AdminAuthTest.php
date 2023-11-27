@@ -2,15 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
+define('ROUTE_EXPLORE', '/explore');
+
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class AdminAuthTest extends TestCase
 {
-    use RefreshDatabase;
-    private $sysadmin, $admin, $seller, $customer;
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
 
     /**
      * Setup for the Admin Auth Test
@@ -20,10 +22,7 @@ class AdminAuthTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->sysadmin = User::factory()->sysadmin()->create();
-        $this->admin = User::factory()->admin()->create();
-        $this->seller = User::factory()->seller()->create();
-        $this->customer = User::factory()->create();
+        $this->setUpUsers();
     }
 
     /**
@@ -39,7 +38,7 @@ class AdminAuthTest extends TestCase
         $url,
         $status = [],
         $redirectUri = ["guest" => '/login'],
-        $fromUri = '/explore'
+        $fromUri = ROUTE_EXPLORE
     ) {
         $default_status = ["guest" => 302, "customer" => 403, "seller" => 403, "admin" => 200, "sysadmin" => 200];
         foreach ($status as $user_role => $status_code) {
@@ -48,32 +47,37 @@ class AdminAuthTest extends TestCase
         $status = $default_status;
 
         $response = $this->from($fromUri)->get($url);
-        if ($response->status() == 302)
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["guest"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->customer)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[0])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["customer"]);
-        else
+        } else {
             $response->assertStatus($status["customer"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->seller)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[1])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["seller"]);
-        else
+        } else {
             $response->assertStatus($status["seller"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->admin)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[2])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["admin"]);
-        else
+        } else {
             $response->assertStatus($status["admin"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->sysadmin)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[3])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["sysadmin"]);
-        else
+        } else {
             $response->assertStatus($status["sysadmin"]);
+        }
     }
 
     /**
@@ -99,9 +103,9 @@ class AdminAuthTest extends TestCase
             "seller" => 302,
         ];
         $redirectUri = [
-            "seller" => '/explore',
-            "admin" => '/explore',
-            "sysadmin" => '/explore',
+            "seller" => ROUTE_EXPLORE,
+            "admin" => ROUTE_EXPLORE,
+            "sysadmin" => ROUTE_EXPLORE,
             "guest" => '/login'
         ];
         $this->testAdminSingleGetRoute(route("admin.register.view"), $status, $redirectUri);

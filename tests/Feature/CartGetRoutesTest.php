@@ -28,18 +28,7 @@ class CartGetRoutesTest extends TestCase
         $this->setUpUsers();
         $this->setUpAddresses();
         $this->setUpProducts();
-
-        // Seller related models
-        // Seller::factory()->create(['user_id' => $this->seller->id]);
-        // $seller_products = Product::factory()->count(3)->create([
-        //     'seller_id' => $this->seller->seller->id,
-        // ]);
-        // $customer_cart = $seller_products->map(function ($product) {
-        //     return Cart::factory()->create([
-        //         'user_id' => $this->customer->id,
-        //         'product_id' => $product->id
-        //     ]);
-        // });
+        $this->setUpCartProducts();
     }
 
     /**

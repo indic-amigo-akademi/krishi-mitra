@@ -2,6 +2,10 @@
 
 namespace Tests\Traits;
 
+use App\Models\Address;
+use App\Models\Cart;
+use App\Models\Product;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
@@ -21,5 +25,41 @@ trait SetupTest
                 )
             )
             ->create();
+
+        // Seller related model
+        Seller::factory()->create(['user_id' => $this->users[1]->id]);
+    }
+
+    protected function setUpAddresses()
+    {
+        // Create test addresses
+        $this->addresses = Address::factory()->count(4)
+            ->state(new Sequence(
+                ...$this->users->map(function ($user) {
+                    return ['user_id' => $user->id];
+                })
+            ))->create();
+    }
+
+    protected function setUpProducts()
+    {
+        // Create test products
+        $this->products = Product::factory()->count(5)
+            ->state(
+                new Sequence(
+                    ['seller_id' => $this->users[1]->seller->id],
+                )
+            )->create();
+        $this->cart_products = Cart::factory()->count(5)
+            ->state(
+                new Sequence(
+                    ...$this->products->map(function ($product) {
+                        return [
+                            'user_id' => $this->users[0]->id,
+                            'product_id' => $product->id
+                        ];
+                    })
+                )
+            )->create();
     }
 }

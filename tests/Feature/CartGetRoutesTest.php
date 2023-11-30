@@ -2,11 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Address;
-use App\Models\Cart;
-use App\Models\Product;
-use App\Models\Seller;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

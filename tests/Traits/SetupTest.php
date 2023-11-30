@@ -4,6 +4,7 @@ namespace Tests\Traits;
 
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
@@ -50,6 +51,10 @@ trait SetupTest
                     ['seller_id' => $this->users[1]->seller->id],
                 )
             )->create();
+    }
+
+    protected function setUpCartProducts()
+    {
         $this->cart_products = Cart::factory()->count(5)
             ->state(
                 new Sequence(
@@ -61,5 +66,20 @@ trait SetupTest
                     })
                 )
             )->create();
+    }
+
+    protected function setUpOrderProducts()
+    {
+        $this->order_products = Order::factory()->count(5)
+            ->state(new Sequence(
+                ...$this->products->map(function ($product) {
+                    return [
+                        'user_id' => $this->users[0]->id,
+                        'product_id' => $product->id,
+                        'address_id' => $this->users[0]->addresses->random()->id
+                    ];
+                })
+            ))
+            ->create();
     }
 }

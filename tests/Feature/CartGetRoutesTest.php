@@ -26,7 +26,6 @@ class CartGetRoutesTest extends TestCase
     {
         parent::setUp();
         $this->setUpUsers();
-        $this->setUpAddresses();
         $this->setUpProducts();
         $this->setUpCartProducts();
     }

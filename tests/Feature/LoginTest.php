@@ -88,7 +88,7 @@ class LoginTest extends TestCase
         //attempt login
         $response = $this->json('POST', route('user.login.validate'), [
             'email' => $this->users[0]->email,
-            'password' => User::factory()->password_str(),
+            'password' => User::factory()->passwordStr(),
         ]); // if with valid email and password
 
         //Assert it was successful
@@ -111,7 +111,7 @@ class LoginTest extends TestCase
         //attempt login
         $response = $this->json('POST', route('user.login.validate'), [
             'email' => $this->users[0]->username,
-            'password' => User::factory()->password_str(),
+            'password' => User::factory()->passwordStr(),
         ]); // if with valid username and password
 
         //Assert it was successful
@@ -134,7 +134,7 @@ class LoginTest extends TestCase
         //attempt login
         $response = $this->json('POST', route('user.login.validate'), [
             'email' => User::factory()->make()->email,
-            'password' => User::factory()->password_str(),
+            'password' => User::factory()->passwordStr(),
         ]); // if with invalid email
 
         //Assert it was successful 

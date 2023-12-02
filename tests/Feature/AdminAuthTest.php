@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-define('ROUTE_EXPLORE', '/explore');
-
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

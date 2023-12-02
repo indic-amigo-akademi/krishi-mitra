@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Traits;
+define('ROUTE_EXPLORE', '/explore');
 
 use App\Models\Address;
 use App\Models\Cart;
@@ -55,7 +56,7 @@ trait SetupTest
 
     protected function setUpCartProducts()
     {
-        $this->cart_products = Cart::factory()->count(5)
+        $this->cartProducts = Cart::factory()->count(5)
             ->state(
                 new Sequence(
                     ...$this->products->map(function ($product) {
@@ -70,7 +71,7 @@ trait SetupTest
 
     protected function setUpOrderProducts()
     {
-        $this->order_products = Order::factory()->count(5)
+        $this->orderProducts = Order::factory()->count(5)
             ->state(new Sequence(
                 ...$this->products->map(function ($product) {
                     return [

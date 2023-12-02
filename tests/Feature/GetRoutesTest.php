@@ -25,30 +25,6 @@ class GetRoutesTest extends TestCase
         $this->setUpCartProducts();
         $this->setUpAddresses();
         $this->setUpOrderProducts();
-
-        // // Customer related models
-        // Address::factory()->create([
-        //     'user_id' => $this->customer->id,
-        // ]);
-
-        // // Seller related models
-        // Seller::factory()->create(['user_id' => $this->seller->id]);
-        // $seller_products = Product::factory()->count(3)->create([
-        //     'seller_id' => $this->seller->seller->id,
-        // ]);
-        // $seller_products->map(function ($product) {
-        //     return Cart::factory()->create([
-        //         'user_id' => $this->customer->id,
-        //         'product_id' => $product->id,
-        //     ]);
-        // });
-        // $seller_products->map(function ($product) {
-        //     return Order::factory()->create([
-        //         'user_id' => $this->customer->id,
-        //         'product_id' => $product->id,
-        //         'address_id' => $this->customer->addresses->first()->id,
-        //     ]);
-        // });
     }
 
     /**
@@ -125,14 +101,14 @@ class GetRoutesTest extends TestCase
     //         "customer" => 200,
     //         "seller" => 200,
     //     ];
-    // $this->testSellerSingleGetRoute(route("search.item"));
-    // $this->testSellerSingleGetRoute(route("OrderProcessed"), $status, [
-    //     "guest" => "/login",
-    //     "customer" => '/orders',
-    //     "seller" => '/orders',
-    //     "admin" => '/orders',
-    //     "sysadmin" => '/orders'
-    // ]);
+    //     $this->testSellerSingleGetRoute(route("search.item"));
+    //     $this->testSellerSingleGetRoute(route("OrderProcessed"), $status, [
+    //         "guest" => "/login",
+    //         "customer" => '/orders',
+    //         "seller" => '/orders',
+    //         "admin" => '/orders',
+    //         "sysadmin" => '/orders'
+    //     ]);
     // }
 
     /**

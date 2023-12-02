@@ -3,12 +3,26 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class RegisterTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
+
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setUpUsers();
+    }
 
     /**
      * Test that the user can register.
@@ -177,15 +191,14 @@ class RegisterTest extends TestCase
      */
     public function testRegisterWithNonUniqueEmail()
     {
-        $user1 = User::factory()->create();
-        $user2 = User::factory()->make();
+        $user = User::factory()->make();
         $password_str = User::factory()->password_string();
 
         $this->json('POST', route('user.register.validate'), [
-            'name' => $user2->name,
-            'username' => $user2->username,
-            'email' => $user1->email,
-            'phone' => $user2->phone,
+            'name' => $user->name,
+            'username' => $user->username,
+            'email' => $this->users[0]->email,
+            'phone' => $user->phone,
             'password' => $password_str,
             'password_confirmation' => $password_str,
         ])
@@ -379,7 +392,9 @@ class RegisterTest extends TestCase
             ->assertJson([
                 'success' => false,
                 'errors' => [
-                    'password' => ['The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'],
+                    'password' => [
+                        'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'
+                    ],
                 ],
             ]);
     }

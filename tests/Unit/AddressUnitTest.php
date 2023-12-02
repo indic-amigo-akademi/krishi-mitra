@@ -4,22 +4,22 @@ namespace Tests\Unit;
 
 use App\Models\Address;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class AddressUnitTest extends TestCase
 {
-    use RefreshDatabase;
-    private $address, $customer;
-    
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
+    private Collection $addresses;
+
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->customer = User::factory()->create();
-        $this->address = Address::factory()->create([
-            'user_id' => $this->customer->id
-        ]);
+        $this->setUpUsers();
+        $this->setUpAddresses();
     }
 
     public function testFillableAttributes()
@@ -37,15 +37,15 @@ class AddressUnitTest extends TestCase
             'type',
         ];
 
-        $this->assertEquals($this->address->getFillable(), $fillable);
+        $this->assertEquals($this->addresses[0]->getFillable(), $fillable);
     }
 
     public function testAddressBelongstoUser()
     {
         $address = Address::factory()->make([
-            'user_id' => $this->customer->id
+            'user_id' => $this->users[0]->id
         ]);
-        $this->assertEquals($address->user->id, $this->customer->id);
+        $this->assertEquals($address->user->id, $this->users[0]->id);
     }
 
     public function testGetAddressAttribute()

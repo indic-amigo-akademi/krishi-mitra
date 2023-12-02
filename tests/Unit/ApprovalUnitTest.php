@@ -10,9 +10,10 @@ use Tests\TestCase;
 class ApprovalUnitTest extends TestCase
 {
     use RefreshDatabase;
-    private $user, $approval;
+    private $user;
+    private $approval;
 
-   
+
     protected function setUp(): void
     {
         parent::setUp();

@@ -3,17 +3,30 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class LoginTest extends TestCase
 {
-    use RefreshDatabase;
-    private $sysadmin, $admin, $seller, $customer;
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
+
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setUpUsers();
+    }
 
     /**
      * Test login without email or password.
-     * 
+     *
      * @return void
      */
     public function testLoginWithoutEmailAndPassword()
@@ -72,16 +85,13 @@ class LoginTest extends TestCase
      */
     public function testLoginWithValidEmailAndPassword()
     {
-        //Create user
-        $user = User::factory()->create();
-
         //attempt login
         $response = $this->json('POST', route('user.login.validate'), [
-            'email' => $user->email,
-            'password' => User::factory()->password_str,
+            'email' => $this->users[0]->email,
+            'password' => User::factory()->password_str(),
         ]); // if with valid email and password
 
-        //Assert it was successful 
+        //Assert it was successful
         $response->assertStatus(200);
 
         // Assert that the response with json
@@ -98,13 +108,10 @@ class LoginTest extends TestCase
      */
     public function testLoginWithValidUsernameAndPassword()
     {
-        //Create user
-        $user = User::factory()->create();
-
         //attempt login
         $response = $this->json('POST', route('user.login.validate'), [
-            'email' => $user->username,
-            'password' => User::factory()->password_str,
+            'email' => $this->users[0]->username,
+            'password' => User::factory()->password_str(),
         ]); // if with valid username and password
 
         //Assert it was successful
@@ -124,13 +131,10 @@ class LoginTest extends TestCase
      */
     public function testLoginWithInvalidEmail()
     {
-        //Create user
-        $user = User::factory()->create();
-
         //attempt login
         $response = $this->json('POST', route('user.login.validate'), [
             'email' => User::factory()->make()->email,
-            'password' => User::factory()->password_str,
+            'password' => User::factory()->password_str(),
         ]); // if with invalid email
 
         //Assert it was successful 

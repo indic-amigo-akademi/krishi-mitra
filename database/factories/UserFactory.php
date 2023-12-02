@@ -78,4 +78,9 @@ class UserFactory extends Factory
     {
         return $this->faker->regexify('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/');
     }
+
+    public function password_str()
+    {
+        return $this->password_str;
+    }
 }

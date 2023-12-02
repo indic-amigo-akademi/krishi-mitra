@@ -6,65 +6,64 @@ use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class CartUnitTest extends TestCase
 {
-    use RefreshDatabase;
-
-    private $cart, $user, $sellerUser, $seller, $product;
-
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
+    private Collection $products;
+    private Collection $cartProducts;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->user = User::factory()->create();
-        $this->sellerUser = User::factory()->seller()->create();
-        $this->seller = Seller::factory()->create(['user_id' => $this->sellerUser->id]);
-        $this->product = Product::factory()->create(['seller_id' => $this->seller->id]);
-        $this->cart = Cart::factory()->create(['user_id' => $this->user->id, 'product_id' => $this->product->id]);
+        $this->setUpUsers();
+        $this->setUpProducts();
+        $this->setUpCartProducts();
     }
 
     public function testFillableAttributes()
     {
         $fillable = ['user_id', 'product_id', 'qty', 'price', 'discount'];
 
-        $this->assertEquals($this->cart->getFillable(), $fillable);
+        $this->assertEquals($this->cartProducts[0]->getFillable(), $fillable);
     }
 
     public function testCartBelongstoUser()
     {
-        $this->assertEquals($this->cart->user->id, $this->user->id);
+        $this->assertEquals($this->cartProducts[0]->user->id, $this->users[0]->id);
     }
 
     public function testProductBelongstoUser()
     {
-        $this->assertEquals($this->cart->product->id, $this->product->id);
+        $this->assertEquals($this->cartProducts[0]->product->id, $this->products[0]->id);
     }
 
     public function testGetTotalPrice()
     {
         $this->assertEquals(
-            $this->cart->totalPrice,
-            $this->cart->price * $this->cart->qty
+            $this->cartProducts[0]->totalPrice,
+            $this->cartProducts[0]->price * $this->cartProducts[0]->qty
         );
     }
 
     public function testGetDiscountedPriceAttribute()
     {
         $this->assertEquals(
-            $this->cart->discountedPrice,
-            $this->cart->price * (1 - $this->cart->discount)
+            $this->cartProducts[0]->discountedPrice,
+            $this->cartProducts[0]->price * (1 - $this->cartProducts[0]->discount)
         );
     }
 
     public function testGetTotalDiscountedPriceAttribute()
     {
         $this->assertEquals(
-            $this->cart->totalDiscountedPrice,
-            $this->cart->price * (1 - $this->cart->discount) * $this->cart->qty
+            $this->cartProducts[0]->totalDiscountedPrice,
+            $this->cartProducts[0]->price * (1 - $this->cartProducts[0]->discount) * $this->cartProducts[0]->qty
         );
     }
 }

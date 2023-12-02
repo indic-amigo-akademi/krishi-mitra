@@ -7,14 +7,16 @@ use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class ProductGetRoutesTest extends TestCase
 {
-    use RefreshDatabase;
-    private $sysadmin, $admin, $seller, $customer;
-    
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
+
     /**
      * A basic feature test example.
      *
@@ -23,27 +25,10 @@ class ProductGetRoutesTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->sysadmin = User::factory()->sysadmin()->create();
-        $this->admin = User::factory()->admin()->create();
-        $this->seller = User::factory()->seller()->create();
-        $this->customer = User::factory()->create();
-
-        // Customer related models
-        Address::factory()->create([
-            'user_id' => $this->customer->id,
-        ]);
-
-        // Seller related models
-        Seller::factory()->create(['user_id' => $this->seller->id]);
-        $seller_products = Product::factory()->count(3)->create([
-            'seller_id' => $this->seller->seller->id,
-        ]);
-        $customer_cart = $seller_products->map(function ($product) {
-            return Cart::factory()->create([
-                'user_id' => $this->customer->id,
-                'product_id' => $product->id,
-            ]);
-        });
+        $this->setUpUsers();
+        $this->setUpAddresses();
+        $this->setUpProducts();
+        $this->setUpCartProducts();
     }
 
     /**
@@ -78,34 +63,39 @@ class ProductGetRoutesTest extends TestCase
         $redirectUri = $default_redirect;
 
         $response = $this->get($url);
-        if ($response->status() == 302)
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["guest"]);
-        else
+        } else {
             $response->assertStatus($status["guest"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->customer)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[0])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["customer"]);
-        else
+        } else {
             $response->assertStatus($status["customer"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->seller)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[1])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["seller"]);
-        else
+        } else {
             $response->assertStatus($status["seller"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->admin)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[2])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["admin"]);
-        else
+        } else {
             $response->assertStatus($status["admin"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->sysadmin)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[3])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["sysadmin"]);
-        else
+        } else {
             $response->assertStatus($status["sysadmin"]);
+        }
     }
 
     /**
@@ -115,7 +105,7 @@ class ProductGetRoutesTest extends TestCase
      */
     public function testProductActivateRoute()
     {
-        $this->testSingleGetRoute(route("product.activate", $this->seller->seller->products->first()->id));
+        $this->testSingleGetRoute(route("product.activate", $this->users[1]->seller->products->first()->id));
     }
 
     /**
@@ -125,6 +115,6 @@ class ProductGetRoutesTest extends TestCase
      */
     public function testProductDeactivateRoute()
     {
-        $this->testSingleGetRoute(route("product.deactivate", $this->seller->seller->products->get(2)->id));
+        $this->testSingleGetRoute(route("product.deactivate", $this->users[1]->seller->products->get(2)->id));
     }
 }

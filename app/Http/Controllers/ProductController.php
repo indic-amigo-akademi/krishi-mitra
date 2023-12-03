@@ -71,7 +71,7 @@ class ProductController extends Controller
             'slug' => Str::slug($req['name'], '-'),
             'discount' => $req['discount'],
         ]);
-        log::info('This method store is called');
+        Log::info('This method store is called');
 
         if ($req->hasFile('cover')) {
             $destinationPath = public_path('uploads/products');
@@ -86,7 +86,7 @@ class ProductController extends Controller
                 );
                 $imageName = $filename . time() . '.' . $extension;
                 if (!$image->move($destinationPath, $imageName)) {
-                    log::info('ERROR SAVING IMAGE');
+                    Log::info('ERROR SAVING IMAGE');
                 }
                 $img = FileImage::create([
                     'name' => $imageName,
@@ -158,7 +158,7 @@ class ProductController extends Controller
         $prod->price = $req->price;
         $prod->discount = $req->discount;
         $prod->save();
-        log::info('Type of user is' . Auth::user()->role);
+        Log::info('Type of user is' . Auth::user()->role);
         return redirect(route(Auth::user()->role . '.product.browse'));
     }
 
@@ -178,7 +178,7 @@ class ProductController extends Controller
             $sid = Auth::user()->seller->id;
             $psid = Product::find($id)->seller_id;
             if ($sid != $psid) {
-                log::info('You cannot delete someone else product');
+                Log::info('You cannot delete someone else product');
                 return redirect('/');
             }
         }

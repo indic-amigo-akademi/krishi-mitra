@@ -3,13 +3,26 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class RegisterTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
+
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setUpUsers();
+    }
 
     /**
      * Test that the user can register.
@@ -19,15 +32,15 @@ class RegisterTest extends TestCase
     public function testRegisterWithValidData()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'username' => $user->username,
             'email' => $user->email,
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -44,14 +57,14 @@ class RegisterTest extends TestCase
     public function testRegisterWithoutName()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'username' => $user->username,
             'email' => $user->email,
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -70,7 +83,7 @@ class RegisterTest extends TestCase
     public function testRegisterWithNameGreaterThan255()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
         $user->name = str_repeat('c', 256);
 
         $this->json('POST', route('user.register.validate'), [
@@ -78,8 +91,8 @@ class RegisterTest extends TestCase
             'username' => $user->username,
             'email' => $user->email,
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -98,14 +111,14 @@ class RegisterTest extends TestCase
     public function testRegisterWithoutEmail()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'username' => $user->username,
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -124,15 +137,15 @@ class RegisterTest extends TestCase
     public function testRegisterWithInvalidEmail()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'username' => $user->username,
             'email' => 'invalid-mail',
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -151,7 +164,7 @@ class RegisterTest extends TestCase
     public function testRegisterWithEmailGreaterThan255()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
         $user->email = str_repeat('a', 250) . "@mail.co";
 
         $this->json('POST', route('user.register.validate'), [
@@ -159,8 +172,8 @@ class RegisterTest extends TestCase
             'username' => $user->username,
             'email' => $user->email,
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -178,17 +191,16 @@ class RegisterTest extends TestCase
      */
     public function testRegisterWithNonUniqueEmail()
     {
-        $user1 = User::factory()->create();
-        $user2 = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $user = User::factory()->make();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
-            'name' => $user2->name,
-            'username' => $user2->username,
-            'email' => $user1->email,
-            'phone' => $user2->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'name' => $user->name,
+            'username' => $user->username,
+            'email' => $this->users[0]->email,
+            'phone' => $user->phone,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -207,14 +219,14 @@ class RegisterTest extends TestCase
     public function testRegisterWithoutUsername()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -234,15 +246,15 @@ class RegisterTest extends TestCase
     {
         $user = User::factory()->make();
         $user->username = str_repeat('a', 256);
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'username' => $user->username,
             'email' => $user->email,
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -262,15 +274,15 @@ class RegisterTest extends TestCase
     {
         $user1 = User::factory()->create();
         $user2 = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user2->name,
             'username' => $user1->username,
             'email' => $user2->email,
             'phone' => $user2->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -313,14 +325,14 @@ class RegisterTest extends TestCase
     public function testRegisterWithoutPasswordConfirmation()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'username' => $user->username,
             'email' => $user->email,
             'phone' => $user->phone,
-            'password' => $password_str,
+            'password' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -339,15 +351,15 @@ class RegisterTest extends TestCase
     public function testRegisterWithPasswordLessThan8()
     {
         $user = User::factory()->make();
-        $password_str = '1234567';
+        $passwordStr = '1234567';
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'username' => $user->username,
             'email' => $user->email,
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -366,21 +378,23 @@ class RegisterTest extends TestCase
     public function testRegisterWithPasswordNotMatchRegex()
     {
         $user = User::factory()->make();
-        $password_str = 'Abcd1234';
+        $passwordStr = 'Abcd1234';
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'username' => $user->username,
             'email' => $user->email,
             'phone' => $user->phone,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
                 'success' => false,
                 'errors' => [
-                    'password' => ['The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'],
+                    'password' => [
+                        'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'
+                    ],
                 ],
             ]);
     }
@@ -393,14 +407,14 @@ class RegisterTest extends TestCase
     public function testRegisterWithoutPhone()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'username' => $user->username,
             'email' => $user->email,
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -419,15 +433,15 @@ class RegisterTest extends TestCase
     public function testRegisterWithPhoneLessThan10()
     {
         $user = User::factory()->make();
-        $password_str = User::factory()->password_string();
+        $passwordStr = User::factory()->passwordString();
 
         $this->json('POST', route('user.register.validate'), [
             'name' => $user->name,
             'username' => $user->username,
             'email' => $user->email,
             'phone' => '123456789',
-            'password' => $password_str,
-            'password_confirmation' => $password_str,
+            'password' => $passwordStr,
+            'password_confirmation' => $passwordStr,
         ])
             ->assertStatus(200)
             ->assertJson([
@@ -437,5 +451,4 @@ class RegisterTest extends TestCase
                 ],
             ]);
     }
-
 }

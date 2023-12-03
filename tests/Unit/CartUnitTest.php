@@ -2,95 +2,68 @@
 
 namespace Tests\Unit;
 
-use App\Cart;
+use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Seller;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class CartUnitTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
+    private Collection $products;
+    private Collection $cartProducts;
+
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->cart = new Cart();
-       $this->user=new User();
-       $this->product=new Product();
-        
+        $this->setUpUsers();
+        $this->setUpProducts();
+        $this->setUpCartProducts();
     }
-
-
 
     public function testFillableAttributes()
     {
-        $fillable = [ 'user_id', 'product_id', 'qty', 'price', 'discount'];
+        $fillable = ['user_id', 'product_id', 'qty', 'price', 'discount'];
 
-        $this->assertEquals($this->cart->getFillable(), $fillable);
+        $this->assertEquals($this->cartProducts[0]->getFillable(), $fillable);
     }
 
-    public function test_cart_belongsto_user()
+    public function testCartBelongstoUser()
     {
-        $cart=new Cart();
-        $this->assertEquals($cart->user_id, $this->user->id);
+        $this->assertEquals($this->cartProducts[0]->user->id, $this->users[0]->id);
     }
-    public function test_product_belongsto_user()
+
+    public function testProductBelongstoUser()
     {
-        $cart=new Cart();
-        $this->assertEquals($cart->product_id, $this->product->id);
+        $this->assertEquals($this->cartProducts[0]->product->id, $this->products[0]->id);
     }
 
-    public function testgettotalprice()
+    public function testGetTotalPrice()
     {
-        $model = new Cart();
-        $model->price = 10;
-
-        $model->qty = 2;
-        $output = $model->getTotalPriceAttribute($model);
-        $expect = new Cart();
-        $expect->price = 10;
-
-        $expect->qty = 2;
-        $expect1 = $expect->price * $expect->qty;
-        $this->assertEquals($expect1, $output);
+        $this->assertEquals(
+            $this->cartProducts[0]->totalPrice,
+            $this->cartProducts[0]->price * $this->cartProducts[0]->qty
+        );
     }
-    public function testgetDiscountedPriceAttribute()
+
+    public function testGetDiscountedPriceAttribute()
     {
-        $model = new Cart();
-        $model->price = 10; 
-        $model->discount = 0.3;
-        $output = $model->getDiscountedPriceAttribute($model);
-        $expect = new Cart();
-        $expect->price = 10;
-
-        $expect->discount = 0.3;
-        $expect1 = $expect->price * (1 - $expect->discount);
-        $this->assertEquals($expect1, $output);
+        $this->assertEquals(
+            $this->cartProducts[0]->discountedPrice,
+            $this->cartProducts[0]->price * (1 - $this->cartProducts[0]->discount)
+        );
     }
 
-    public function testgetTotalDiscountedPriceAttribute()
+    public function testGetTotalDiscountedPriceAttribute()
     {
-        //$this->price * (1 - $this->discount) * $this->qty
-        $model = new Cart();
-        $model->price = 10;
-        $model->discount = 0.3;
-        $model->qty = 2;
-        $output = $model->getTotalDiscountedPriceAttribute($model);
-        $expect = new Cart();
-        $expect->price = 10;
-
-        $expect->discount = 0.3;
-        $expect->qty = 2;
-        $expect1 = $expect->price * (1 - $expect->discount) * $expect->qty;
-        $this->assertEquals($expect1, $output);
+        $this->assertEquals(
+            $this->cartProducts[0]->totalDiscountedPrice,
+            $this->cartProducts[0]->price * (1 - $this->cartProducts[0]->discount) * $this->cartProducts[0]->qty
+        );
     }
-   
-
-   
 }

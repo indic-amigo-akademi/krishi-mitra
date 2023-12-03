@@ -2,14 +2,10 @@
 
 namespace Tests\Unit;
 use App\Rules\ValidPassword;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 class PasswordValidationTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+   
     public function test_password_should_not_be_less_than_8_chars()
     {
         $result = (new ValidPassword())->passes('', 'Hm14567');

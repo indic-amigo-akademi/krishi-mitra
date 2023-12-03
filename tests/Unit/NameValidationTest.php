@@ -3,15 +3,11 @@
 namespace Tests\Unit;
 
 use App\Rules\ValidName;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class NameValidationTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+   
     public function test_name_should_not_contain_anysymbol()
     {
         $result = (new ValidName())->passes('','$$ $$');

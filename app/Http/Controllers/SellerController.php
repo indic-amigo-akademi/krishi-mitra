@@ -88,7 +88,7 @@ class SellerController extends Controller
         ]);
         Approval::create([
             'user_id' => Auth::id(),
-            'type' => 'seller_approval',
+            'type' => 'seller_new',
         ]);
 
         return redirect()

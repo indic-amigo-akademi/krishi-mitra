@@ -2,26 +2,24 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
-use App\FileImage;
+use App\Models\FileImage;
+use Tests\TestCase;
+
 class FileImageUnitTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+    private $fileimage;
+
+
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->fileimage = new FileImage();
+        $this->fileimage = FileImage::factory()->make();
     }
+    
     public function testFillableAttributes()
     {
         $fillable = ['name', 'type', 'ref_id'];
 
         $this->assertEquals($this->fileimage->getFillable(), $fillable);
     }
-
 }

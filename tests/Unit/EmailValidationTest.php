@@ -2,15 +2,11 @@
 
 namespace Tests\Unit;
 use App\Rules\ValidEmail;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class EmailValidationTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+   
     public function test_email_should_contain_attheratesymbol()
     {
         $result = (new ValidEmail())->passes('','srija.com');

@@ -35,11 +35,11 @@ Route::prefix('admin')->name('admin.')
         Route::get('product/browse', 'product_browse')->name('product.browse'); // test done
         Route::get('browse', 'admin_browse_view')->name('browse.view'); // test done
 
-        Route::post('register', 'register')->name('register');
         Route::post('approval', 'approval')->name('approval');
         Route::post('browse', 'admin_browse')->name('browse');
     });
-
+    
+Route::post('admin/register', 'AdminController@register')->name('admin.register');
 Route::get('admin/register', 'AdminController@register_view')->name('admin.register.view'); // test done
 
 
@@ -58,9 +58,9 @@ Route::prefix('seller')->name('seller.')
         Route::get('products', 'product_browse')->name('product.browse'); // test done
         Route::get('product/{slug}', 'product_show')->name('product.view'); // test done
 
-        Route::post('register', 'create_seller')->name('register');
     });
-
+    
+Route::post('seller/register', 'SellerController@create_seller')->name('seller.register');
 Route::get('seller/register', 'SellerController@seller_form')->name('seller.register.view'); // test done
 
 
@@ -115,22 +115,28 @@ Route::post('/orders/{id}', 'OrderController@cancel_delete')->name(
 );
 
 // Address Routes
-Route::get('/address', 'AddressController@address_view')->name('address'); // test done
-Route::post('/address', 'AddressController@address_edit_delete')->name(
-    'address.edit.delete'
-);
-Route::get('/address/add', 'AddressController@add_address_view')->name(
-    'address.add.view'
-); // test done
-Route::post('/address/add', 'AddressController@add_address')->name(
-    'address.add'
-);
+
+Route::prefix('address')->name('address.')
+    ->controller('AddressController')->group(function () {
+        Route::get('add', 'add')->name(
+            'add.view'
+        ); // test done
+        
+        Route::post('add', 'create')->name(
+            'add'
+        ); // test done
+        Route::post('', 'update_delete')->name(
+            'edit.delete'
+        ); // test done
+        Route::post('edit', 'edit')->name(
+            'edit'
+        ); // test done
+    });
+Route::get('/address', 'AddressController@view')->name('address'); // test done
 // Route::get('/address/edit', 'AddressController@edit_address_view')->name(
 //     'address.edit.view'
 // );
-Route::post('/address/edit', 'AddressController@edit_address')->name(
-    'address.edit'
-);
+
 
 //product page
 Route::get('/product/{slug}', 'ProductController@show_one')->name(

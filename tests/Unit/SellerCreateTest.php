@@ -3,18 +3,11 @@
 namespace Tests\Unit;
 
 use App\Models\Approval;
-use App\Models\Cart;
-use App\Models\Order;
-use App\Models\Product;
 use App\Models\User;
-use Carbon\Carbon;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class SellerCreateTest extends TestCase
 {
@@ -23,49 +16,56 @@ class SellerCreateTest extends TestCase
      *
      * @return void
      */
-    use WithoutMiddleware;
-    public function setUp(): void
+    use RefreshDatabase, SetupTest;
+
+    private Collection $users;
+
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->sysadmin = User::where("id", "=", 1)->first();
-        $this->admin = User::where("id", "=", 2)->first();
-        $this->seller = User::where("id", "=", 11)->first();
-        $this->customer = User::where("id", "=", 8)->first();
+        $this->setUpUsers();
         //$this->setUpFaker();
         // $this->faker->seed(1235);
         //->withHeaders(['X-CSRF-TOKEN' => csrf_token()])
     }
+
     public function testSellerSubmitApproval()
     {
-        $req = [
+        $data = [
             'name' => 'TestSeller',
             'gstin' => '6512r65',
             'aadhaar' => '333311114444',
             'trade_name' => 'UnitTestingSeller'
         ];
-        log::info($req);
-        $response = $this->actingAs($this->customer)->post(route('seller.register'), $req);
+        $this->actingAs($this->users[0])->post(route('seller.register'), $data)
+            ->assertStatus(302);
 
-        $lastApproval = Approval::all()->sortByDesc('updated_at')->first();
-        log::info('Last product' . $lastApproval);
-        $this->assertEquals($lastApproval->type, 'seller_approval');
-        $this->assertEquals($lastApproval->user_id, 8);
+        $lastApproval = Approval::all()->sortByDesc('id')->first();
+        $this->assertEquals(
+            $lastApproval->user_id,
+            1
+        );
+        $this->assertEquals($lastApproval->type, 'seller_new');
     }
+
     public function testSellerApprovalAccepted()
     {
-        $id = Approval::all()->sortByDesc('updated_at')->first()->id;
-        $req = [
-            'input' => 'approve',
-            'id' => $id,
+        $data = [
+            'name' => 'TestSeller',
+            'gstin' => '6512r65',
+            'aadhaar' => '333311114444',
+            'trade_name' => 'UnitTestingSeller'
         ];
-        log::info($req);
+        $this->actingAs($this->users[0])->post(route('seller.register'), $data);
 
-        $response = $this->actingAs($this->admin)->post(route('admin.approval'), $req);
-        $lastpersonapproval = User::where('id', 8)->get()[0];
-        log::info($lastpersonapproval);
-        $this->assertEquals($lastpersonapproval->role, 'seller');
-        $z = User::where('id', 8)->get()[0];
-        $z->role = 'customer';
-        $z->save();
+        $lastApproval = Approval::all()->sortByDesc('id')->first();
+        $data = [
+            'input' => 'approve',
+            'id' => $lastApproval->id,
+        ];
+
+        $this->actingAs($this->users[2])->post(route('admin.approval'), $data);
+        $lastPersonApproved = User::where('id', $lastApproval->user_id)->first();
+        $this->assertEquals($lastPersonApproved->role, 'seller');
     }
 }

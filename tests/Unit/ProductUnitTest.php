@@ -3,105 +3,94 @@
 namespace Tests\Unit;
 
 use App\Models\FileImage;
-use App\Models\Product;
-use App\Models\Seller;
-use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use Tests\Traits\SetupTest;
+
 class ProductUnitTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+    use RefreshDatabase, SetupTest;
 
-
-   
+    private Collection $users;
+    private Collection $products;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-       
-       $this->user=new User();
-       $this->product=new Product();
-       $this->seller=new Seller();
-       $this->fileimage=new FileImage();
-        
+        $this->setUpUsers();
+        $this->setUpProducts();
     }
-
-
 
     public function testFillableAttributes()
     {
-        $fillable = [ 'type',
-        'seller_id',
-        'desc',
-        'price',
-        'name',
-        'unit',
-        'quantity',
-        'slug',
-        'discount',];
+        $fillable = [
+            'type',
+            'seller_id',
+            'desc',
+            'price',
+            'name',
+            'unit',
+            'quantity',
+            'slug',
+            'discount',
+            'active',
+        ];
 
-        $this->assertEquals($this->product->getFillable(), $fillable);
+        $this->assertEquals($this->products[0]->getFillable(), $fillable);
     }
 
-    public function test_product_belongsto_seller()
+    public function testProductBelongstoSeller()
     {
-        $product=new product();
-        $this->assertEquals($product->seller_id, $this->seller->id);
+        $this->assertEquals(
+            $this->products[0]->seller->id,
+            $this->users[1]->seller->id
+        );
     }
-   public function test_product_hasmany_coverphoto()
-   {
 
-    $product = new product();
-    $user=new User();
-    $coverphoto=new FileImage(['ref_id'=>array('type','product')]);
-    $coverphoto1=new FileImage(['ref_id'=>array('type','product')]);
-    $testArray = array($coverphoto,$coverphoto1);
-    $expectedCount = 2;
-    $this->assertCount(
-        $expectedCount,
-        $testArray
-    );
-   }
-    public function testgetPriceAfterDiscountWithDiscount()
+    public function testProductHasManyCoverPhotos()
     {
-        $model = new Product();
-        $model->price = 10;
+        $coverphotos[] = FileImage::factory()->create([
+            'type' => 'products',
+            'ref_id' => $this->products[0]->id
+        ]);
+        $coverphotos[] = FileImage::factory()->create([
+            'type' => 'products', 'ref_id' => $this->products[0]->id
+        ]);
+        $coverphotos = collect($coverphotos);
 
-        $model->discount = 0.3;
-        $output = $model->getDiscountedPriceAttribute($model);
-        $expect = new Product();
-        $expect->price = 10;
+        $this->assertCount(
+            2,
+            $this->products[0]->coverPhotos
+        );
 
-        $expect->discount = 0.3;
-        $expect1 = $expect->price * (1 - $expect->discount);
-        $this->assertEquals($expect1, $output);
+        $this->assertEquals(
+            $this->products[0]->coverPhotos->pluck('id'),
+            $coverphotos->pluck('id')
+        );
     }
-    public function testgetcategory()
+
+    public function testGetPriceAfterDiscountWithDiscount()
     {
-        $model = new Product();
-        $model::$categories[$model->type] = 'Vegetable';
-        $output = $model->getCategoryAttribute($model);
-        $expect = new Product();
-        // $expect::$categories[$model->type]='Vegetable';
-        $expect = 'Vegetable';
-        $this->assertEquals($expect, $output);
+        $this->assertEquals(
+            $this->products[0]->discountedPrice,
+            $this->products[0]->price * (1 - $this->products[0]->discount)
+        );
     }
-    public function testgetproductunit()
-    {
-        $model = new Product();
-        $model::$units[$model->unit] = 'KGS';
-        $output = $model->getProductUnitAttribute($model);
-        $expect = new Product();
 
-        $expect = 'KGS';
-        $this->assertEquals($expect, $output);
+    public function testGetCategory()
+    {
+        $this->assertEquals(
+            $this->products[0]->category,
+            $this->products[0]::$categories[$this->products[0]->type]
+        );
     }
-    
-   
-  }
+
+    public function testGetProductUnit()
+    {
+        $this->assertEquals(
+            $this->products[0]->productUnit,
+            $this->products[0]::$units[$this->products[0]->unit]
+        );
+    }
+}

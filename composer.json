@@ -64,6 +64,8 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "test": "vendor/bin/phpunit --verbose --colors --stderr"
+        "test": [
+            "php artisan test"
+        ]
     }
 }

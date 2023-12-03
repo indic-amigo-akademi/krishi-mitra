@@ -2,71 +2,75 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
-use App\Address;
+use App\Models\Address;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class AddressUnitTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
+    private Collection $addresses;
+
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->address = new Address();
-        $this->user=new User();
-        
+        $this->setUpUsers();
+        $this->setUpAddresses();
     }
-
-
 
     public function testFillableAttributes()
     {
-        $fillable = [ 'user_id',
-        'name',
-        'mobile',
-        'address1',
-        'address2',
-        'city',
-        'state',
-        'pincode',
-        'landmark',
-        'type',];
+        $fillable = [
+            'user_id',
+            'name',
+            'mobile',
+            'address1',
+            'address2',
+            'city',
+            'state',
+            'pincode',
+            'landmark',
+            'type',
+        ];
 
-        $this->assertEquals($this->address->getFillable(), $fillable);
+        $this->assertEquals($this->addresses[0]->getFillable(), $fillable);
     }
 
-    public function test_address_belongsto_user()
+    public function testAddressBelongstoUser()
     {
-        $address=new Address();
-        $this->assertEquals($address->user_id, $this->user->id);
+        $address = Address::factory()->make([
+            'user_id' => $this->users[0]->id
+        ]);
+        $this->assertEquals($address->user->id, $this->users[0]->id);
     }
-    public function test_getaddress_attribute()
-    {
-        $address=new Address();
-        $address->address1='central road';
-        $address->address2='abc';
-        $address->city='kolkata';
-        $address->pincode=700028;
-        $address->landmark='telephone exchange';
-        $output=$address->getFullAddressAttribute($address);
-        $expect=new Address();
-        $expect->address1='central road';
-        $expect->address2='abc';
-        $expect->city='kolkata';
-        $expect->pincode=700028;
-        $expect->landmark='telephone exchange';
-        $expect1=$expect->address1 .
-        ', ' .
-        $expect->address2 .
-        ($expect->city ? ', ' . $expect->city : '') .
-        ($expect->pincode ? '-' . $expect->pincode : '') .
-        ($expect->landmark ? ', ' . $expect->landmark : '');
-        $this->assertEquals($output,$expect1);
 
+    public function testGetAddressAttribute()
+    {
+        $address1 = Address::factory()->make();
+        $address1->address1 = 'central road';
+        $address1->address2 = 'abc';
+        $address1->city = 'kolkata';
+        $address1->pincode = 700028;
+        $address1->landmark = 'telephone exchange';
+        $received = $address1->full_address;
+
+        $address2 = Address::factory()->make();
+        $address2->address1 = 'central road';
+        $address2->address2 = 'abc';
+        $address2->city = 'kolkata';
+        $address2->pincode = 700028;
+        $address2->landmark = 'telephone exchange';
+        $expected = $address2->address1 .
+            ', ' .
+            $address2->address2 .
+            ($address2->city ? ', ' . $address2->city : '') .
+            ($address2->pincode ? '-' . $address2->pincode : '') .
+            ($address2->landmark ? ', ' . $address2->landmark : '');
+
+        $this->assertEquals($received, $expected);
     }
 }

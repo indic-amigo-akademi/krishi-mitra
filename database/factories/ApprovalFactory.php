@@ -15,7 +15,10 @@ class ApprovalFactory extends Factory
     {
         return [
             'user_id' => $this->faker->randomNumber(5),
-            'type' => $this->faker->randomElement(['admin', 'seller']),
+            'type' => $this->faker->randomElement([
+                'admin_new',
+                'seller_new'
+            ]),
         ];
     }
 }

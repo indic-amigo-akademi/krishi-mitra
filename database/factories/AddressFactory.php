@@ -22,7 +22,7 @@ class AddressFactory extends Factory
             'city' => $this->faker->city(),
             'state' => $this->faker->state(),
             'pincode' => (int) $this->faker->postcode(),
-            'landmark' => $this->faker->secondaryAddress(),
+            'landmark' => $this->faker->societyName(),
             'type' => $this->faker->randomElement(['home', 'work']),
         ];
     }

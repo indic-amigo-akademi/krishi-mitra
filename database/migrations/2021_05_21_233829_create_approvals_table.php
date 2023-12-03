@@ -20,7 +20,7 @@ class CreateApprovalsTable extends Migration
                 ->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table->enum('type', ['admin', 'seller']);
+            $table->enum('type', ['admin_new', 'seller_new']);
             $table->timestamps();
         });
     }

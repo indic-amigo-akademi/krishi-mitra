@@ -2,44 +2,29 @@
 
 namespace Tests\Feature;
 
-use App\Models\Address;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\Seller;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class SellerAuthTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, SetupTest;
+    private Collection $users;
+    private Collection $orderProducts;
 
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
-        $this->sysadmin = User::factory()->sysadmin()->create();
-        $this->admin = User::factory()->admin()->create();
-        $this->seller = User::factory()->seller()->create();
-        $this->customer = User::factory()->create();
-
-        // Customer related models
-        Address::factory()->create([
-            'user_id' => $this->customer->id,
-        ]);
-
-        // Seller related models
-        Seller::factory()->create(['user_id' => $this->seller->id]);
-        $seller_products = Product::factory()->count(3)->create([
-            'seller_id' => $this->seller->seller->id,
-        ]);
-        $this->seller_orders = $seller_products->map(function ($product) {
-            return Order::factory()->create([
-                'user_id' => $this->customer->id,
-                'product_id' => $product->id,
-                'address_id' => $this->customer->addresses->first()->id,
-            ]);
-        });
+        $this->setUpUsers();
+        $this->setUpAddresses();
+        $this->setUpProducts();
+        $this->setUpOrderProducts();
     }
 
     /**
@@ -54,7 +39,7 @@ class SellerAuthTest extends TestCase
         $url,
         $status = [],
         $redirectUri = ["guest" => '/login'],
-        $fromUri = '/explore'
+        $fromUri = ROUTE_EXPLORE
     ) {
         $default_status = ["guest" => 302, "customer" => 403, "seller" => 200, 'admin' => 403, 'sysadmin' => 403];
         foreach ($status as $user_role => $status_code) {
@@ -63,34 +48,39 @@ class SellerAuthTest extends TestCase
         $status = $default_status;
 
         $response = $this->get($url);
-        if ($response->status() == 302)
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["guest"]);
-        else
+        } else {
             $response->assertStatus($status["guest"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->customer)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[0])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["customer"]);
-        else
+        } else {
             $response->assertStatus($status["customer"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->seller)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[1])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["seller"]);
-        else
+        } else {
             $response->assertStatus($status["seller"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->admin)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[2])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["admin"]);
-        else
+        } else {
             $response->assertStatus($status["admin"]);
+        }
 
-        $response = $this->from($fromUri)->actingAs($this->sysadmin)->get($url);
-        if ($response->status() == 302)
+        $response = $this->from($fromUri)->actingAs($this->users[3])->get($url);
+        if ($response->status() == 302) {
             $response->assertRedirect($redirectUri["sysadmin"]);
-        else
+        } else {
             $response->assertStatus($status["sysadmin"]);
+        }
     }
 
     // public function testSellerRoute()
@@ -134,9 +124,9 @@ class SellerAuthTest extends TestCase
             "sysadmin" => 302
         ];
         $redirectUri = [
-            "seller" => '/explore',
-            "admin" => '/explore',
-            "sysadmin" => '/explore',
+            "seller" => ROUTE_EXPLORE,
+            "admin" => ROUTE_EXPLORE,
+            "sysadmin" => ROUTE_EXPLORE,
             "guest" => '/login'
         ];
         $this->testSellerSingleGetRoute(route("seller.register.view"), $status, $redirectUri);
@@ -159,8 +149,7 @@ class SellerAuthTest extends TestCase
      */
     public function testSellerRouteOrderView()
     {
-        // var_dump(Order::factory()->generateOrderID(1));
-        $this->testSellerSingleGetRoute(route("seller.order.view", ['id' => $this->seller_orders->first()->order_id]));
+        $this->testSellerSingleGetRoute(route("seller.order.view", ['id' => $this->orderProducts->first()->order_id]));
         // $this->testSellerSingleGetRoute(route("seller.order.view", ['id' => Order::factory()->generateOrderID(1)]));
     }
 
@@ -183,7 +172,7 @@ class SellerAuthTest extends TestCase
     {
         $this->testSellerSingleGetRoute(route(
             "seller.product.edit",
-            ['id' => $this->seller->seller->products->first()->id]
+            ['id' => $this->users[1]->seller->products->first()->id]
         ));
     }
 
@@ -196,7 +185,7 @@ class SellerAuthTest extends TestCase
     {
         $this->testSellerSingleGetRoute(route(
             "seller.product.view",
-            ['slug' => $this->seller->seller->products->first()->slug]
+            ['slug' => $this->users[1]->seller->products->first()->slug]
         ));
     }
 }

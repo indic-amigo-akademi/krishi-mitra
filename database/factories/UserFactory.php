@@ -16,7 +16,7 @@ class UserFactory extends Factory
      * @var string
      */
     protected $model = User::class;
-    public $password_str =  "4PkgW@UdAmB2bayT";
+    public $passwordStr =  "4PkgW@UdAmB2bayT";
 
     /**
      * Define the model's default state.
@@ -30,8 +30,8 @@ class UserFactory extends Factory
             'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->phoneNumber,
-            'password' => Hash::make($this->password_str),
-            'role' => 'user',
+            'password' => Hash::make($this->passwordStr),
+            'role' => $this->faker->randomElement(['user', 'admin', 'seller', 'sysadmin']),
             'active' => true,
             'remember_token' => Str::random(10),
         ];
@@ -74,8 +74,13 @@ class UserFactory extends Factory
      *
      * @return string
      */
-    public function password_string()
+    public function passwordString()
     {
         return $this->faker->regexify('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/');
+    }
+
+    public function passwordStr()
+    {
+        return $this->passwordStr;
     }
 }

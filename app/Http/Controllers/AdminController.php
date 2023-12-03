@@ -82,7 +82,7 @@ class AdminController extends Controller
         ) {
             Approval::create([
                 'user_id' => $user->id,
-                'type' => 'admin',
+                'type' => 'admin_new',
             ]);
             return redirect()
                 ->route('home')
@@ -135,7 +135,7 @@ class AdminController extends Controller
         if (!Auth::user()->is_sysadmin) {
             abort(403);
         }
-        $admin = User::all()->where('role', '=', 'admin');
+        $admin = User::all()->where('role', '=', 'admin_new');
         return view('admin.browse.view')->with('admin', $admin);
     } // test done
 
@@ -150,7 +150,7 @@ class AdminController extends Controller
             ->where('id', '=', $unadmin)
             ->first();
 
-        $admin->role = 'customer';
+        $admin->role = 'user';
         $admin->save();
         return redirect()
             ->route('admin.browse.view')
@@ -177,9 +177,9 @@ class AdminController extends Controller
             $z = User::all()
                 ->where('id', '=', $y->user_id)
                 ->first();
-            if ($y->type == 'seller') {
+            if ($y->type == 'seller_new') {
                 $z->role = 'seller';
-            } elseif ($y->type == 'admin') {
+            } elseif ($y->type == 'admin_new') {
                 $z->role = 'admin';
             }
             $z->save();

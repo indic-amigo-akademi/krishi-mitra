@@ -24,6 +24,6 @@
         "notiflix": "^3.0.1",
         "remixicon": "^3.6.0",
         "slick-carousel": "^1.8.1",
-        "uikit": "^3.6.20"
+        "uikit": "^3.17.11"
     }
 }

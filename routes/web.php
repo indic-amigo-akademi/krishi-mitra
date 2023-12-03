@@ -35,11 +35,11 @@ Route::prefix('admin')->name('admin.')
         Route::get('product/browse', 'product_browse')->name('product.browse'); // test done
         Route::get('browse', 'admin_browse_view')->name('browse.view'); // test done
 
-        Route::post('register', 'register')->name('register');
         Route::post('approval', 'approval')->name('approval');
         Route::post('browse', 'admin_browse')->name('browse');
     });
-
+    
+Route::post('admin/register', 'AdminController@register')->name('admin.register');
 Route::get('admin/register', 'AdminController@register_view')->name('admin.register.view'); // test done
 
 
@@ -58,9 +58,9 @@ Route::prefix('seller')->name('seller.')
         Route::get('products', 'product_browse')->name('product.browse'); // test done
         Route::get('product/{slug}', 'product_show')->name('product.view'); // test done
 
-        Route::post('register', 'create_seller')->name('register');
     });
-
+    
+Route::post('seller/register', 'SellerController@create_seller')->name('seller.register');
 Route::get('seller/register', 'SellerController@seller_form')->name('seller.register.view'); // test done
 
 

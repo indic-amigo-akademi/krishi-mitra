@@ -3,27 +3,23 @@
 namespace Tests\Unit;
 
 use App\Models\FileImage;
-use App\Models\Product;
-use App\Models\Seller;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class ProductUnitTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, SetupTest;
 
-    private $user, $product, $sellerUser, $seller, $fileimage;
+    private Collection $users;
+    private Collection $products;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->user = User::factory()->create();
-        $this->sellerUser = User::factory()->seller()->create();
-        $this->seller = Seller::factory()->create(['user_id' => $this->sellerUser->id]);
-        $this->product = Product::factory()->create(['seller_id' => $this->seller->id]);
-        // $this->fileimage = FileImage::factory()->create();
+        $this->setUpUsers();
+        $this->setUpProducts();
     }
 
     public function testFillableAttributes()
@@ -41,14 +37,14 @@ class ProductUnitTest extends TestCase
             'active',
         ];
 
-        $this->assertEquals($this->product->getFillable(), $fillable);
+        $this->assertEquals($this->products[0]->getFillable(), $fillable);
     }
 
     public function testProductBelongstoSeller()
     {
         $this->assertEquals(
-            $this->product->seller->id,
-            $this->seller->id
+            $this->products[0]->seller->id,
+            $this->users[1]->seller->id
         );
     }
 
@@ -56,20 +52,20 @@ class ProductUnitTest extends TestCase
     {
         $coverphotos[] = FileImage::factory()->create([
             'type' => 'products',
-            'ref_id' => $this->product->id
+            'ref_id' => $this->products[0]->id
         ]);
         $coverphotos[] = FileImage::factory()->create([
-            'type' => 'products', 'ref_id' => $this->product->id
+            'type' => 'products', 'ref_id' => $this->products[0]->id
         ]);
         $coverphotos = collect($coverphotos);
 
         $this->assertCount(
             2,
-            $this->product->coverPhotos
+            $this->products[0]->coverPhotos
         );
 
         $this->assertEquals(
-            $this->product->coverPhotos->pluck('id'),
+            $this->products[0]->coverPhotos->pluck('id'),
             $coverphotos->pluck('id')
         );
     }
@@ -77,24 +73,24 @@ class ProductUnitTest extends TestCase
     public function testGetPriceAfterDiscountWithDiscount()
     {
         $this->assertEquals(
-            $this->product->discountedPrice,
-            $this->product->price * (1 - $this->product->discount)
+            $this->products[0]->discountedPrice,
+            $this->products[0]->price * (1 - $this->products[0]->discount)
         );
     }
 
     public function testGetCategory()
     {
         $this->assertEquals(
-            $this->product->category,
-            $this->product::$categories[$this->product->type]
+            $this->products[0]->category,
+            $this->products[0]::$categories[$this->products[0]->type]
         );
     }
 
     public function testGetProductUnit()
     {
         $this->assertEquals(
-            $this->product->productUnit,
-            $this->product::$units[$this->product->unit]
+            $this->products[0]->productUnit,
+            $this->products[0]::$units[$this->products[0]->unit]
         );
     }
 }

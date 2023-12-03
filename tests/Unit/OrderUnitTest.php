@@ -2,34 +2,27 @@
 
 namespace Tests\Unit;
 
-use App\Models\Address;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\Seller;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class OrderUnitTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, SetupTest;
 
-    private $user, $product, $sellerUser, $seller, $address, $order;
+    private Collection $users;
+    private Collection $addresses;
+    private Collection $products;
+    private Collection $orderProducts;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->user = User::factory()->create();
-        $this->sellerUser = User::factory()->seller()->create();
-        $this->seller = Seller::factory()->create(['user_id' => $this->sellerUser->id]);
-        $this->product = Product::factory()->create(['seller_id' => $this->seller->id]);
-        $this->address = Address::factory()->create(['user_id' => $this->user->id]);
-        $this->order = Order::factory()->create([
-            'user_id' => $this->user->id,
-            'product_id' => $this->product->id,
-            'address_id' => $this->address->id
-        ]);
+        $this->setUpUsers();
+        $this->setUpAddresses();
+        $this->setUpProducts();
+        $this->setUpOrderProducts();
     }
 
     public function testFillableAttributes()
@@ -46,53 +39,53 @@ class OrderUnitTest extends TestCase
             'type',
         ];
 
-        $this->assertEquals($this->order->getFillable(), $fillable);
+        $this->assertEquals($this->orderProducts[0]->getFillable(), $fillable);
     }
 
     public function testOrderBelongstoUser()
     {
-        $this->assertEquals($this->order->user->id, $this->user->id);
+        $this->assertEquals($this->orderProducts[0]->user->id, $this->users[0]->id);
     }
 
     public function testOrderBelongstoProduct()
     {
-        $this->assertEquals($this->order->product->id, $this->product->id);
+        $this->assertEquals($this->orderProducts[0]->product->id, $this->products[0]->id);
     }
 
     public function testOrderBelongstoAddress()
     {
-        $this->assertEquals($this->order->address->id, $this->address->id);
+        $this->assertEquals($this->orderProducts[0]->address->id, $this->addresses[0]->id);
     }
 
     public function testGetDiscountedPriceAttribute()
     {
         $this->assertEquals(
-            $this->order->discountedPrice,
-            $this->order->price * (1 - $this->order->discount)
+            $this->orderProducts[0]->discountedPrice,
+            $this->orderProducts[0]->price * (1 - $this->orderProducts[0]->discount)
         );
     }
 
     public function testGetTotalPriceAttribute()
     {
         $this->assertEquals(
-            $this->order->totalPrice,
-            $this->order->price * $this->order->qty
+            $this->orderProducts[0]->totalPrice,
+            $this->orderProducts[0]->price * $this->orderProducts[0]->qty
         );
     }
 
     public function testGetTotalDiscountedPriceAttribute()
     {
         $this->assertEquals(
-            $this->order->totalDiscountedPrice,
-            $this->order->price * (1 - $this->order->discount) * $this->order->qty
+            $this->orderProducts[0]->totalDiscountedPrice,
+            $this->orderProducts[0]->price * (1 - $this->orderProducts[0]->discount) * $this->orderProducts[0]->qty
         );
     }
 
     public function testCategoryAttribute()
     {
         $this->assertEquals(
-            $this->order->category,
-            $this->order::$categories[$this->order->type]
+            $this->orderProducts[0]->category,
+            $this->orderProducts[0]::$categories[$this->orderProducts[0]->type]
         );
     }
 }

@@ -4,10 +4,11 @@ namespace Tests\Unit;
 
 use App\Models\Approval;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-
+use Tests\Traits\SetupTest;
 
 class AdminTest extends TestCase
 {
@@ -16,30 +17,28 @@ class AdminTest extends TestCase
      *
      * @return void
      */
-    use WithFaker, RefreshDatabase;
+    use WithFaker, RefreshDatabase, SetupTest;
 
-    private $sysadmin, $admin, $seller, $customer;
+    private Collection $users;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->sysadmin = User::factory()->sysadmin()->create();
-        $this->admin = User::factory()->admin()->create();
-        $this->seller = User::factory()->seller()->create();
-        $this->customer = User::factory()->create();
+        $this->setUpUsers();
         $this->setUpFaker();
     }
 
     public function test_admin_register()
     {
         $data = [
-            'email' => $this->customer->email,
-            'password' => 'Mohan@1999'
+            'email' => $this->users[0]->email,
+            'password' => User::factory()->passwordStr()
         ];
-        $response1 = $this->actingAs($this->customer)->post(route('admin.register'), $data);
+        $this->actingAs($this->users[0])->post(route('admin.register'), $data)
+            ->assertStatus(302);
         $lastApproval = Approval::all()->sortByDesc('updated_at')->first();
-        $this->assertEquals($lastApproval->type, 'admin_approval');
-        $this->assertEquals($lastApproval->user_id, $this->customer->id);
+        $this->assertEquals($lastApproval->type, 'admin_new');
+        $this->assertEquals($lastApproval->user_id, $this->users[0]->id);
     }
 
     // public function test_approval()
@@ -47,15 +46,15 @@ class AdminTest extends TestCase
     //     $lastApproval1 = Approval::all()->sortByDesc('updated_at')->first();
     //     $approve_data = ['input' => 'approve', 'id' => $lastApproval1->id];
     //     $admin_obj = [
-    //         'user_id' => $this->customer->id,
+    //         'user_id' => $this->users[0]->id,
     //         'type' => 'admin_approval',
     //     ];
     //     $seller_obj = [
-    //         'user_id' => $this->customer->id,
+    //         'user_id' => $this->users[0]->id,
     //         'type' => 'seller_approval',
     //     ];
 
-    //     $response1 = $this->actingAs($this->admin)->post(route('admin.approval'), $approve_data);
+    //     $response1 = $this->actingAs($this->users[2])->post(route('admin.approval'), $approve_data);
     //     $c1 = User::all()
     //         ->where('id', '=', $lastApproval1->user_id)->first();
     //     $this->assertEquals($c1->role, 'admin');
@@ -64,7 +63,7 @@ class AdminTest extends TestCase
 
     //     $declineApproval = Approval::create($admin_obj);
     //     $decline_data = ['input' => 'decline', 'id' => $declineApproval->id];
-    //     $response2 = $this->actingAs($this->admin)->post(route('admin.approval'), $decline_data);
+    //     $response2 = $this->actingAs($this->users[2])->post(route('admin.approval'), $decline_data);
 
     //     $c2 = User::all()
     //         ->where('id', '=', $declineApproval->user_id)->first();
@@ -78,10 +77,10 @@ class AdminTest extends TestCase
     //         'aadhaar' => '333311114444',
     //         'trade_name' => 'UnitTestingSeller'
     //     ];
-    //     $response = $this->actingAs($this->customer)->post(route('seller.register'), $req);
+    //     $response = $this->actingAs($this->users[0])->post(route('seller.register'), $req);
     //     $sellerApproval = Approval::all()->sortByDesc('updated_at')->first();
     //     $seller_data = ['input' => 'approve', 'id' => $sellerApproval->id];
-    //     $response3 = $this->actingAs($this->admin)->post(route('admin.approval'), $seller_data);
+    //     $response3 = $this->actingAs($this->users[2])->post(route('admin.approval'), $seller_data);
 
     //     $seller = User::all()
     //         ->where('id', '=', $sellerApproval->user_id)->first();
@@ -101,16 +100,13 @@ class AdminTest extends TestCase
 
     public function test_admin_browse()
     {
-        $data = ['input' => $this->admin->id];
+        $data = ['input' => $this->users[2]->id];
 
-        $response = $this->actingAs($this->sysadmin)->post(route('admin.browse'), $data);
+        $this->actingAs($this->users[3])->post(route('admin.browse'), $data)
+            ->assertStatus(302)
+            ->assertRedirect(route('admin.browse.view'));
 
-        $c1 = User::where('id', '=', $this->admin->id)->first();
-
-        $this->assertEquals($c1->role, 'customer');
-        $c1->role = 'admin';
-        $c1->save();
-        $response->assertStatus(302);
-        $response->assertRedirect(route('admin.browse.view'));
+        $c1 = User::where('id', '=', $this->users[2]->id)->first();
+        $this->assertEquals($c1->role, 'user');
     }
 }

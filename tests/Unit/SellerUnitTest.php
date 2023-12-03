@@ -2,40 +2,38 @@
 
 namespace Tests\Unit;
 
-use App\Models\Product;
-use App\Models\Seller;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class SellerUnitTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, SetupTest;
 
-    private $user, $seller, $product;
+    private Collection $users;
+    private Collection $products;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->user = User::factory()->create();
-        $this->seller = Seller::factory()->create(['user_id' => $this->user->id]);
-        $this->product = Product::factory()->create(['seller_id' => $this->seller->id]);
+        $this->setUpUsers();
+        $this->setUpProducts();
     }
 
     public function testFillableAttributes()
     {
         $fillable = ['name', 'user_id', 'gstin', 'aadhaar', 'trade_name'];
-        $this->assertEquals($this->seller->getFillable(), $fillable);
+        $this->assertEquals($this->users[1]->seller->getFillable(), $fillable);
     }
-    
+
     public function testSellerBelongsToUser()
     {
-        $this->assertEquals($this->seller->user->id, $this->user->id);
+        $this->assertEquals($this->users[1]->seller->user->id, $this->users[1]->id);
     }
-    
+
     public function testSellerBelongsToProducts()
     {
-        $this->assertEquals($this->seller->products[0]->id, $this->product->id);
+        $this->assertEquals($this->users[1]->seller->products[0]->id, $this->products[0]->id);
     }
 }

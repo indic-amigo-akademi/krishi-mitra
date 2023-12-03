@@ -5,15 +5,14 @@ namespace Tests\Unit;
 use App\Models\FileImage;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Tests\Traits\SetupTest;
 
 class ProductUpdateTest extends TestCase
 {
@@ -22,18 +21,16 @@ class ProductUpdateTest extends TestCase
      *
      * @return void
      */
-    // use RefreshDatabase;
-    use WithFaker;
-    use WithoutMiddleware;
-    public function setUp(): void
+    use RefreshDatabase, WithFaker, SetupTest;
+    
+    private Collection $users;
+
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->sysadmin = User::where("id", "=", 1)->first();
-        $this->admin = User::where("id", "=", 2)->first();
-        $this->seller = User::where("id", "=", 11)->first();
-        $this->customer = User::where("id", "=", 8)->first();
         $this->setUpFaker();
-        // $this->faker->seed(1235);
+        $this->setUpUsers();
+        $this->setUpProducts();
     }
 
     public function testCreateProduct()
@@ -60,8 +57,8 @@ class ProductUpdateTest extends TestCase
             'cover' => [0 => $file]
         ];
 
-        $response = $this->actingAs($this->seller)->post(route('product.store'), $product);
-        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
+        $response = $this->actingAs($this->users[1])->post(route('product.store'), $product);
+        $lastProduct = Product::all()->sortByDesc('id')->first();
 
         $this->assertEquals($lastProduct->name, $product['name']);
         $response->assertStatus(302);
@@ -71,7 +68,7 @@ class ProductUpdateTest extends TestCase
 
     public function testupdateProduct()
     {
-        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
+        $lastProduct = Product::all()->sortByDesc('id')->first();
         $product = [
             'type' => 1,
             'seller_id' => 3,
@@ -82,9 +79,9 @@ class ProductUpdateTest extends TestCase
             'quantity' => '133',
             'discount' => 0.4
         ];
-        $response = $this->actingAs($this->seller)->post(route('product.update', $lastProduct->id), $product);
+        $response = $this->actingAs($this->users[1])->post(route('product.update', $lastProduct->id), $product);
 
-        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
+        $lastProduct = Product::all()->sortByDesc('id')->first();
         $this->assertEquals($lastProduct->desc, $product['desc']);
         $response->assertStatus(302);
         $response->assertRedirect(route(Auth::user()->role . '.product.browse'));
@@ -92,11 +89,11 @@ class ProductUpdateTest extends TestCase
 
     public function testDeleteProduct()
     {
-        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
+        $lastProduct = Product::all()->sortByDesc('id')->first();
         $id = $lastProduct->id;
-        $response = $this->actingAs($this->seller)->post(route('product.destroy', $lastProduct->id));
+        $response = $this->actingAs($this->users[1])->post(route('product.destroy', $lastProduct->id));
 
-        $lastProduct = Product::all()->sortByDesc('updated_at')->first();
+        $lastProduct = Product::all()->sortByDesc('id')->first();
         $this->assertNotEquals($lastProduct->id, $id);
         $response->assertStatus(302);
         $response->assertRedirect(route(Auth::user()->role . '.product.browse'));
